@@ -5,6 +5,10 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomMemberController;
 use Illuminate\Support\Facades\Route;
 
+if (env('APP_ENV') == 'production') {
+    \Illuminate\Support\Facades\URL::forceScheme('https');
+}
+
 Route::get('/', function () {
     return view('welcome');
 });
