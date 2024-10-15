@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->int('size');
+            $table->integer('size');
             $table->string('title');
             $table->json('data_json');
-            $table->int('position')->nullable();
+            $table->integer('position')->nullable();
             $table->timestamps();
         });
     }

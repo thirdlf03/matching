@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('room_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->unique(['room_id', 'user_id']);
-            $table->int('status')->default(1);
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }
