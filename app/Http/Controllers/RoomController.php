@@ -60,6 +60,8 @@ class RoomController extends Controller
      */
     public function destroy(Room $room)
     {
-        //
+        //ルームの削除処理
+        $room->delete();
+        return redirect()->route('rooms.index');
     }
 }
