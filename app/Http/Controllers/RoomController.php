@@ -52,7 +52,7 @@ class RoomController extends Controller
      */
     public function update(Request $request, Room $room)
     {
-        //
+        //ルームの更新処理を
     }
 
     /**
