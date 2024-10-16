@@ -28,7 +28,18 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //ルームの新規保存を処理。ユーザーが送信したデータをDBに保存し、一覧ページにリダイレクト
+        $request->validate([
+            'rooms' => 'required',
+        ]);
+
+        //ルームの作成と保存
+        $request->user()->rooms()->create($request->only('rooms'));
+
+        //ルーム一覧ページにリダイレクト
+        return redirect()->route('rooms.index');
+
+        //入室メソッドを作成して、あるユーザーがあるルームに入室したことを記録する？？
     }
 
     /**
