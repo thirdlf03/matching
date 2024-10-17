@@ -9,4 +9,10 @@ class RoomMember extends Model
 {
     /** @use HasFactory<\Database\Factories\RoomMemberFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'room_id',
+        'user_id',
+        'status',
+    ];
 }
