@@ -15,8 +15,10 @@ class RoomMemberController extends Controller
         // RoomMemberの全項目を取得
         $roomMembers = RoomMember::all();
 
-        // room_members.index ビューにデータを渡して表示
-        return view('room_members.index', ['roomMembers' => $roomMembers]);
+        // roommember.index ビューにデータを渡して表示
+        return view('roommember.index', [
+            'roomMembers' => $roomMembers
+        ]);
     }
 
     /**
