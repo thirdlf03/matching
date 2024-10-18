@@ -48,7 +48,8 @@ class RoomController extends Controller
      */
     public function edit(Room $room)
     {
-        //
+        //ルームの編集画面を表示する
+        return view('rooms.edit',compact('room'));
     }
 
     /**
