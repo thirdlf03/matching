@@ -69,7 +69,14 @@ class RoomController extends Controller
      */
     public function update(Request $request, Room $room)
     {
-        //
+        //ルームの更新処理を実装
+        $request->validate([
+            'room' => 'required',
+        ]);
+
+        $rooms->update($request->only('room'));
+        return redirect()->route('room.show',$room);
+        
     }
 
     /**
