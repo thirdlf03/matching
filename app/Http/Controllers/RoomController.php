@@ -34,16 +34,27 @@ class RoomController extends Controller
     {
         //ルームの新規保存を処理。ユーザーが送信したデータをDBに保存し、一覧ページにリダイレクト
         $request->validate([
-            'rooms' => 'required',
+            'user_id' => 'required',
+            'size' => 'required',
+            'title' => 'required',
+            'data_json' => 'required',
+            
         ]);
 
         //ルームの作成と保存
-        $request->user()->rooms()->create($request->only('rooms'));
+        $user_id = auth()->id();
+
+        Room::create([
+            'data_json' => $request -> roomContent,
+            'title' =>$request -> title,
+            'user_id' => $user_id,
+            'size' => $request -> size,
+        ]);
+        
 
         //ルーム一覧ページにリダイレクト
         return redirect()->route('rooms.index');
 
-        //入室メソッドを作成して、あるユーザーがあるルームに入室したことを記録する？？
     }
 
     /**
@@ -52,7 +63,7 @@ class RoomController extends Controller
     public function show(Room $room)
     {
         //
-        return view('rooms.show',compact('rooms'));
+        return view('rooms.show',compact('room'));
     }
 
     /**
@@ -69,14 +80,23 @@ class RoomController extends Controller
      */
     public function update(Request $request, Room $room)
     {
-        //ルームの更新処理を実装
         $request->validate([
-            'room' => 'required',
+            'user_id' => 'required',
+            'size' => 'required',
+            'title' => 'required',
+            'data_json' => 'required',
+            
         ]);
 
-        $rooms->update($request->only('room'));
-        return redirect()->route('room.show',$room);
-        
+        //ルームの更新と保存
+        $user_id = auth()->id();
+
+        $room -> update([
+            'data_json' => $request -> roomContent,
+            'title' =>$request -> title,
+            'user_id' => $user_id,
+            'size' => $request -> size,
+        ]);
     }
 
     /**
