@@ -17,8 +17,8 @@ return new class extends Migration
             $table->integer('size');
             $table->string('title');
             $table->json('data_json');
-            $table->integer('latitude')->nullable();
-            $table->integer('longitude')->nullable();
+            $table->decimal('latitude', 10, 8)->nullable();
+            $table->decimal('longitude', 11, 8)->nullable();
             $table->timestamps();
         });
     }
