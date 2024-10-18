@@ -23,7 +23,8 @@ class RoomController extends Controller
      */
     public function create()
     {
-        //
+        //ルーム作成ページを表示する
+        return view('rooms.create');
     }
 
     /**
