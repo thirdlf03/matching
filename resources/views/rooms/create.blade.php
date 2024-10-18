@@ -4,7 +4,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Room編集') }}
+            {{ __('Room作成') }}
         </h2>
     </x-slot>
 
@@ -17,13 +17,12 @@
                     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
                     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
 
-                    <form method="POST" action="{{ route('rooms.update' , $room) }}" id="roomForm">
+                    <form method="POST" action="{{ route('rooms.store') }}" id="roomForm">
                         @csrf
-                        @method('PUT')
                         <label>ルーム名</label>
-                        <input name="title" required type="text" class="mx-2 my-4" value="{{$room -> title}}"></input>
+                        <input name="title" required type="text" class="mx-2 my-4"></input>
                         <label>人数</label>
-                        <input name="size" required type="number" class="mx-2 my-4" value="{{$room -> size}}"><br>
+                        <input name="size" required type="number" class="mx-2 my-4"><br>
                         <div x-data="{ open: false }">
                             <input @click="open = !open" type="checkbox" class="my-4"></input>
                             <label>位置情報をセット</label><br>
@@ -75,13 +74,13 @@
                             </span>
                         </div>
                         <div id="editor" required></div>
-                        <input type="hidden" name="roomContent" id="roomContent" value="{1:1}">
+                        <input type="hidden" name="data_json" id="data_json" value="">
                         <input type="hidden" name="latitude" id="latitude" value="">
                         <input type="hidden" name="longitude" id="longitude" value="">
                         <div class="flex justify-end mt-4">
                             <button type="submit" id="submit"
                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                更新
+                                送信
                             </button>
                         </div>
                     </form>
@@ -99,7 +98,7 @@
                         document.getElementById('roomForm').addEventListener('submit', function(e) {
                             const delta = quill.getContents();
                             const jsoncontent = JSON.stringify(delta);
-                            document.getElementById('roomContent').value = jsoncontent;
+                            document.getElementById('data_json').value = jsoncontent;
                         });
 
 

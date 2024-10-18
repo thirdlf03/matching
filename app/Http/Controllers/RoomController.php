@@ -14,7 +14,8 @@ class RoomController extends Controller
     {
         //ルームのデータをビューに渡して新しい順に一覧表示させる。
         $rooms = Room::with('user')->latest()->get();
-        return view('rooms.index',compact('rooms'));
+
+        return view('rooms.index', compact('rooms'));
         //dd($rooms);
     }
 
@@ -34,23 +35,22 @@ class RoomController extends Controller
     {
         //ルームの新規保存を処理。ユーザーが送信したデータをDBに保存し、一覧ページにリダイレクト
         $request->validate([
-            'user_id' => 'required',
             'size' => 'required',
             'title' => 'required',
             'data_json' => 'required',
-            
         ]);
 
         //ルームの作成と保存
         $user_id = auth()->id();
 
         Room::create([
-            'data_json' => $request -> roomContent,
-            'title' =>$request -> title,
+            'data_json' => $request->data_json,
+            'title' => $request->title,
             'user_id' => $user_id,
-            'size' => $request -> size,
+            'size' => $request->size,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
         ]);
-        
 
         //ルーム一覧ページにリダイレクト
         return redirect()->route('rooms.index');
@@ -63,7 +63,7 @@ class RoomController extends Controller
     public function show(Room $room)
     {
         //
-        return view('rooms.show',compact('room'));
+        return view('rooms.show', compact('room'));
     }
 
     /**
@@ -72,7 +72,7 @@ class RoomController extends Controller
     public function edit(Room $room)
     {
         //ルームの編集画面を表示する
-        return view('rooms.edit',compact('room'));
+        return view('rooms.edit', compact('room'));
     }
 
     /**
@@ -81,22 +81,20 @@ class RoomController extends Controller
     public function update(Request $request, Room $room)
     {
         $request->validate([
-            'user_id' => 'required',
             'size' => 'required',
             'title' => 'required',
             'data_json' => 'required',
-            
         ]);
 
-        //ルームの更新と保存
-        $user_id = auth()->id();
-
-        $room -> update([
-            'data_json' => $request -> roomContent,
-            'title' =>$request -> title,
-            'user_id' => $user_id,
-            'size' => $request -> size,
+        $room->update([
+            'data_json' => $request->data_json,
+            'title' => $request->title,
+            'size' => $request->size,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
         ]);
+
+        return redirect()->route('rooms.index');
     }
 
     /**
@@ -106,6 +104,7 @@ class RoomController extends Controller
     {
         //ルームの削除処理
         $room->delete();
+
         return redirect()->route('rooms.index');
     }
 }
