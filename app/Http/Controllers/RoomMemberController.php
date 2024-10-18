@@ -7,12 +7,18 @@ use Illuminate\Http\Request;
 
 class RoomMemberController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
+    //ルームメンバーの一覧表示
+
     public function index()
     {
-        //
+        // RoomMemberの全項目を取得
+        $roomMembers = RoomMember::all();
+
+        // roommember.index ビューにデータを渡して表示
+        return view('roommember.index', [
+            'roomMembers' => $roomMembers
+        ]);
     }
 
     /**
