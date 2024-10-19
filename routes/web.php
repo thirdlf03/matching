@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomMemberController;
+use App\Http\Controllers\ChatController;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FollowController;
 
@@ -27,6 +29,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
     Route::resource('rooms', RoomController::class);
     Route::resource('roomMembers', RoomMemberController::class);
+    Route::get('/rooms',[ChatController::class,'index'])->name('chat.index');
+    Route::post('/rooms',[ChatController::class,'store'])->name('chat.store');
+    Route::get('/rooms/create',[ChatController::class,'create'])->name('chat.create');
+    Route::delete('/rooms/{room}',[ChatController::class,'destroy'])->name('chat.destroy');
+    //Route::resource('chats',ChatController::class);
     Route::post('/follow/{user}', [FollowController::class, 'store'])->name('follow.store');
     Route::delete('/follow/{user}', [FollowController::class, 'destroy'])->name('follow.destroy');
 });
