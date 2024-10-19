@@ -4,7 +4,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Room一覧') }}
+            {{ __('部屋一覧') }}
         </h2>
     </x-slot>
 
@@ -16,8 +16,8 @@
 
                     @foreach ($rooms as $room)
                         <div class="flex items-center">
-                            <p class="font-bold text-lg mt-4">募集人数: {{ $room->size }}</p>
-                            <p class="text-black mx-7 font-bold text-lg mt-4">部屋名: {{ $room->title }}</p>
+                            <p class="font-bold text-base lg:text-lg mt-4">募集人数: {{ $room->size }}</p>
+                            <p class="text-black mx-7 text-base lg:text-lg font-bold mt-4">部屋名: {{ $room->title }}</p>
                         </div>
                         <div class="mt-2 mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
                             <div id="restored-content-{{ $room->id }}"></div>
