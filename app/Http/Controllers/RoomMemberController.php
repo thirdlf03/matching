@@ -29,13 +29,28 @@ class RoomMemberController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
+ 
     public function store(Request $request)
     {
-        //
+        // バリデーションでデータの型があっているか確認
+         $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:room_members,email',
+        ]);
+
+        // 新しいRoomMemberの保存
+        $roomMember = new RoomMember();
+        $roomMember->name = $validatedData['name'];
+        $roomMember->email = $validatedData['email'];
+        $roomMember->save();
+
+        // 成功後、一覧画面にリダイレクトしてフラッシュメッセージを表示
+        return redirect()->route('roommember.index')->with('status', 'ルームメンバー作成');
     }
+
+    
+
 
     /**
      * Display the specified resource.
@@ -64,8 +79,15 @@ class RoomMemberController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(RoomMember $roomMember)
+    public function destroy($id)
     {
-        //
+        // 指定されたIDのRoomMemberを取得
+        $roomMember = RoomMember::findOrFail($id);
+
+        // データを削除
+        $roomMember->delete();
+
+        // 成功メッセージ付きで一覧ページにリダイレクト
+        return redirect()->route('roommember.index')->with('status', 'ルームメンバー削除');
     }
 }
