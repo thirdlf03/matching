@@ -13,7 +13,7 @@ class RoomController extends Controller
     public function index()
     {
         //ルームのデータをビューに渡して新しい順に一覧表示させる。
-        $rooms = Room::with('user')->latest()->get();
+        $rooms = Room::with(['user', 'room_members'])->latest()->get();
 
         return view('rooms.index', compact('rooms'));
         //dd($rooms);

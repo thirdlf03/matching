@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\RoomMember;
+use App\Models\Room;
 use Illuminate\Http\Request;
 
 class RoomMemberController extends Controller
 {
-    
+
     //ルームメンバーの一覧表示
 
     public function index()
     {
-        // RoomMemberの全項目を取得
-        $roomMembers = RoomMember::all();
-
         // roommember.index ビューにデータを渡して表示
         return view('roommember.index', [
             'roomMembers' => $roomMembers
@@ -30,7 +27,7 @@ class RoomMemberController extends Controller
     }
 
 
- 
+
     public function store(Request $request)
     {
         // バリデーションでデータの型があっているか確認
@@ -45,10 +42,10 @@ class RoomMemberController extends Controller
         $room->room_members()->attach($user_id);
 
         // 成功後、一覧画面にリダイレクトしてフラッシュメッセージを表示
-        return redirect()->route('rooms.index')->with('status', 'ルームメンバー作成');
+        return redirect()->route('rooms.show', $room)->with('status', 'ルームメンバー作成');
     }
 
-    
+
     public function destroy(Request $request, Room $room)
     {
         // バリデーションでデータの型があっているか確認
@@ -63,6 +60,6 @@ class RoomMemberController extends Controller
         $room->room_members()->detach($user_id);
 
         // 成功メッセージ付きで一覧ページにリダイレクト
-        return redirect()->route('roommember.index')->with('status', 'ルームメンバー削除');
+        return redirect()->route('rooms.show', $room);
     }
 }
