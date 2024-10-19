@@ -21,6 +21,7 @@
                         @csrf
                         <label>ルーム名</label>
                         <input name="title" required type="text" class="mx-2 my-4"></input>
+                        <br class="block sm:hidden">
                         <label>人数</label>
                         <input name="size" required type="number" class="mx-2 my-4"><br>
                         <div x-data="{ open: false }">
@@ -107,7 +108,7 @@
                             var address = document.getElementById('address').value;
                             const url = `https://www.google.com/maps?output=embed&q=${address}`
                             document.getElementById('map').innerHTML =
-                                `<iframe src="${url}&t=m&hl=ja&z=18" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
+                                `<iframe src="${url}&t=m&hl=ja&z=18" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
                             document.getElementById('latitude').value = 33.59253;
                             document.getElementById('longitude').value = 130.39928;
                         });
@@ -124,7 +125,7 @@
                                 console.log(crd.latitude);
                                 console.log(crd.longitude);
                                 document.getElementById('map').innerHTML =
-                                    `<iframe src="https://maps.google.com/maps?output=embed&q=${crd.latitude},${crd.longitude}&ll=${crd.latitude},${crd.longitude}&t=m&hl=ja&z=18" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
+                                    `<iframe src="https://maps.google.com/maps?output=embed&q=${crd.latitude},${crd.longitude}&ll=${crd.latitude},${crd.longitude}&t=m&hl=ja&z=18" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
                                 document.getElementById('latitude').value = crd.latitude;
                                 document.getElementById('longitude').value = crd.longitude;
                             }
