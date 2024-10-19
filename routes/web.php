@@ -6,6 +6,8 @@ use App\Http\Controllers\FollowController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomMemberController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\RoomRoleController;
 use Illuminate\Support\Facades\Route;
 
 if (env('APP_ENV') == 'production') {
@@ -32,13 +34,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
     Route::resource('rooms', RoomController::class);
     Route::resource('roomMembers', RoomMemberController::class);
-    Route::get('/rooms', [ChatController::class, 'index'])->name('chat.index');
-    Route::post('/rooms', [ChatController::class, 'store'])->name('chat.store');
-    Route::get('/rooms/create', [ChatController::class, 'create'])->name('chat.create');
-    Route::delete('/rooms/{room}', [ChatController::class, 'destroy'])->name('chat.destroy');
+    Route::post('/chats',[ChatController::class,'store'])->name('chat.store');
+    Route::delete('/chats/{chat}',[ChatController::class,'destroy'])->name('chat.destroy');
     //Route::resource('chats',ChatController::class);
-    Route::post('/follow/{user}', [FollowController::class, 'store'])->name('follow.store');
-    Route::delete('/follow/{user}', [FollowController::class, 'destroy'])->name('follow.destroy');
+    Route::post('/room_roles',[RoomRoleController::class, 'store'])->name('room_role.store');
+    Route::delete('/room_roles/{room_role}',[RoomRoleController::class,'destroy'])->name('room_role.destroy');
+
 });
 
 require __DIR__.'/auth.php';
