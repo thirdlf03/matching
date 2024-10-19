@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\RoomMember;
-use Illuminate\Http\Request;
 
-class RoomMemberController extends Controller
+
+class RoomRoleController extends Controller
 {
     
 
