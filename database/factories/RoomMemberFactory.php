@@ -1,23 +1,35 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
+use App\Models\Room;
+use App\Models\RoomMember;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\RoomMember>
+ * @extends Factory<\App\Models\RoomMember>
  */
-class RoomMemberFactory extends Factory
+final class RoomMemberFactory extends Factory
 {
     /**
-     * Define the model's default state.
+     * The name of the factory's corresponding model.
      *
-     * @return array<string, mixed>
+     * @var string
+     */
+    protected $model = RoomMember::class;
+
+    /**
+     * Define the model's default state.
      */
     public function definition(): array
     {
         return [
-            //
+            'room_id' => Room::factory(),
+            'user_id' => User::factory(),
+            'status' => fake()->randomNumber(),
         ];
     }
 }

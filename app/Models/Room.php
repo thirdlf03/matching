@@ -15,7 +15,8 @@ class Room extends Model
         'size',
         'title',
         'data_json',
-        'position',
+        'latitude',
+        'longitude',
     ];
 
     public function user()
