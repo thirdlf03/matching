@@ -29,43 +29,40 @@ class RoomMemberController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
+ 
     public function store(Request $request)
     {
-        //
+        // バリデーションでデータの型があっているか確認
+         $validatedData = $request->validate([
+            'room_id' =>'required',
+        ]);
+
+        $user_id = auth()->id();
+        $room_id = $request->input('room_id');
+
+        $room = Room::find($room_id);
+        $room->room_members()->attach($user_id);
+
+        // 成功後、一覧画面にリダイレクトしてフラッシュメッセージを表示
+        return redirect()->route('rooms.index')->with('status', 'ルームメンバー作成');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(RoomMember $roomMember)
+    
+    public function destroy(Request $request, Room $room)
     {
-        //
-    }
+        // バリデーションでデータの型があっているか確認
+         $validatedData = $request->validate([
+            'room_id' =>'required',
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(RoomMember $roomMember)
-    {
-        //
-    }
+        $user_id = auth()->id();
+        $room_id = $request->input('room_id');
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, RoomMember $roomMember)
-    {
-        //
-    }
+        $room = Room::find($room_id);
+        $room->room_members()->detach($user_id);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(RoomMember $roomMember)
-    {
-        //
+        // 成功メッセージ付きで一覧ページにリダイレクト
+        return redirect()->route('roommember.index')->with('status', 'ルームメンバー削除');
     }
 }
