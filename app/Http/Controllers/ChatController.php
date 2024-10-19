@@ -47,7 +47,7 @@ class ChatController extends Controller
         ]);
 
         //ルーム一覧ページにリダイレクト
-        return redirect()->with('message')//->route('rooms.index');
+        return redirect()->with('message'); //->route('rooms.index');
 
     }
 
@@ -83,6 +83,6 @@ class ChatController extends Controller
         //チャットの削除処理
         $chat->delete();
 
-        return redirect()->with('message')//route('rooms.index');
+        return redirect()->with('message'); //route('rooms.index');
     }
 }
