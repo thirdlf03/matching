@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\User;
+
 
 class User extends Authenticatable
 {
@@ -55,4 +57,13 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Room::class, 'room_members', 'user_id', 'room_id');
     }
+    public function follows()
+  {
+    return $this->belongsToMany(User::class, 'follows', 'follow_id', 'follower_id');
+  }
+
+  public function followers()
+  {
+    return $this->belongsToMany(User::class, 'follows', 'follower_id', 'follow_id');
+  }
 }
