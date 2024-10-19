@@ -1,17 +1,21 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\FollowController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomMemberController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\RoomRoleController;
-
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\FollowController;
 
 if (env('APP_ENV') == 'production') {
     \Illuminate\Support\Facades\URL::forceScheme('https');
 }
+
+Route::get('auth/google', [LoginController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('auth/google/callback', [LoginController::class, 'handleGoogleCallback']);
 
 Route::get('/', function () {
     return view('welcome');
