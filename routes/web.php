@@ -6,7 +6,6 @@ use App\Http\Controllers\FollowController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomMemberController;
-use App\Http\Controllers\ChatController;
 use App\Http\Controllers\RoomRoleController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,11 +33,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
     Route::resource('rooms', RoomController::class);
     Route::resource('roomMembers', RoomMemberController::class);
-    Route::post('/chats',[ChatController::class,'store'])->name('chat.store');
-    Route::delete('/chats/{chat}',[ChatController::class,'destroy'])->name('chat.destroy');
+    Route::post('/chats', [ChatController::class, 'store'])->name('chat.store');
+    Route::delete('/chats/{chat}', [ChatController::class, 'destroy'])->name('chat.destroy');
     //Route::resource('chats',ChatController::class);
-    Route::post('/room_roles',[RoomRoleController::class, 'store'])->name('room_role.store');
-    Route::delete('/room_roles/{room_role}',[RoomRoleController::class,'destroy'])->name('room_role.destroy');
+    Route::post('/room_roles', [RoomRoleController::class, 'store'])->name('room_role.store');
+    Route::delete('/room_roles/{room_role}', [RoomRoleController::class, 'destroy'])->name('room_role.destroy');
 
 });
 
