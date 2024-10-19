@@ -1,6 +1,5 @@
 name: code format
 on:
-  workflow_dispatch:
   push:
     branches:
       - develop
