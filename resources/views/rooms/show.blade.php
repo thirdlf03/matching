@@ -14,8 +14,9 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex items-center justify-between mt-4">
                         <div class="flex items-center">
-                            <p class="font-bold text-lg mt-4">募集人数: {{ $room->size }}</p>
-                            <p class="text-black mx-7 font-bold text-lg mt-4">部屋名: {{ $room->title }}</p>
+                            <p class="font-bold text-sm lg:text-lg mt-4">募集人数: {{ $room->size }}</p>
+                            <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">部屋名:
+                                {{ $room->title }}</p>
                         </div>
 
                         @if ($room->user_id == auth()->id())
@@ -34,7 +35,7 @@
                         <p class="my-2">場所</p>
                         <iframe
                             src="https://maps.google.com/maps?output=embed&q={{ $room->latitude }},{{ $room->longitude }}&ll={{ $room->latitude }},{{ $room->longitude }}&t=m&hl=ja&z=18"
-                            width="500" height="350" style="border:0;" allowfullscreen="" loading="lazy"
+                            width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"
                             referrerpolicy="no-referrer-when-downgrade"></iframe>
                         <p class="text-gray-600 dark:text-gray-400 text-sm">投稿者: {{ $room->user->name }}</p>
                         @if ($room->user_id != auth()->id())

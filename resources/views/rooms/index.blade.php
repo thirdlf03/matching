@@ -16,8 +16,9 @@
 
                     @foreach ($rooms as $room)
                         <div class="flex items-center">
-                            <p class="font-bold text-base lg:text-lg mt-4">募集人数: {{ $room->size }}</p>
-                            <p class="text-black mx-7 text-base lg:text-lg font-bold mt-4">部屋名: {{ $room->title }}</p>
+                            <p class="font-bold text-sm lg:text-lg mt-4">募集人数: {{ $room->size }}</p>
+                            <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">部屋名:
+                                {{ $room->title }}</p>
                         </div>
                         <div class="mt-2 mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
                             <div id="restored-content-{{ $room->id }}"></div>
