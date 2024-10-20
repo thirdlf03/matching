@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\Room;
 use App\Models\User;
 
 class ProfileController extends Controller
@@ -58,8 +59,41 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
-      public function show(User $user)
+
+    public function show(User $user)
     {
-        return view('profile.show', compact('user'));
+        if (auth()->user()->is($user)) {
+          $rooms = Room::query()
+            ->where('user_id', $user->id)  // 自分のツイート
+            ->orWhereIn('user_id', $user->follows->pluck('id')) // フォローしているユーザーのツイート
+            ->latest()
+            ->paginate(10);
+        } else {
+          // 他のユーザーの場合、そのユーザーのツイートのみを取得
+          $rooms = $user
+            ->rooms()
+            ->latest()
+            ->paginate(10);
+        }
+          // ユーザーのフォロワーとフォローしているユーザーを取得
+          $user->load(['follows', 'followers']);
+
+          return view('profile.show', compact('user', 'rooms'));
+    }
+
+    public function showFollowers(User $user)
+    {
+        // 指定されたユーザーのフォロワーを取得
+        $followers = $user->followers()->get();  // フォロワーのリストを取得
+
+        // ビューにユーザーとフォロワー一覧を渡す
+        return view('profile.follower', compact('user', 'followers'));
+    }
+    public function showFollowing(User $user)
+    {
+        // 指定されたユーザーのフォロワーを取得
+        $following = $user->follows()->get();  // フォロワーのリストを取得
+        // ビューにユーザーとフォロワー一覧を渡す
+        return view('profile.following', compact('user', 'following'));
     }
 }
