@@ -37,8 +37,29 @@
                             src="https://maps.google.com/maps?output=embed&q={{ $room->latitude }},{{ $room->longitude }}&ll={{ $room->latitude }},{{ $room->longitude }}&t=m&hl=ja&z=18"
                             width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"
                             referrerpolicy="no-referrer-when-downgrade"></iframe>
-                        <p class="text-gray-600 dark:text-gray-400 text-sm">投稿者: {{ $room->user->name }}</p>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">投稿者: {{ $room->user->name }}</p><br>
+                        <p>参加者<br>
+                            @foreach ($room->room_members as $member)
+                                ・{{ $member->name }}
+                                <br>
+                            @endforeach
+                        </p>
                         @if ($room->user_id != auth()->id())
+                            @if ($room->room_members->contains(auth()->id()))
+                            <form method="POST" action="{{ route('roomMembers.destroy', $room) }}">
+                                @csrf
+                                @method('DELETE')
+                                <div class="flex justify-end mt-4">
+                                    <div
+                                        class="bg-red-500 hover:bg-red-700 text-gray-200 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                        <input type="hidden" name="room_id" value="{{ $room->id }}">
+                                        <button type="submit">
+                                            退室
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            @else
                             <form method="POST" action="{{ route('roomMembers.store') }}">
                                 @csrf
                                 <div class="flex justify-end mt-4">
@@ -51,6 +72,7 @@
                                     </div>
                                 </div>
                             </form>
+                            @endif
                         @else
                             <form method="GET" action="{{ route('rooms.edit', $room) }}">
                                 @csrf
