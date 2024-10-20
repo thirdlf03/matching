@@ -35,13 +35,12 @@
           <a href="{{ route('profile.following', $user) }}" class="text-gray-900 mb-3">
                 followings: {{ $user->follows->count() }}
           </a><br>
-          
+
           <a href="{{ route('profile.followers', $user) }}" class="text-gray-900 mb-3">
                followers: {{ $user->followers->count() }}
           </a>
 
           @if ($rooms->count())
-
           <!-- ページネーション -->
           <div class="mb-4">
             {{ $rooms->appends(request()->input())->links() }}

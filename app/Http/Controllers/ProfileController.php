@@ -65,7 +65,6 @@ class ProfileController extends Controller
         if (auth()->user()->is($user)) {
           $rooms = Room::query()
             ->where('user_id', $user->id)  // 自分のツイート
-            ->orWhereIn('user_id', $user->follows->pluck('id')) // フォローしているユーザーのツイート
             ->latest()
             ->paginate(10);
         } else {
