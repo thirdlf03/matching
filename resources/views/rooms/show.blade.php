@@ -78,8 +78,16 @@
                                                     <div class="h-full overflow-y-auto p-4">
                                                         <div class="chats space-y-4">
                                                             @foreach ($chats as $chat)
-                                                                <div class="chat bg-neutral-100 p-2 rounded-md">
+                                                                <!--<div class="chat bg-neutral-100 p-2 rounded-md">
                                                                     {{ $chat->chat }}
+                                                                </div>-->
+                                                                <!--自分のメッセージと他の人のメッセージを区別できるようにする-->
+                                                                <div class="flex @if($chat->user_id == auth()->id()) justify-end @else justify-start @endif">
+                                                                    <div class="@if($chat->user_id == auth()->id()) bg-blue-50 @else bg-gray-100 @endif p-2 rounded-md max-w-xs">
+                                                                        <p class="text-sm text-gray-900">
+                                                                            {{ $chat->chat }}
+                                                                        </p>
+                                                                    </div>
                                                                 </div>
                                                             @endforeach
                                                         </div>
