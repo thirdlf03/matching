@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Room;
+use App\Models\Chat;
+
 use Illuminate\Http\Request;
 
 class RoomController extends Controller
@@ -62,12 +64,8 @@ class RoomController extends Controller
      */
     public function show(Room $room)
     {
-        $room->with('chat');
-        // $room_id = $room->id;
-
-        // $room = Room::find($room_id)->with('chat')->get();
-        dd($room);
-        return view('rooms.show', compact('room'));
+        $chats = Chat::find($room->id)->get();
+        return view('rooms.show', compact(['room', 'chats']));
     }
 
     /**

@@ -32,7 +32,7 @@
                     </div>
                     <div x-data="{ slideOverOpen: false }" class="relative z-50 w-auto h-auto">
     <button @click="slideOverOpen=true" class="inline-flex items-center justify-center h-10 px-4 py-2 text-sm font-medium transition-colors bg-white border rounded-md hover:bg-neutral-100 active:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-neutral-200/60 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none">チャット</button>
-    
+
     <template x-teleport="body">
         <div x-show="slideOverOpen" @keydown.window.escape="slideOverOpen=false" class="relative z-[99]">
             <div x-show="slideOverOpen" x-transition.opacity.duration.600ms @click="slideOverOpen = false" class="fixed inset-0 bg-black bg-opacity-10"></div>
@@ -44,8 +44,8 @@
                     x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
                     x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
                     class="w-full max-w-lg h-full max-h-[80vh] bg-white shadow-lg rounded-lg flex flex-col overflow-hidden">
-                    
-            
+
+
             <!-- ヘッダー -->
             <div class="px-4 sm:px-5">
                 <div class="flex items-start justify-between pb-1">
@@ -68,9 +68,9 @@
                                             <!-- ここにチャットメッセージが表示される -->
                                              @foreach($chats as $chat)
                                             <div class="chat bg-neutral-100 p-2 rounded-md">
-                                                {{$chat->content}}
+                                                {{$chat->chat}}
                                             </div>
-                                
+
                                             @endforeach
                                         </div>
                                     </div>
@@ -80,7 +80,7 @@
                                 <form method="POST" action="{{ route('chat.store') }}">
                         @csrf
                                 <div class="px-4 sm:px-5 mt-5">
-                                    
+
                                         <div class="flex">
                                             <input type="hidden" name="room_id" value="{{ $room->id }}">
                                             <input type="text" x-model="message" name="chat" placeholder="メッセージを入力"
@@ -89,7 +89,7 @@
                                                 送信
                                             </button>
                                         </div>
-                                
+
                                 </div>
 </form>
 
