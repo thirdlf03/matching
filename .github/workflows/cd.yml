@@ -37,6 +37,6 @@ jobs:
 
          echo "${{ secrets.PRIVATE_KEY }}" > private_key
          chmod 600 private_key
-         ssh -o StrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "cd /var/www/laravel/matching && git pull origin main && composer install --optimize-autoloader --no-dev && npm install && npm run build && php artisan migrate --force"
+         ssh -o StrictHostKeyChecking=no ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -i private_key "cd /var/www/laravel/matching && git pull origin main && npm install && npm run build && php artisan migrate --force"
 
          aws ec2 revoke-security-group-ingress --group-id ${{ secrets.EC2_SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
