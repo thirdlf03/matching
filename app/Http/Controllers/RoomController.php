@@ -74,6 +74,33 @@ class RoomController extends Controller
         //ルームの編集画面を表示する
         return view('rooms.edit', compact('room'));
     }
+    
+
+    public function search(Request $request)
+    {
+        $query = Room::query();
+
+        // 検索キーワードが指定されている場合の処理
+        if ($request->filled('keyword')) {
+            $keyword = $request->keyword;
+
+            // titleで部分一致検索
+            $query->where('title', 'like', '%' . $keyword . '%');
+        }
+
+        // sizeが指定されている場合のフィルタリング
+        if ($request->filled('size')) {
+            $query->where('size', $request->size);
+        }
+
+        // ページネーション（1ページに10件表示）
+        $rooms = $query->latest()->paginate(10);
+
+        // 検索結果をビューに渡す
+        return view('rooms.search', compact('rooms'));
+    }
+
+
 
     /**
      * Update the specified resource in storage.
