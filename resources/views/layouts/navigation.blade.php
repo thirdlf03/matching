@@ -15,6 +15,12 @@
                     <x-nav-link :href="route('rooms.index')" :active="request()->routeIs('rooms.index')">
                         {{ __('部屋一覧') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('rooms.search')" :active="request()->routeIs('rooms.search')">
+                        {{ __('部屋検索') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('profile.show', auth()->user())" :active="request()->routeIs('profile.show')">
+                        {{ __('User詳細') }}
+                    </x-nav-link>
                 </div>
 
             </div>
@@ -78,6 +84,12 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('rooms.index')" :active="request()->routeIs('rooms.index')">
                 {{ __('部屋一覧') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('rooms.search')" :active="request()->routeIs('rooms.search')">
+                {{ __('部屋検索') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('profile.show', auth()->user())" :active="request()->routeIs('profile.show')">
+                {{ __('User詳細') }}
             </x-responsive-nav-link>
         </div>
 
