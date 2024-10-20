@@ -22,7 +22,7 @@
                         </div>
                         <div class="mt-2 mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
                             <div id="restored-content-{{ $room->id }}"></div>
-                            <a href="{{ route('profile.show', $room -> user) }}">
+                            <a href="{{ route('profile.show', $room->user) }}">
                                 <p class="text-gray-600 dark:text-gray-400 text-sm">投稿者: {{ $room->user->name }}</p>
                             </a>
                             <form method="GET" action="{{ route('rooms.show', $room) }}">

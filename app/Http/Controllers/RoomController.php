@@ -64,7 +64,7 @@ class RoomController extends Controller
      */
     public function show(Room $room)
     {
-        $chats = Chat::find($room->id)->get();
+        $chats = Chat::where('room_id', $room->id)->get();
         return view('rooms.show', compact(['room', 'chats']));
     }
 
