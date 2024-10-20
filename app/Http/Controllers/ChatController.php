@@ -28,8 +28,9 @@ class ChatController extends Controller
             'chat' => $request -> chat,
         ]);
 
-        //ルームページにリダイレクトすると同時にチャットを表示
-        return redirect()->with('message'); //->route('rooms.index');
+
+          return redirect()->route('rooms.show', ['room' => $request->room_id])
+                    ->with('openChat', true);
 
     }
 
