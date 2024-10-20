@@ -47,7 +47,7 @@ class ChatController extends Controller
         ]);
 
         //ルーム一覧ページにリダイレクト
-        return redirect()->with('message'); //->route('rooms.index');
+        return redirect()->route('rooms.index');
 
     }
 

@@ -62,7 +62,11 @@ class RoomController extends Controller
      */
     public function show(Room $room)
     {
-        //
+        $room->with('chat');
+        // $room_id = $room->id;
+
+        // $room = Room::find($room_id)->with('chat')->get();
+        dd($room);
         return view('rooms.show', compact('room'));
     }
 
