@@ -30,6 +30,8 @@
                             </form>
                         @endif
                     </div>
+                    <!-- ルームに参加しているか確認 -->
+                    @if ($room->room_members->contains(auth()->id()))
                     <div x-data="{ slideOverOpen: false }" x-init="@if (session('openChat')) slideOverOpen = true @endif" class="relative z-50 w-auto h-auto">
                         <button @click="slideOverOpen=true; document.body.style.overflow = 'hidden';"
                             class="inline-flex items-center justify-center h-10 px-4 py-2 text-sm font-medium transition-colors bg-white border rounded-md hover:bg-neutral-100 active:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-neutral-200/60 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none">チャット</button>
@@ -119,7 +121,7 @@
                             </div>
                         </template>
                     </div>
-
+                    @endif
                     <div class="mt-2 mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
                         <div id="restored-content-{{ $room->id }}"></div>
                         <p class="my-2">場所</p>
