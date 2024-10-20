@@ -81,9 +81,14 @@
                                                                 <!--<div class="chat bg-neutral-100 p-2 rounded-md">
                                                                     {{ $chat->chat }}
                                                                 </div>-->
-                                                                <!--自分のメッセージと他の人のメッセージを区別できるようにする-->
+                                                                <!--自分のメッセージと他の人のメッセージを名前と色と左右で区別できるようにする-->
                                                                 <div class="flex @if($chat->user_id == auth()->id()) justify-end @else justify-start @endif">
-                                                                    <div class="@if($chat->user_id == auth()->id()) bg-blue-50 @else bg-gray-100 @endif p-2 rounded-md max-w-xs">
+                                                                    @if($chat->user_id != auth()->id())
+                                                                    <p class="text-xs text-gray-600 mb-1">
+                                                                        {{ $chat->user->name }}
+                                                                    </p>
+                                                                    @endif
+                                                                    <div class="@if($chat->user_id == auth()->id()) bg-red-1 @else bg-gray-100 @endif p-2 rounded-md max-w-xs">
                                                                         <p class="text-sm text-gray-900">
                                                                             {{ $chat->chat }}
                                                                         </p>
