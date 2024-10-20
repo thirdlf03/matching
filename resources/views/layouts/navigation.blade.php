@@ -19,7 +19,7 @@
                         {{ __('部屋検索') }}
                     </x-nav-link>
                     <x-nav-link :href="route('profile.show', auth()->user())" :active="request()->routeIs('profile.show')">
-                        {{ __('User詳細') }}
+                        {{ __('アカウント詳細') }}
                     </x-nav-link>
                 </div>
 
