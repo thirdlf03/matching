@@ -28,4 +28,9 @@ class Room extends Model
     {
         return $this->belongsToMany(User::class, 'room_members', 'room_id', 'user_id');
     }
+
+    public function chat()
+    {
+        return $this->belongsTo(Chat::class);
+    }
 }
