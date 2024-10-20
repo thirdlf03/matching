@@ -88,7 +88,7 @@
                                                                         {{ $chat->user->name }}
                                                                     </p>
                                                                     @endif
-                                                                    <div class="@if($chat->user_id == auth()->id()) bg-red-1 @else bg-gray-100 @endif p-2 rounded-md max-w-xs">
+                                                                    <div class=bg-gray-100 p-2 rounded-md max-w-xs">
                                                                         <p class="text-sm text-gray-900">
                                                                             {{ $chat->chat }}
                                                                         </p>
