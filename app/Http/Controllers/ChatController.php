@@ -7,25 +7,7 @@ use Illuminate\Http\Request;
 
 class ChatController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //チャットのデータをビューに渡して一覧表示させる。
-        //$chats = Chat::with(['user', 'room'])->get();
 
-        //return view('chats.index', compact('chats'));
-        //dd($chats);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -46,34 +28,12 @@ class ChatController extends Controller
             'chat' => $request -> chat,
         ]);
 
-        //ルーム一覧ページにリダイレクト
+        //ルームページにリダイレクトすると同時にチャットを表示
         return redirect()->with('message'); //->route('rooms.index');
 
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Chat $chat)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Chat $chat)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Chat $chat)
-    {
-        //
-    }
+  
 
     /**
      * Remove the specified resource from storage.
