@@ -21,23 +21,23 @@
                                 <form action="{{ route('follow.destroy', $user) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:text-red-700">unFollow</button>
+                                    <button type="submit" class="text-red-500 hover:text-red-700">フォローをやめる</button>
                                 </form>
                             @else
                                 <form action="{{ route('follow.store', $user) }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="text-blue-500 hover:text-blue-700">follow</button>
+                                    <button type="submit" class="text-blue-500 hover:text-blue-700">フォローする</button>
                                 </form>
                             @endif
                         </div>
                     @endif
 
                     <a href="{{ route('profile.following', $user) }}" class="text-gray-900 mb-3">
-                        followings: {{ $user->follows->count() }}
+                        フォロー中: {{ $user->follows->count() }}
                     </a><br>
 
                     <a href="{{ route('profile.followers', $user) }}" class="text-gray-900 mb-3">
-                        followers: {{ $user->followers->count() }}
+                        フォロワー: {{ $user->followers->count() }}
                     </a>
 
                     @if ($rooms->count())
