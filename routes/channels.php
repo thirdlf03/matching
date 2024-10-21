@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Broadcast;
 use App\Models\User;
 
-
-Broadcast::channel('room.{roomId}', function (User $user, $roomId) {
-    return $user->rooms->contains('id', $roomId);
+Broadcast::channel('my-channel.{userId}', function (User $user, $userId) {
+    return $user->room_members()->where('user_id', $userId)->exists();
 });
