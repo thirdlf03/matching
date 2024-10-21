@@ -45,7 +45,7 @@ class RoomController extends Controller
         //ルームの作成と保存
         $user_id = auth()->id();
 
-        Room::create([
+        $room = Room::create([
             'data_json' => $request->data_json,
             'title' => $request->title,
             'user_id' => $user_id,
@@ -53,6 +53,8 @@ class RoomController extends Controller
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
         ]);
+        
+        $room->room_members()->attach($user_id);
 
         //ルーム一覧ページにリダイレクト
         return redirect()->route('rooms.index');
@@ -76,7 +78,7 @@ class RoomController extends Controller
         //ルームの編集画面を表示する
         return view('rooms.edit', compact('room'));
     }
-    
+
 
     public function search(Request $request)
     {
