@@ -53,7 +53,7 @@ class RoomController extends Controller
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
         ]);
-        
+
         $room->room_members()->attach($user_id);
 
         //ルーム一覧ページにリダイレクト
