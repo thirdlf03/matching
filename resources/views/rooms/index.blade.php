@@ -17,6 +17,8 @@
                     @foreach ($rooms as $room)
                         <div class="flex items-center">
                             <p class="font-bold text-sm lg:text-lg mt-4">募集人数: {{ $room->size }}</p>
+                            <p class="font-bold mx-7 text-sm lg:text-lg mt-4">参加中: 
+                                {{ count($room->room_members) }}</p>
                             <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">部屋名:
                                 {{ $room->title }}</p>
                         </div>
