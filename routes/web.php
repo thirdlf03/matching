@@ -8,6 +8,7 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomMemberController;
 use App\Http\Controllers\RoomRoleController;
 use Illuminate\Support\Facades\Route;
+use App\Events\MyEvent;
 
 if (env('APP_ENV') == 'production') {
     \Illuminate\Support\Facades\URL::forceScheme('https');

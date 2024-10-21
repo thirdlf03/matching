@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chat;
+use App\Events\MyEvent;
 use Illuminate\Http\Request;
 
 class ChatController extends Controller
@@ -22,19 +23,24 @@ class ChatController extends Controller
         //chatの作成と保存
         $user_id = auth()->id();
 
-        Chat::create([
+        $chat = Chat::create([
             'user_id' => $user_id,
             'room_id' => $request -> room_id,
             'chat' => $request -> chat,
         ]);
 
+        MyEvent::dispatch(
+            ['user_id' => $user_id,
+                'user' => ['name' => auth()->user()->name],
+                'chat' => $request -> chat]
+        );
 
-          return redirect()->route('rooms.show', ['room' => $request->room_id])
-                    ->with('openChat', true);
+        //チャットの送信をブロードキャスト
+        return response()->noContent();
 
     }
 
-  
+
 
     /**
      * Remove the specified resource from storage.
