@@ -16,6 +16,7 @@ class RoomRoleController extends Controller
         //ロールが記入されているか確認
         $request->validate([
             'role_name' => 'required',
+            
         ]);
 
         //ロールの作成と保存

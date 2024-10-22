@@ -162,7 +162,9 @@
     <!-- 新しいタスク追加フォーム -->
     <div class="mt-4">
         <input type="text" x-model="newTaskTitle" placeholder="新しい役割を追加する" class="border p-2 w-full mb-2" />
-        <button @click="addTask" class="bg-green-500 text-white px-4 py-2 rounded w-full">Add Task</button>
+        <button @click="addTask" class="bg-green-500 text-white px-4 py-2 rounded w-full">Add Task</button> 
+        <!-- <a class="p-2 mb-2" href="{{ route('room_role.store') }}">+ 新規作成</a>  -->
+
     </div>
 @endif
 
