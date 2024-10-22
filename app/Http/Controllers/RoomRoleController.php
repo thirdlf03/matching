@@ -40,6 +40,6 @@ class RoomRoleController extends Controller
         //ロールの削除処理
         $room_role->delete();
 
-        return redirect()->with('role_page');
+        return redirect();//->with('role_page');
     }
 }
