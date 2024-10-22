@@ -32,6 +32,7 @@
                         @endif
                     </div>
 
+
                     @if ($room->room_members->contains(auth()->id()) || $room->user_id == auth()->id())
                         <div x-data="{ slideOverOpen: false }" x-init="@if (session('openChat')) slideOverOpen = true @endif" class="relative z-50 w-auto h-auto">
                             <button @click="slideOverOpen=true; document.body.style.overflow = 'hidden';" class="inline-flex items-center justify-center h-10 px-4 py-2 text-sm font-medium transition-colors bg-white border rounded-md hover:bg-neutral-100 active:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-neutral-200/60 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none">チャット</button>
@@ -94,6 +95,7 @@
                         </div>
                     @endif
 
+
                     <div class="mt-2 mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
                         <div id="restored-content-{{ $room->id }}"></div>
                         <p class="my-2">場所</p>
@@ -105,6 +107,128 @@
                            <li>{{ $member->name }}</li>
                            @endforeach
                         </ul>
+
+                        <div x-data="{
+        selectOpen: false,
+        newTaskTitle: '',
+        selectedTask: '',
+        tasks: [
+            {
+    
+            title: '役割',
+                assignedMember: null,
+                progress: '未着手',
+                members: {{ json_encode($room->room_members->map(function($member) { return ['name' => $member->name, 'value' => $member->id]; })) }}
+            },
+            
+        ],
+        progressOptions: ['未着手', '進行中', '達成'],
+        activeTask: null,
+        activeMember: null,
+        activeProgress: null,
+        activeTitle: '',
+        selectTask(task) {
+            this.activeTask = task;
+            this.activeMember = task.assignedMember;
+            this.activeProgress = task.progress;
+            this.activeTitle = task.title;
+            this.selectOpen = true;
+        },
+        assignMember(memberId) {
+            const selectedMember = this.activeTask.members.find(member => member.value == memberId);
+            this.activeTask.assignedMember = selectedMember;
+        },
+        updateProgress(status) {
+            this.activeTask.progress = status;
+        },
+        updateTaskTitle() {
+            this.activeTask.title = this.activeTitle;
+        },
+        addTask() {
+            if (this.newTaskTitle.trim() === '') return;
+            this.tasks.push({
+                title: this.newTaskTitle,
+                assignedMember: null,
+                progress: 'Not Started',
+                members: {{ json_encode($room->room_members->map(function($member) { return ['name' => $member->name, 'value' => $member->id]; })) }}
+            });
+            this.newTaskTitle = ''; // タイトル入力欄をリセット
+        },
+        removeTask(task) {
+            this.tasks = this.tasks.filter(t => t !== task); // タスクを削除
+        }
+    }" class="w-full">
+@if ($room->room_members->contains(auth()->id()) || $room->user_id == auth()->id())
+    <!-- 新しいタスク追加フォーム -->
+    <div class="mt-4">
+        <input type="text" x-model="newTaskTitle" placeholder="新しい役割を追加する" class="border p-2 w-full mb-2" />
+        <button @click="addTask" class="bg-green-500 text-white px-4 py-2 rounded w-full">Add Task</button>
+    </div>
+@endif
+
+    <!-- タスクリスト -->
+    <ul class="task-list space-y-4 mt-4">
+        <template x-for="task in tasks" :key="task.title">
+            <li class="task-item border rounded p-4">
+                <div class="flex justify-between items-center">
+                    <span class="font-bold" x-text="task.title"></span>
+                    <div>
+                        @if ($room->room_members->contains(auth()->id()) || $room->user_id == auth()->id())
+                        <button @click="selectTask(task)" class="bg-blue-500 text-white px-2 py-1 rounded mr-2">
+                            編集
+                        </button>
+                        <button @click="removeTask(task)" class="bg-red-500 text-white px-2 py-1 rounded">
+                            削除
+                        </button>
+                        @endif
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <p>担当: <span x-text="task.assignedMember ? task.assignedMember.name : 'None'"></span></p>
+                    <p>進捗: <span x-text="task.progress"></span></p>
+                </div>
+            </li>
+        </template>
+    </ul>
+@if ($room->room_members->contains(auth()->id()) || $room->user_id == auth()->id())
+    <!-- タスク編集モーダル -->
+    <div x-show="selectOpen" @click.away="selectOpen = false" class="modal bg-white border rounded p-4 shadow-md mt-4">
+        <h3 class="text-lg font-bold">編集中...</h3>
+
+        <!-- タスク名編集 -->
+        <div class="mt-4">
+            <label class="block">役割名</label>
+            <input type="text" x-model="activeTitle" @input="updateTaskTitle" class="border p-2 w-full" />
+        </div>
+
+        <!-- メンバー割り当て -->
+        <div class="mt-4">
+            <label class="block">担当者</label>
+            <select @change="assignMember($event.target.value)" class="border p-2 w-full">
+                <option value="">メンバーを選ぶ</option>
+                <template x-for="member in activeTask.members" :key="member.value">
+                    <option :value="member.value" x-text="member.name"></option>
+                </template>
+            </select>
+        </div>
+
+        <!-- 進捗状況の更新 -->
+        <div class="mt-4">
+            <label class="block">ステータス</label>
+            <select @change="updateProgress($event.target.value)" class="border p-2 w-full">
+                <template x-for="status in progressOptions" :key="status">
+                    <option :value="status" x-text="status"></option>
+                </template>
+            </select>
+        </div>
+
+        <button @click="selectOpen = false" class="mt-4 bg-gray-500 text-white px-4 py-2 rounded">Close</button>
+    </div>
+@endif
+</div>
+
+<!--ここまで役割タグの追加-->
+
                         @if ($room->user_id != auth()->id())
                             @if ($room->room_members->contains(auth()->id()))
                                 <form method="POST" action="{{ route('roomMembers.destroy', $room) }}">
