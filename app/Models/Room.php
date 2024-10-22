@@ -17,6 +17,7 @@ class Room extends Model
         'data_json',
         'latitude',
         'longitude',
+        'category_id',
     ];
 
     public function user()
@@ -32,5 +33,10 @@ class Room extends Model
     public function chat()
     {
         return $this->belongsTo(Chat::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }
