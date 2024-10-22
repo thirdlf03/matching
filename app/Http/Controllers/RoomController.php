@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Room;
 use App\Models\Chat;
+use App\Models\Archive;
 
 use Illuminate\Http\Request;
 
@@ -134,6 +135,18 @@ class RoomController extends Controller
      */
     public function destroy(Room $room)
     {
+        $user_id = auth()->id();
+
+        Archive::create([
+            'data_json' => $room->data_json,
+            'title' => $room->title,
+            'user_id' => $user_id,
+            'size' => $room->size,
+            'latitude' => $room->latitude,
+            'longitude' => $room->longitude,
+            'category_id' => $room->category_id,
+        ]);
+
         //ルームの削除処理
         $room->delete();
 
