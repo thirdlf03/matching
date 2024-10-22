@@ -12,12 +12,12 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                   <a class="p-2 mb-2" href="{{ route('rooms.create') }}">+ 新規作成</a>
+                    <a class="p-2 mb-2" href="{{ route('rooms.create') }}">+ 新規作成</a>
 
                     @foreach ($rooms as $room)
                         <div class="flex items-center">
                             <p class="font-bold text-sm lg:text-lg mt-4">募集人数: {{ $room->size }}</p>
-                            <p class="font-bold mx-7 text-sm lg:text-lg mt-4">参加中: 
+                            <p class="font-bold mx-7 text-sm lg:text-lg mt-4">参加中:
                                 {{ count($room->room_members) }}</p>
                             <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">部屋名:
                                 {{ $room->title }}</p>

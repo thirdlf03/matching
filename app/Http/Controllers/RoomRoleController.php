@@ -21,16 +21,17 @@ class RoomRoleController extends Controller
 
         //ロールの作成と保存
         $user_id = auth() ->id();
-
+        dd($request);
         //ロールを作成
         Role::create([
             'user_id' => $user_id,
             'room_id' => $request -> room_id,
             'role_name' => $request -> role_name,
+            'status' => $request -> status,
         ]);
 
         //ルームページにリダイレクトすると同時にロールページを表示
-        return redirect()->with('role_page');
+        //return redirect()->with('role_page');
     }
 
     

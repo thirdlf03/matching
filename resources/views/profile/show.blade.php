@@ -14,7 +14,7 @@
                     <div class="text-gray-600 dark:text-gray-400 text-sm">
                         <p>アカウント作成日時: {{ $user->created_at->format('Y-m-d H:i') }}</p>
                     </div>
-                    
+
                     @if ($user->id !== auth()->id())
                         <div class="text-gray-900 dark:text-gray-100">
                             @if ($user->followers->contains(auth()->id()))
