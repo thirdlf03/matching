@@ -125,9 +125,11 @@ class RoomController extends Controller
             'size' => $request->size,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
+            'category_id' => $request->category_id,
+            'is_show' => $request->is_show,
         ]);
 
-        return redirect()->route('rooms.index');
+        return redirect()->route('rooms.show', $room);
     }
 
     /**

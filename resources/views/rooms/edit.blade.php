@@ -30,7 +30,7 @@
                             <label>位置情報を更新</label><br>
                             <span x-show="open">
                                 <input type="checkbox" class="my-1" id="check"></input>
-                                <label>詳細に位置情報を載せますか？</label><br>
+                                <label>詳細画面に位置情報を載せる</label><br>
                                 <br>
                                 <input type="checkbox" class="my-1" id="position"></input>
                                 <label>自分の位置をセットする</label><br>
