@@ -19,4 +19,9 @@ class Category extends Model
     {
         return $this->hasMany(Room::class);
     }
+
+    public function archives()
+    {
+        return $this->hasMany(Archive::class);
+    }
 }

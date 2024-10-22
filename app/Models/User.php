@@ -71,4 +71,9 @@ class User extends Authenticatable
   {
     return $this->hasMany(Chats::class);
   }
+
+  public function archives()
+  {
+    return $this->hasMany(Archive::class);
+  }
 }

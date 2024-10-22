@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\Room;
 use App\Models\User;
+use App\Models\Archive;
 
 class ProfileController extends Controller
 {
@@ -63,21 +64,25 @@ class ProfileController extends Controller
     public function show(User $user)
     {
         if (auth()->user()->is($user)) {
-          $rooms = Room::query()
-            ->where('user_id', $user->id)  // 自分のツイート
-            ->latest()
-            ->paginate(10);
+            $rooms = Room::query()
+                ->where('user_id', $user->id)
+                ->latest()
+                ->paginate(10);
         } else {
-          // 他のユーザーの場合、そのユーザーのツイートのみを取得
-          $rooms = $user
-            ->rooms()
+            $rooms = $user
+                ->rooms()
+                ->latest()
+                ->paginate(10);
+        }
+
+        $archives = Archive::query()
+            ->where('user_id', $user->id)
             ->latest()
             ->paginate(10);
-        }
-          // ユーザーのフォロワーとフォローしているユーザーを取得
-          $user->load(['follows', 'followers']);
 
-          return view('profile.show', compact('user', 'rooms'));
+        $user->load(['follows', 'followers']);
+
+        return view('profile.show', compact('user', 'rooms', 'archives'));
     }
 
     public function showFollowers(User $user)
