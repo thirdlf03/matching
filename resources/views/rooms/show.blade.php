@@ -62,7 +62,12 @@
                                                                 @foreach ($chats as $chat)
                                                                     <div class="flex @if($chat->user_id == auth()->id()) justify-end @else justify-start @endif">
                                                                         @if($chat->user_id != auth()->id())
-                                                                            <p class="text-xs text-gray-600 mb-1">{{ $chat->user->name }}</p>
+                                                                            <div class="text-xs text-gray-600 mb-1">
+                                                                                <p>{{ $chat->user->name }}</p>
+                                                                                <p>{{$chat->created_at->format('H:i')}}</p> <!--タイムスタンプを表示する-->
+                                                                            </div>
+                                                                        @else
+                                                                            <p class="text-xs text-gray-600 mb-1">{{$chat->created_at->format('H:i')}}</p> <!--タイムスタンプの表示-->
                                                                         @endif
                                                                         <div class="bg-gray-100 p-2 rounded-md max-w-xs">
                                                                             <p class="text-sm text-gray-900">{{ $chat->chat }}</p>
