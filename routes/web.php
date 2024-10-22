@@ -7,6 +7,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomMemberController;
 use App\Http\Controllers\RoomRoleController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ArchiveController;
 use Illuminate\Support\Facades\Route;
 use App\Events\MyEvent;
 
@@ -37,6 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/rooms/search', [RoomController::class, 'search'])->name('rooms.search');
     Route::resource('rooms', RoomController::class);
     Route::resource('roomMembers', RoomMemberController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('archives', ArchiveController::class);
     Route::post('/chats', [ChatController::class, 'store'])->name('chat.store');
     Route::delete('/chats/{chat}', [ChatController::class, 'destroy'])->name('chat.destroy');
     //Route::resource('chats',ChatController::class);

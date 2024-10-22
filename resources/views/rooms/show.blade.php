@@ -14,9 +14,9 @@
                     <div class="flex items-center justify-between mt-4">
                         <a href="{{ route('rooms.index') }}" class="text-blue-500 hover:text-blue-700 mr-2">部屋一覧に戻る</a>
                         <div class="flex items-center">
-                            <p class="font-bold text-sm lg:text-lg mt-4">募集人数: 
+                            <p class="font-bold text-sm lg:text-lg mt-4">募集人数:
                                 {{ $room->size }}</p>
-                            <p class="font-bold mx-7 text-sm lg:text-lg mt-4">参加中: 
+                            <p class="font-bold mx-7 text-sm lg:text-lg mt-4">参加中:
                                 {{ count($room->room_members) }}</p>
                             <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">部屋名:
                                 {{ $room->title }}</p>
@@ -96,8 +96,10 @@
 
                     <div class="mt-2 mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
                         <div id="restored-content-{{ $room->id }}"></div>
-                        <p class="my-2">場所</p>
-                        <iframe src="https://maps.google.com/maps?output=embed&q={{ $room->latitude }},{{ $room->longitude }}&ll={{ $room->latitude }},{{ $room->longitude }}&t=m&hl=ja&z=18" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        @if ($room->is_show == 1)
+                            <p class="my-2">場所</p>
+                            <iframe src="https://maps.google.com/maps?output=embed&q={{ $room->latitude }},{{ $room->longitude }}&ll={{ $room->latitude }},{{ $room->longitude }}&t=m&hl=ja&z=18" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        @endif
                         <p class="text-gray-600 dark:text-gray-400 text-sm">投稿者: {{ $room->user->name }}</p><br>
                         <p>参加者 ({{ count($room->room_members) }}人)</p>
                         <ul>
@@ -118,15 +120,17 @@
                                     </div>
                                 </form>
                             @else
+                                @if(count($room->room_members) < $room->size)
                                 <form method="POST" action="{{ route('roomMembers.store') }}">
                                     @csrf
                                     <div class="flex justify-end mt-4">
                                         <div class="bg-blue-500 hover:bg-blue-700 text-gray-200 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                             <input type="hidden" name="room_id" value="{{ $room->id }}">
-                                            <button type="submit">参加</button>
+                                            <button type="submit" @if(count($room->room_members) >= $room->size) disabled @endif>参加</button>
                                         </div>
                                     </div>
                                 </form>
+                                @endif
                             @endif
                         @else
                             <form method="GET" action="{{ route('rooms.edit', $room) }}">

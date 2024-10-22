@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Room;
 use App\Models\Chat;
+use App\Models\Archive;
 
 use Illuminate\Http\Request;
 
@@ -45,16 +46,17 @@ class RoomController extends Controller
         //ルームの作成と保存
         $user_id = auth()->id();
 
-        $room = Room::create([
+        Room::create([
             'data_json' => $request->data_json,
             'title' => $request->title,
             'user_id' => $user_id,
             'size' => $request->size,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
+            'category_id' => $request->category_id,
+            'is_show' => $request->is_show,
         ]);
 
-        $room->room_members()->attach($user_id);
 
         //ルーム一覧ページにリダイレクト
         return redirect()->route('rooms.index');
@@ -133,6 +135,18 @@ class RoomController extends Controller
      */
     public function destroy(Room $room)
     {
+        $user_id = auth()->id();
+
+        Archive::create([
+            'data_json' => $room->data_json,
+            'title' => $room->title,
+            'user_id' => $user_id,
+            'size' => $room->size,
+            'latitude' => $room->latitude,
+            'longitude' => $room->longitude,
+            'category_id' => $room->category_id,
+        ]);
+
         //ルームの削除処理
         $room->delete();
 

@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Room extends Model
+class Archive extends Model
 {
-    /** @use HasFactory<\Database\Factories\RoomFactory> */
+    /** @use HasFactory<\Database\Factories\ArchiveFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -18,22 +18,11 @@ class Room extends Model
         'latitude',
         'longitude',
         'category_id',
-        'is_show',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function room_members()
-    {
-        return $this->belongsToMany(User::class, 'room_members', 'room_id', 'user_id');
-    }
-
-    public function chat()
-    {
-        return $this->belongsTo(Chat::class);
     }
 
     public function category()
