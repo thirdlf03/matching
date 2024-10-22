@@ -29,6 +29,9 @@
                             <input @click="open = !open" type="checkbox" class="my-4"></input>
                             <label>位置情報をセット</label><br>
                             <span x-show="open">
+                                <input type="checkbox" class="my-1" id="check"></input>
+                                <label>詳細に位置情報を載せますか？</label><br>
+                                <br>
                                 <input type="checkbox" class="my-1" id="position"></input>
                                 <label>自分の位置をセットする</label><br>
                                 <input type="text" id="address" value="場所" class="my-2"></input>
@@ -77,6 +80,7 @@
                         </div>
                         <div id="editor" required></div>
                         <input type="hidden" name="data_json" id="data_json" value="">
+                        <input type="hidden" name="is_show" id="show" value="0">
                         <input type="hidden" name="latitude" id="latitude" value="">
                         <input type="hidden" name="longitude" id="longitude" value="">
                         <div class="flex justify-end mt-4">
@@ -112,6 +116,16 @@
                                 `<iframe src="${url}&t=m&hl=ja&z=18" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
                             document.getElementById('latitude').value = 33.59253;
                             document.getElementById('longitude').value = 130.39928;
+                        });
+
+                        document.getElementById('check').addEventListener('change', function(e) {
+                            if (document.getElementById('show').value == '1') {
+                                document.getElementById('show').value = '0';
+                                console.log(document.getElementById('show').value);
+                            } else {
+                                document.getElementById('show').value = '1';
+                                console.log(document.getElementById('show').value);
+                            }
                         });
 
                         document.getElementById('position').addEventListener('change', function(e) {

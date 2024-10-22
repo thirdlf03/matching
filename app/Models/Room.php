@@ -18,6 +18,7 @@ class Room extends Model
         'latitude',
         'longitude',
         'category_id',
+        'is_show',
     ];
 
     public function user()

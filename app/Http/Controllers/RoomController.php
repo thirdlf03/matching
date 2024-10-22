@@ -45,16 +45,17 @@ class RoomController extends Controller
         //ルームの作成と保存
         $user_id = auth()->id();
 
-        $room = Room::create([
+        Room::create([
             'data_json' => $request->data_json,
             'title' => $request->title,
             'user_id' => $user_id,
             'size' => $request->size,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
+            'category_id' => $request->category_id,
+            'is_show' => $request->is_show,
         ]);
 
-        $room->room_members()->attach($user_id);
 
         //ルーム一覧ページにリダイレクト
         return redirect()->route('rooms.index');

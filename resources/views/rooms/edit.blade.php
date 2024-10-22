@@ -29,6 +29,9 @@
                             <input @click="open = !open" type="checkbox" class="my-4"></input>
                             <label>位置情報を更新</label><br>
                             <span x-show="open">
+                                <input type="checkbox" class="my-1" id="check"></input>
+                                <label>詳細に位置情報を載せますか？</label><br>
+                                <br>
                                 <input type="checkbox" class="my-1" id="position"></input>
                                 <label>自分の位置をセットする</label><br>
                                 <input type="text" id="address" value="場所" class="my-2"></input>
@@ -79,6 +82,7 @@
                         <input type="hidden" name="data_json" id="data_json" value="">
                         <input type="hidden" name="latitude" id="latitude" value="">
                         <input type="hidden" name="longitude" id="longitude" value="">
+                        <input type="hidden" name="is_show" id="show" value="0">
                         <div class="flex justify-end mt-4">
                             <button type="submit" id="submit"
                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
@@ -107,6 +111,15 @@
                             document.getElementById('data_json').value = jsoncontent;
                         });
 
+                        document.getElementById('check').addEventListener('change', function(e) {
+                            if (document.getElementById('show').value == '1') {
+                                document.getElementById('show').value = '0';
+                                console.log(document.getElementById('show').value);
+                            } else {
+                                document.getElementById('show').value = '1';
+                                console.log(document.getElementById('show').value);
+                            }
+                        });
 
                         document.getElementById('getPosition').addEventListener('click', function(e) {
                             e.preventDefault();
