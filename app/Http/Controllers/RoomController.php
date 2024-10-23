@@ -14,13 +14,18 @@ class RoomController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //ルームのデータをビューに渡して新しい順に一覧表示させる。
-        $rooms = Room::with(['user', 'room_members'])->latest()->get();
+        $category_id = $request->input('category_id');
+        $categories = Category::all();
 
-        return view('rooms.index', compact('rooms'));
-        //dd($rooms);
+        if ($category_id) {
+            $rooms = Room::where('category_id', $category_id)->orderBy('created_at', 'desc')->get();
+        } else {
+            $rooms = Room::orderBy('created_at', 'desc')->get();
+        }
+
+        return view('rooms.index', compact('rooms', 'categories'));
     }
 
     /**
