@@ -152,12 +152,7 @@
                             selectOpen: false,
                             newTaskTitle: '',
                             selectedTask: '',
-                            tasks: [{
-                                title: '役割',
-                                assignedMember: null,
-                                progress: '未着手',
-                                members: {{ json_encode($room->room_members->map(function ($member) {return ['name' => $member->name, 'value' => $member->id];})) }}
-                            }],
+                            tasks: @json($room->room_roles), // データベースから取得した役割
                             progressOptions: ['未着手', '進行中', '達成'],
                             activeTask: null,
                             activeMember: null,
@@ -180,16 +175,7 @@
                             updateTaskTitle() {
                                 this.activeTask.title = this.activeTitle;
                             },
-                            addTask() {
-                                if (this.newTaskTitle.trim() === '') return;
-                                this.tasks.push({
-                                    title: this.newTaskTitle,
-                                    assignedMember: null,
-                                    progress: 'Not Started',
-                                    members: {{ json_encode($room->room_members->map(function ($member) {return ['name' => $member->name, 'value' => $member->id];})) }}
-                                });
-                                this.newTaskTitle = ''; // タイトル入力欄をリセット
-                            },
+                            
                             removeTask(task) {
                                 this.tasks = this.tasks.filter(t => t !== task); // タスクを削除
                         } 
@@ -197,7 +183,7 @@
 
                         }" class="w-full">
 
-                            <!-- アコーディオン -->
+                            <!-- アコーディオン np-->
                             
                             <div x-data="{
                                 activeAccordion: '',
@@ -224,12 +210,14 @@
                                         
                                         @if ($room->room_members->contains(auth()->id()) || $room->user_id == auth()->id())
                                             <!-- 新しいタスク追加フォーム -->
-                                            <form method="POST" action="{{ route('room_role.store') }}" id="getRole">
+                                            <form method="POST" action="{{ route('room_role.store') }}" >
                                                 @csrf
                                                 <div class="mt-4">
-                                                    <input type="text" x-model="newTaskTitle"
+                                                    <input type="hidden" name="room_id"
+                                                            value="{{ $room->id }}">
+                                                    <input type="text" name="role_name" value=""
                                                         placeholder="新しい役割を追加する" class="border p-2 w-full mb-2" />
-                                                    <button @click="addTask" type="submit" 
+                                                    <button type="submit" 
                                                         class="bg-green-500 text-white px-4 py-2 rounded-full w-8 h-6 flex items-center justify-center">
                                                         <span class="text-2xl font-bold">+</span>
                                                     </button>

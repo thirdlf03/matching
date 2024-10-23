@@ -12,8 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('room_roles', function (Blueprint $table) {
-            //役割のステータスを管理
-            $table->string('status');
+            //
+             //役割のステータスを管理
+            $table->string('status')->nullable()->change();
+       
         });
     }
 
@@ -22,7 +24,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
-        }
-    
+        Schema::table('room_roles', function (Blueprint $table) {
+            //
+            
+        });
+    }
 };
