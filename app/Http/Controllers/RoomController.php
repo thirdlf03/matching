@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Room;
 use App\Models\Chat;
 use App\Models\Archive;
+use App\Models\Category;
 
 use Illuminate\Http\Request;
 
@@ -27,8 +28,9 @@ class RoomController extends Controller
      */
     public function create()
     {
+        $categories = Category::all();
         //ルーム作成ページを表示する
-        return view('rooms.create');
+        return view('rooms.create', compact('categories'));
     }
 
     /**
@@ -46,7 +48,7 @@ class RoomController extends Controller
         //ルームの作成と保存
         $user_id = auth()->id();
 
-        Room::create([
+        $room = Room::create([
             'data_json' => $request->data_json,
             'title' => $request->title,
             'user_id' => $user_id,
@@ -56,7 +58,6 @@ class RoomController extends Controller
             'category_id' => $request->category_id,
             'is_show' => $request->is_show,
         ]);
-
 
         //ルーム一覧ページにリダイレクト
         return redirect()->route('rooms.index');
