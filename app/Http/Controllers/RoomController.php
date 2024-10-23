@@ -29,8 +29,10 @@ class RoomController extends Controller
     public function create()
     {
         $categories = Category::all();
+
+        $selected_category_id = null;
         //ルーム作成ページを表示する
-        return view('rooms.create', compact('categories'));
+        return view('rooms.create', compact(['categories', 'selected_category_id']));
     }
 
     /**
@@ -79,7 +81,10 @@ class RoomController extends Controller
     public function edit(Room $room)
     {
         //ルームの編集画面を表示する
-        return view('rooms.edit', compact('room'));
+        $categories = Category::all();
+        $selected_category_id = $room->category_id;
+
+        return view('rooms.edit', compact(['room', 'categories', 'selected_category_id']));
     }
 
 

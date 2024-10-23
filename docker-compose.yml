@@ -97,6 +97,8 @@ services:
                 - 'http://127.0.0.1:7700/health'
             retries: 3
             timeout: 5s
+        command:
+            - --innodb-buffer-pool-size=402653184
     mailpit:
         image: 'axllent/mailpit:latest'
         ports:
