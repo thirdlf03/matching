@@ -109,6 +109,84 @@
                            <li>{{ $member->name }}</li>
                            @endforeach
                         </ul>
+<div x-data="{
+    selectOpen: false,
+    newTaskTitle: '',
+    tasks: [{
+        title: '役割',
+        assignedMember: null,
+        progress: '未着手',
+        members: {{ json_encode($room->room_members->map(function ($member) {return ['name' => $member->name, 'value' => $member->id];})) }}
+    }],
+    activeTask: null,
+    activeTitle: '',
+    selectTask(task) {
+        this.activeTask = task;
+        this.activeTitle = task.title;
+        this.selectOpen = true;
+    }
+}" class="w-full">
+
+    <!-- 新しい役割の追加フォーム -->
+    <!-- 役割作成フォーム -->
+<form action="{{ route('room_role.store') }}" method="POST">
+    @csrf
+    <input type="hidden" name="room_id" value="{{ $room->id }}">
+    
+    <label for="role_name">Role Name:</label>
+    <input type="text" id="role_name" name="role_name" required>
+    
+    <button type="submit">Add Role</button>
+</form>
+
+
+    <!-- タスクリストの表示 -->
+    <template x-for="task in tasks" :key="task.title">
+        <ul class="task-item border rounded p-4">
+            <div class="flex justify-between items-center">
+                <span class="font-bold" x-text="task.title"></span>
+                <div>
+                    <button @click="selectTask(task)" type="button" class="bg-blue-500 text-white px-2 py-1 rounded mr-2">
+                        編集
+                    </button>
+
+                    <!-- 削除フォーム -->
+                    <form action="{{ route('room_role.destroy', $role->id) }}" method="POST">
+            @csrf
+                        @method('DELETE')
+                        <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded">
+                            削除
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="mt-2">
+                <p>担当: <span x-text="task.assignedMember ? task.assignedMember.name : 'None'"></span></p>
+                <p>進捗: <span x-text="task.progress"></span></p>
+            </div>
+        </ul>
+    </template>
+
+    <!-- タスク編集モーダル -->
+    <div x-show="selectOpen" @click.away="selectOpen = false" class="modal bg-white border rounded p-4 shadow-md mt-4">
+        <h3 class="text-lg font-bold">役割を編集...</h3>
+
+        <!-- タスク名編集 -->
+        <form method="POST" action="{{ route('room_role.store') }}">
+            @csrf
+            <div class="mt-4">
+                <label class="block">役割名</label>
+                <input type="text" x-model="activeTitle" class="border p-2 w-full" />
+            </div>
+        </form>
+
+        <button @click="selectOpen = false;" type="button" class="mt-4 bg-gray-500 text-white px-4 py-2 rounded">
+            閉じる
+        </button>
+    </div>
+</div>
+
+
                         @if ($room->user_id != auth()->id())
                             @if ($room->room_members->contains(auth()->id()))
                                 <form method="POST" action="{{ route('roomMembers.destroy', $room) }}">
