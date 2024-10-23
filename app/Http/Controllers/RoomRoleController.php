@@ -19,9 +19,11 @@ class RoomRoleController extends Controller
             
         ]);
 
+        //$taskData = json_decode($request->input('role'),true);
+
         //ロールの作成と保存
         $user_id = auth() ->id();
-        dd($request);
+        //dd($request);
         //ロールを作成
         Role::create([
             'user_id' => $user_id,
