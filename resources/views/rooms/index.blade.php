@@ -13,8 +13,37 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <a class="p-2 mb-2" href="{{ route('rooms.create') }}">+ 新規作成</a>
+                    <form id="categoryForm" action="{{ route('rooms.index') }}" method="GET" class="mb-6">
+                        <div class="flex flex-wrap">
+                            <div class="w-22 h-8 rounded-full border border-black p-1 m-1 cursor-pointer category-icon flex items-center justify-center {{ is_null(request('category_id')) ? 'selected' : '' }}" data-category-id="">
+                                <h3 class="text-xs font-semibold text-center">すべてのカテゴリー</h3>
+                            </div>
+                            @foreach ($categories as $category)
+                                <div class="w-22 h-8 rounded-full border border-black p-1 m-1 cursor-pointer category-icon flex items-center justify-center {{ request('category_id') == $category->id ? 'selected' : '' }}" data-category-id="{{ $category->id }}">
+                                    <h3 class="text-xs font-semibold text-center">{{ $category->category_name }}</h3>
+                                </div>
+                            @endforeach
+                        </div>
+                        <input type="hidden" name="category_id" id="selected_category_id" value="{{ request('category_id') }}">
+                    </form>
+                    <style>
+                        .selected {
+                            background-color: #0000FF; /* Blue color */
+                            color: #fff; /* Change text color if needed */
+                        }
+                    </style>
+                    <script>
+                        document.querySelectorAll('.category-icon').forEach(icon => {
+                            icon.addEventListener('click', function() {
+                                document.querySelectorAll('.category-icon').forEach(i => i.classList.remove('selected'));
+                                this.classList.add('selected');
+                                document.getElementById('selected_category_id').value = this.getAttribute('data-category-id');
+                                document.getElementById('categoryForm').submit();
+                            });
+                        });
+                    </script>
 
-                    @foreach ($rooms as $room)
+                @foreach ($rooms as $room)
                         <div class="flex items-center">
                             <p class="font-bold text-sm lg:text-lg mt-4">募集人数: {{ $room->size }}</p>
                             <p class="font-bold mx-7 text-sm lg:text-lg mt-4">参加中:
@@ -55,5 +84,5 @@
                 </div>
             </div>
         </div>
-
+    </div>
 </x-app-layout>
