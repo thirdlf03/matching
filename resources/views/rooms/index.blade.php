@@ -26,6 +26,35 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <a class="p-2 mb-2" href="{{ route('rooms.create') }}">+ 新規作成</a>
+                     <button id="followedRoomsBtn" class="ml-4 px-4 py-0.75 bg-blue-500 text-white rounded-full hover:bg-blue-700" data-followed="false">
+                        フォロー中
+                    </button>
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const backToTopBtn = document.getElementById('backToTopBtn');
+                        backToTopBtn.addEventListener('click', () => {
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                        });
+
+                    const followedRoomsBtn = document.getElementById('followedRoomsBtn');
+                    followedRoomsBtn.textContent = "{{ request('followed') ? '全体' : 'フォロー中' }}";
+                    followedRoomsBtn.setAttribute('data-followed', "{{ request('followed') ? 'true' : 'false' }}");
+                    followedRoomsBtn.addEventListener('click', function() {
+                        const url = new URL("{{ route('rooms.index') }}");
+                        const isFollowed = followedRoomsBtn.getAttribute('data-followed') === 'true';
+                    if (isFollowed) {
+                        url.searchParams.delete("followed"); 
+                        followedRoomsBtn.textContent = "フォロー中"; 
+                    } else {
+                        url.searchParams.set("followed", "true"); 
+                        followedRoomsBtn.textContent = "全体"; 
+                    }
+                    followedRoomsBtn.setAttribute('data-followed', !isFollowed);
+                    window.location.href = url; 
+                    });
+                    });
+                    </script>
+
                     <form id="categoryForm" action="{{ route('rooms.index') }}" method="GET" class="mb-6">
                         <div class="flex flex-wrap">
                             <div class="w-22 h-8 rounded-full border border-black p-1 m-1 cursor-pointer category-icon flex items-center justify-center {{ is_null(request('category_id')) ? 'selected' : '' }}" data-category-id="">
