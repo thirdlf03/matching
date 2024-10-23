@@ -1,4 +1,7 @@
-<x-app-layout>
+
+                
+
+    <x-app-layout>
     <x-slot name="header">
         <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
@@ -207,23 +210,19 @@
                                     <div x-show="activeAccordion==id" x-collapse x-cloak>
 
                                         <!-- タスクリスト -->
+                                        <!-- 新しい役割作成フォーム -->
+                @if ($room->room_members->contains(auth()->id()) || $room->user_id == auth()->id())
+                <form method="POST" action="{{ route('room_role.store') }}" class="mb-4">
+                    @csrf
+                    <input type="hidden" name="room_id" value="{{ $room->id }}">
+                    <div class="flex items-center">
+                        <input type="text" name="role_name" placeholder="新しい役割を追加する" class="border p-2 w-full" required>
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-full w-8 h-8 flex items-center justify-center">+</button>
+                    </div>
+                </form>
+                @endif
+
                                         
-                                        @if ($room->room_members->contains(auth()->id()) || $room->user_id == auth()->id())
-                                            <!-- 新しいタスク追加フォーム -->
-                                            <form method="POST" action="{{ route('room_role.store') }}" >
-                                                @csrf
-                                                <div class="mt-4">
-                                                    <input type="hidden" name="room_id"
-                                                            value="{{ $room->id }}">
-                                                    <input type="text" name="role_name" value=""
-                                                        placeholder="新しい役割を追加する" class="border p-2 w-full mb-2" />
-                                                    <button type="submit" 
-                                                        class="bg-green-500 text-white px-4 py-2 rounded-full w-8 h-6 flex items-center justify-center">
-                                                        <span class="text-2xl font-bold">+</span>
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        @endif 
 
                                         
                                         <template x-for="task in tasks" :key="task.title">
