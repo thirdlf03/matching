@@ -25,6 +25,16 @@
                             value="{{ $room->title }}"></input>
                         <label>人数</label>
                         <input name="size" required type="number" class="mx-2 my-4" value="{{ $room->size }}"><br>
+                        <div class="flex flex-wrap">
+                            <div class="w-22 h-8 rounded-full border border-black p-1 m-1 cursor-pointer category-icon flex items-center justify-center {{ is_null($selected_category_id) ? 'selected' : '' }}" data-category-id="">
+                                <h3 class="text-xs font-semibold text-center">なし</h3>
+                            </div>
+                            @foreach ($categories as $category)
+                                <div class="w-22 h-8 rounded-full border border-black p-1 m-1 cursor-pointer category-icon flex items-center justify-center {{ $category->id == $selected_category_id ? 'selected' : '' }}" data-category-id="{{ $category->id }}">
+                                    <h3 class="text-xs font-semibold text-center">{{ $category->category_name }}</h3>
+                                </div>
+                            @endforeach
+                        </div>
                         <div x-data="{ open: false }">
                             <input @click="open = !open" type="checkbox" class="my-4"></input>
                             <label>位置情報を更新</label><br>
@@ -83,6 +93,7 @@
                         <input type="hidden" name="latitude" id="latitude" value="">
                         <input type="hidden" name="longitude" id="longitude" value="">
                         <input type="hidden" name="is_show" id="show" value="0">
+                        <input type="hidden" name="category_id" id="selected_category_id" value="{{ $selected_category_id }}">
                         <div class="flex justify-end mt-4">
                             <button type="submit" id="submit"
                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
@@ -90,7 +101,12 @@
                             </button>
                         </div>
                     </form>
-
+                    <style>
+                        .selected {
+                            background-color: #0000FF; /* Blue color */
+                            color: #fff; /* Change text color if needed */
+                        }
+                    </style>
                     <script>
                         const quill = new Quill('#editor', {
                             modules: {
@@ -119,6 +135,14 @@
                                 document.getElementById('show').value = '1';
                                 console.log(document.getElementById('show').value);
                             }
+                        });
+
+                        document.querySelectorAll('.category-icon').forEach(icon => {
+                            icon.addEventListener('click', function() {
+                                document.querySelectorAll('.category-icon').forEach(i => i.classList.remove('selected'));
+                                this.classList.add('selected');
+                                document.getElementById('selected_category_id').value = this.getAttribute('data-category-id');
+                            });
                         });
 
                         document.getElementById('getPosition').addEventListener('click', function(e) {

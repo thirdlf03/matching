@@ -20,6 +20,8 @@
                                 {{ count($room->room_members) }}</p>
                             <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">部屋名:
                                 {{ $room->title }}</p>
+                            <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">カテゴリー:
+                                {{ $room->category->category_name ?? 'なし' }}</p>
 
                         </div>
 
