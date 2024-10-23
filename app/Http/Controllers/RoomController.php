@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Room;
 use App\Models\Chat;
 use App\Models\Archive;
+use App\Models\Category;
 
 use Illuminate\Http\Request;
 
@@ -27,8 +28,11 @@ class RoomController extends Controller
      */
     public function create()
     {
+        $categories = Category::all();
+
+        $selected_category_id = null;
         //ルーム作成ページを表示する
-        return view('rooms.create');
+        return view('rooms.create', compact(['categories', 'selected_category_id']));
     }
 
     /**
@@ -46,7 +50,7 @@ class RoomController extends Controller
         //ルームの作成と保存
         $user_id = auth()->id();
 
-        Room::create([
+        $room = Room::create([
             'data_json' => $request->data_json,
             'title' => $request->title,
             'user_id' => $user_id,
@@ -56,7 +60,6 @@ class RoomController extends Controller
             'category_id' => $request->category_id,
             'is_show' => $request->is_show,
         ]);
-
 
         //ルーム一覧ページにリダイレクト
         return redirect()->route('rooms.index');
@@ -78,7 +81,10 @@ class RoomController extends Controller
     public function edit(Room $room)
     {
         //ルームの編集画面を表示する
-        return view('rooms.edit', compact('room'));
+        $categories = Category::all();
+        $selected_category_id = $room->category_id;
+
+        return view('rooms.edit', compact(['room', 'categories', 'selected_category_id']));
     }
 
 
@@ -125,9 +131,11 @@ class RoomController extends Controller
             'size' => $request->size,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
+            'category_id' => $request->category_id,
+            'is_show' => $request->is_show,
         ]);
 
-        return redirect()->route('rooms.index');
+        return redirect()->route('rooms.show', $room);
     }
 
     /**
