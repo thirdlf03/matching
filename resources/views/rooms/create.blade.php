@@ -25,16 +25,18 @@
                         <br class="block sm:hidden">
                         <label>人数</label>
                         <input name="size" required type="number" class="mx-2 my-4"><br>
-                        <div class="flex flex-wrap">
-                            <div class="w-22 h-8 rounded-full border border-black p-1 m-1 cursor-pointer category-icon flex items-center justify-center {{ is_null($selected_category_id) ? 'selected' : '' }}" data-category-id="">
-                                <h3 class="text-xs font-semibold text-center">なし</h3>
-                            </div>
-                            @foreach ($categories as $category)
-                                <div class="w-22 h-8 rounded-full border border-black p-1 m-1 cursor-pointer category-icon flex items-center justify-center {{ $category->id == $selected_category_id ? 'selected' : '' }}" data-category-id="{{ $category->id }}">
-                                    <h3 class="text-xs font-semibold text-center">{{ $category->category_name }}</h3>
-                                </div>
-                            @endforeach
+                        <div class="flex items-center">
+                            <select name="category_id" id="categorySelect" class="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                <option value="">すべてのカテゴリー</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->category_name }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
+                        <input type="hidden" name="category_id" id="selected_category_id" value="{{ request('category_id') }}">
+                        <br>
                         <div x-data="{ open: false }">
                             <input @click="open = !open" type="checkbox" class="my-4"></input>
                             <label>位置情報をセット</label><br>
@@ -93,7 +95,6 @@
                         <input type="hidden" name="is_show" id="show" value="0">
                         <input type="hidden" name="latitude" id="latitude" value="">
                         <input type="hidden" name="longitude" id="longitude" value="">
-                        <input type="hidden" name="category_id" id="selected_category_id" value="">
                         <div class="flex justify-end mt-4">
                             <button type="submit" id="submit"
                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
@@ -115,6 +116,10 @@
                             },
                             placeholder: '内容を入力',
                             theme: 'snow',
+                        });
+
+                        document.getElementById('categorySelect').addEventListener('change', function() {
+                            document.getElementById('selected_category_id').value = this.value;
                         });
 
                         document.getElementById('roomForm').addEventListener('submit', function(e) {
