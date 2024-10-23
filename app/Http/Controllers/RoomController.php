@@ -6,7 +6,7 @@ use App\Models\Room;
 use App\Models\Chat;
 use App\Models\Archive;
 use App\Models\Category;
-
+use App\Models\Follow;
 use Illuminate\Http\Request;
 
 class RoomController extends Controller
@@ -14,19 +14,38 @@ class RoomController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
-    {
-        $category_id = $request->input('category_id');
-        $categories = Category::all();
+  public function index(Request $request)
+   {
+      $category_id = $request->input('category_id');
+      $followed = $request->input('followed'); 
+      $categories = Category::all();
 
-        if ($category_id) {
-            $rooms = Room::where('category_id', $category_id)->orderBy('created_at', 'desc')->get();
-        } else {
-            $rooms = Room::orderBy('created_at', 'desc')->get();
-        }
+      // 現在のユーザーを取得
+      $currentUser = auth()->user();
 
+      if ($followed) {
+          // 自分がフォローしているユーザーのIDを取得
+          $followedUsers = Follow::where('follow_id', $currentUser->id)
+                                 ->pluck('follower_id'); 
+
+          // フォローしているユーザーの部屋を取得
+          $rooms = Room::whereIn('user_id', $followedUsers)
+                       ->when($category_id, function($query) use ($category_id) {
+                           return $query->where('category_id', $category_id);
+                       })
+                       ->orderBy('created_at', 'desc')
+                       ->get();
+                    } else {
+        // フォローしていない場合はすべての部屋を表示
+        $rooms = Room::when($category_id, function($query) use ($category_id) {
+                         return $query->where('category_id', $category_id);
+                     })
+                     ->orderBy('created_at', 'desc')
+                     ->get();
+                    }
         return view('rooms.index', compact('rooms', 'categories'));
     }
+
 
     /**
      * Show the form for creating a new resource.
