@@ -1,7 +1,4 @@
-
-                
-
-    <x-app-layout>
+<x-app-layout>
     <x-slot name="header">
         <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
@@ -31,7 +28,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
-                                    class="bg-red-500 hover:bg-red-700 text-gray-100 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">削除</button>
+                                        class="bg-red-500 hover:bg-red-700 text-gray-100 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">削除</button>
                             </form>
                         @endif
                     </div>
@@ -39,29 +36,25 @@
                     @if ($room->room_members->contains(auth()->id()) || $room->user_id == auth()->id())
                         <div x-data="{ slideOverOpen: false }" x-init="@if (session('openChat')) slideOverOpen = true @endif" class="relative z-50 w-auto h-auto">
                             <button @click="slideOverOpen=true; document.body.style.overflow = 'hidden';"
-                                class="inline-flex items-center justify-center h-10 px-4 py-2 text-sm font-medium transition-colors bg-white border rounded-md hover:bg-neutral-100 active:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-neutral-200/60 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none">チャット</button>
+                                    class="inline-flex items-center justify-center h-10 px-4 py-2 text-sm font-medium transition-colors bg-white border rounded-md hover:bg-neutral-100 active:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-neutral-200/60 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none">チャット</button>
 
                             <template x-teleport="body">
                                 <div x-show="slideOverOpen"
-                                    @keydown.window.escape="slideOverOpen=false; document.body.style.overflow = '';"
-                                    x-init="$watch('slideOverOpen', value => {
-                                        if (value) {
-                                            setupChatFormSubmission();
-                                            scrollToBottom();
-                                        }
-                                    })" class="relative z-[99]">
+                                     @keydown.window.escape="slideOverOpen=false; document.body.style.overflow = '';"
+                                     x-init="$watch('slideOverOpen', value => { if (value) { setupChatFormSubmission();
+                                            scrollToBottom(); } })" class="relative z-[99]">
                                     <div x-show="slideOverOpen" x-transition.opacity.duration.600ms
-                                        @click="slideOverOpen=false; document.body.style.overflow = '';"
-                                        class="fixed inset-0 bg-black bg-opacity-10"></div>
+                                         @click="slideOverOpen=false; document.body.style.overflow = '';"
+                                         class="fixed inset-0 bg-black bg-opacity-10"></div>
                                     <div class="fixed inset-0 right-0 flex justify-end">
                                         <div x-show="slideOverOpen"
-                                            @click.away="slideOverOpen=false; document.body.style.overflow = '';"
-                                            x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
-                                            x-transition:enter-start="translate-x-full"
-                                            x-transition:enter-end="translate-x-0"
-                                            x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
-                                            x-transition:leave-start="translate-x-0"
-                                            x-transition:leave-end="translate-x-full" class="w-screen max-w-md">
+                                             @click.away="slideOverOpen=false; document.body.style.overflow = '';"
+                                             x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
+                                             x-transition:enter-start="translate-x-full"
+                                             x-transition:enter-end="translate-x-0"
+                                             x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
+                                             x-transition:leave-start="translate-x-0"
+                                             x-transition:leave-end="translate-x-full" class="w-screen max-w-md">
                                             <div
                                                 class="flex flex-col h-screen bg-white border-l shadow-lg border-neutral-100/70">
                                                 <div class="px-4 sm:px-5">
@@ -73,10 +66,10 @@
                                                                 @click="slideOverOpen = false; document.body.style.overflow = '';"
                                                                 class="absolute top-0 right-0 z-30 flex items-center justify-center px-3 py-2 mt-4 mr-5 space-x-1 text-xs font-medium uppercase border rounded-md border-neutral-200 text-neutral-600 hover:bg-neutral-100">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                    viewBox="0 0 24 24" stroke-width="1.5"
-                                                                    stroke="currentColor" class="w-4 h-4">
+                                                                     viewBox="0 0 24 24" stroke-width="1.5"
+                                                                     stroke="currentColor" class="w-4 h-4">
                                                                     <path stroke-linecap="round" stroke-linejoin="round"
-                                                                        d="M6 18L18 6M6 6l12 12"></path>
+                                                                          d="M6 18L18 6M6 6l12 12"></path>
                                                                 </svg>
                                                                 <span>閉じる</span>
                                                             </button>
@@ -114,16 +107,16 @@
                                                     </div>
                                                 </div>
                                                 <form method="POST" action="{{ route('chat.store') }}" id="chat-form"
-                                                    class="flex-shrink-0 px-4 sm:px-5 mt-5 mb-4">
+                                                      class="flex-shrink-0 px-4 sm:px-5 mt-5 mb-4">
                                                     @csrf
                                                     <div class="flex">
                                                         <input type="hidden" name="room_id"
-                                                            value="{{ $room->id }}">
+                                                               value="{{ $room->id }}">
                                                         <input type="text" name="chat" placeholder="メッセージを入力"
-                                                            id="chat-input"
-                                                            class="flex-1 w-full px-4 py-2 text-sm border rounded-md focus:ring-2 focus:ring-neutral-200 focus:outline-none">
+                                                               id="chat-input"
+                                                               class="flex-1 w-full px-4 py-2 text-sm border rounded-md focus:ring-2 focus:ring-neutral-200 focus:outline-none">
                                                         <button type="submit"
-                                                            class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">送信</button>
+                                                                class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">送信</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -148,257 +141,241 @@
                                 <li>{{ $member->name }}</li>
                             @endforeach
                         </ul>
-
                         <!-- ここから投稿タグの作成 -->
-                        
+                        <!-- <form method="POST" action="{{ route('room_role.store') }}">
+    @csrf -->
                         <div x-data="{
-                            selectOpen: false,
-                            newTaskTitle: '',
-                            selectedTask: '',
-                            tasks: @json($room->room_roles), // データベースから取得した役割
-                            progressOptions: ['未着手', '進行中', '達成'],
-                            activeTask: null,
-                            activeMember: null,
-                            activeProgress: null,
-                            activeTitle: '',
-                            selectTask(task) {
-                                this.activeTask = task;
-                                this.activeMember = task.assignedMember;
-                                this.activeProgress = task.progress;
-                                this.activeTitle = task.title;
-                                this.selectOpen = true;
-                            },
-                            assignMember(memberId) {
-                                const selectedMember = this.activeTask.members.find(member => member.value == memberId);
-                                this.activeTask.assignedMember = selectedMember;
-                            },
-                            updateProgress(status) {
-                                this.activeTask.progress = status;
-                            },
-                            updateTaskTitle() {
-                                this.activeTask.title = this.activeTitle;
-                            },
-                            
-                            removeTask(task) {
-                                this.tasks = this.tasks.filter(t => t !== task); // タスクを削除
-                        } 
-                            
+    selectOpen: false,
+    newTaskTitle: '',
+    selectedTask: '',
+    tasks: [
+    @foreach ($roles as $role)
+        {
+            id: {{ $role->id }},
+            title: '{{ $role->role_name }}',
+            assignedMember: {{ $role->user_id }},
+            progress: '{{ $role->status }}',
+            members: {!! json_encode($room->room_members->map(function ($member) { return ['name' => $member->name, 'value' => $member->id]; })) !!}
+        },
+        @endforeach
+    ],
+    progressOptions: ['未着手', '進行中', '達成'],
+    activeTask: null,
+    activeMember: null,
+    activeProgress: null,
+    activeTitle: '',
+    selectTask(task) {
+        this.activeTask = task;
+        this.activeMember = task.assignedMember;
+        this.activeProgress = task.progress;
+        this.activeTitle = task.title;
+        this.selectOpen = true;
+    },
+    assignMember(memberId) {
+        const selectedMember = this.activeTask.members.find(member => member.value == memberId);
+        this.activeTask.assignedMember = selectedMember;
+    },
+    updateProgress(status) {
+        this.activeTask.progress = status;
+    },
+    updateTaskTitle() {
+        this.activeTask.title = this.activeTitle;
+    },
+    addTask() {
+        if (this.newTaskTitle.trim() === '') return;
+        this.tasks.push({
+            id: null,
+            title: this.newTaskTitle,
+            assignedMember: null,
+            progress: '未着手',
+            members: {{ json_encode($room->room_members->map(function ($member) { return ['name' => $member->name, 'value' => $member->id]; })) }}
+        });
+        this.newTaskTitle = '';
+    },
+    removeTask(task) {
+        this.tasks = this.tasks.filter(t => t !== task);
+    }
+}" class="w-full">
 
-                        }" class="w-full">
+                            <!-- アコーディオン -->
+                            <div x-data="{ accordionOpen: false }" class="w-full mt-4">
+                                <button @click="accordionOpen = !accordionOpen" class="w-full bg-gray-200 text-left px-4 py-2 text-lg font-semibold">
+                                    役割
+                                </button>
 
-                            <!-- アコーディオン np-->
-                            
-                            <div x-data="{
-                                activeAccordion: '',
-                                setActiveAccordion(id) {
-                                    this.activeAccordion = (this.activeAccordion == id) ? '' : id
-                                }
-                            }"
-                                class="relative w-full mx-auto overflow-hidden text-sm font-normal bg-white border border-gray-200 divide-y divide-gray-200 rounded-md">
+                                <!-- タスクリスト -->
+                                <div x-show="accordionOpen" class="task-list space-y-4 mt-4">
+                                    @if ($room->room_members->contains(auth()->id()) || $room->user_id == auth()->id())
+                                        <!-- 新しいタスク追加フォーム -->
+                                        <form method="POST" action="{{ route('room_role.store') }}">
+                                            @csrf
+                                            <div class="mt-4">
+                                                <input type="text" x-model="newTaskTitle" placeholder="新しい役割を追加する" class="border p-2 w-full mb-2" />
+                                                <button @click="addTask" type="submit" class="bg-green-500 text-white px-4 py-2 rounded-full w-8 h-6 flex items-center justify-center">
+                                                    <span class="text-2xl font-bold">+</span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    @endif
 
-                                <div x-data="{ id: $id('accordion') }" class="cursor-pointer group">
-                                    <button @click="setActiveAccordion(id)"
-                                        class="flex items-center justify-between w-full p-4 text-left select-none group-hover:underline">
-                                        <span>あなたは何ができる?</span>
-                                        <svg class="w-4 h-4 duration-200 ease-out"
-                                            :class="{ 'rotate-180': activeAccordion == id }" viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="6 9 12 15 18 9"></polyline>
-                                        </svg>
-                                    </button>
-                                    <div x-show="activeAccordion==id" x-collapse x-cloak>
-
-                                        <!-- タスクリスト -->
-                                        <!-- 新しい役割作成フォーム -->
-                @if ($room->room_members->contains(auth()->id()) || $room->user_id == auth()->id())
-                <form method="POST" action="{{ route('room_role.store') }}" class="mb-4">
-                    @csrf
-                    <input type="hidden" name="room_id" value="{{ $room->id }}">
-                    <div class="flex items-center">
-                        <input type="text" name="role_name" placeholder="新しい役割を追加する" class="border p-2 w-full" required>
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-full w-8 h-8 flex items-center justify-center">+</button>
-                    </div>
-                </form>
-                @endif
-
-                                        
-
-                                        
-                                        <template x-for="task in tasks" :key="task.title">
-                                            <ul class="task-item border rounded p-4">
-                                                <div class="flex justify-between items-center">
-                                                    <span class="font-bold" x-text="task.title"></span>
-                                                    <div>
-                                                        @if ($room->room_members->contains(auth()->id()) || $room->user_id == auth()->id())
-                                                        <form method="POST" action="{{ route('room_role.store') }}" id="getRole">
-                                                @csrf
-                                                            <button @click="selectTask(task)" type="button"
-                                                                class="bg-blue-500 text-white px-2 py-1 rounded mr-2">
-                                                                編集
-                                                            </button>
-                                                            <button @click="removeTask(task)" type="button"
-                                                                class="bg-red-500 text-white px-2 py-1 rounded">
-                                                                削除
-                                                            </button>
-                                                        @endif
-                                                    </div>
+                                    <template x-for="task in tasks" :key="task.title">
+                                        <ul class="task-item border rounded p-4">
+                                            <div class="flex justify-between items-center">
+                                                <span class="font-bold" x-text="task.title"></span>
+                                                <div>
+                                                    @if ($room->room_members->contains(auth()->id()) || $room->user_id == auth()->id())
+                                                        <button @click="selectTask(task)" type="button" class="bg-blue-500 text-white px-2 py-1 rounded mr-2">
+                                                            編集
+                                                        </button>
+                                                        <button @click="removeTask(task)" type="button" class="bg-red-500 text-white px-2 py-1 rounded">
+                                                            削除
+                                                        </button>
+                                                    @endif
                                                 </div>
-                                                <div class="mt-2">
-                                                    <p>担当: <span
-                                                            x-text="task.assignedMember ? task.assignedMember.name : 'None'"></span>
-                                                    </p>
-                                                    <p>進捗: <span x-text="task.progress"></span></p>
-                                                </div>
-                                            </ul>
-                                        </template>
-                                    </div>
-                                </div>
-
-                                <!-- タスク編集モーダル -->
-                                <div x-show="selectOpen" @click.away="selectOpen = false"
-                                    class="modal bg-white border rounded p-4 shadow-md mt-4">
-                                    <h3 class="text-lg font-bold">編集中...</h3>
-
-                                    <!-- タスク名編集 -->
-                                    <form method="POST" action="{{ route('room_role.store') }}">
-                                        @csrf
-                                        <div class="mt-4">
-                                            <label class="block">役割名</label>
-                                            <input type="text" x-model="activeTitle" @input="updateTaskTitle"
-                                                class="border p-2 w-full" />
-                                        </div>
-                                    </form>
-
-                                    <!-- メンバー割り当て -->
-                                    <form method="POST" action="{{ route('room_role.store') }}">
-                                        @csrf
-                                        <div class="mt-4">
-                                            <label class="block">担当者</label>
-                                            <select @change="assignMember($event.target.value)"
-                                                class="border p-2 w-full">
-                                                <option value="">メンバーを選ぶ</option>
-                                                <template x-for="member in activeTask.members" :key="member.value">
-                                                    <option :value="member.value" x-text="member.name"></option>
-                                                </template>
-                                            </select>
-                                        </div>
-                                    </form>
-
-                                    <!-- 進捗状況の更新 -->
-                                    <form method="POST" action="{{ route('room_role.store') }}">
-                                        @csrf
-                                        <div class="mt-4">
-                                            <label class="block">ステータス</label>
-                                            <select @change="updateProgress($event.target.value)"
-                                                class="border p-2 w-full">
-                                                <template x-for="status in progressOptions" :key="status">
-                                                    <option :value="status" x-text="status"></option>
-                                                </template>
-                                            </select>
-                                        </div>
-                                    </form>
-
-                                    <button @click="selectOpen = false;" type="button"
-                                        class="mt-4 bg-gray-500 text-white px-4 py-2 rounded">
-                                        閉じる
-                                    </button>
+                                            </div>
+                                            <div class="mt-2">
+                                                <p>担当: <span x-text="task.assignedMember ? task.assignedMember.name : 'None'"></span></p>
+                                                <p>進捗: <span x-text="task.progress"></span></p>
+                                            </div>
+                                        </ul>
+                                    </template>
                                 </div>
                             </div>
-                            </form>
-                            <!-- ここまで役割タグの追加 -->
 
-                            @if ($room->user_id != auth()->id())
-                                @if ($room->room_members->contains(auth()->id()))
-                                    <form method="POST" action="{{ route('roomMembers.destroy', $room) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <div class="flex justify-end mt-4">
-                                            <div
-                                                class="bg-red-500 hover:bg-red-700 text-gray-200 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                                <input type="hidden" name="room_id" value="{{ $room->id }}">
-                                                <button type="submit">退室</button>
-                                            </div>
+                            <!-- タスク編集モーダル -->
+                            <!-- Task editing modal -->
+                            <form method="POST" action="{{ route('room_role.update', ['room_role' => 1]) }}">
+                                @method('PATCH')
+                                @csrf
+                                <input type="hidden" name="room_id" value="{{ $room->id }}">
+                                <input type="hidden" name="user_id" :value="activeTask.user_id">
+
+                                <div class="mt-4">
+                                    <label class="block">役割名</label>
+                                    <input type="text" name="role_name" x-model="activeTitle" @input="updateTaskTitle" class="border p-2 w-full" />
+                                </div>
+
+                                <div class="mt-4">
+                                    <label class="block">担当者</label>
+                                    <select name="assigned_member" @change="assignMember($event.target.value)" class="border p-2 w-full">
+                                        <option value="">メンバーを選ぶ</option>
+                                        <template x-for="member in activeTask.members" :key="member.value">
+                                            <option :value="member.value" x-text="member.name"></option>
+                                        </template>
+                                    </select>
+                                </div>
+
+                                <div class="mt-4">
+                                    <label class="block">ステータス</label>
+                                    <select name="status" @change="updateProgress($event.target.value)" class="border p-2 w-full">
+                                        <template x-for="status in progressOptions" :key="status">
+                                            <option :value="status" x-text="status"></option>
+                                        </template>
+                                    </select>
+                                </div>
+
+                                <div class="flex justify-end mt-4">
+                                    <button @click="selectOpen = false;" type="button" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">
+                                        閉じる
+                                    </button>
+                                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
+                                        送信
+                                    </button>
+                                </div>
+                            </form>
+                        <!-- ここまで役割タグの追加 -->
+
+                        @if ($room->user_id != auth()->id())
+                            @if ($room->room_members->contains(auth()->id()))
+                                <form method="POST" action="{{ route('roomMembers.destroy', $room) }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <div class="flex justify-end mt-4">
+                                        <div
+                                            class="bg-red-500 hover:bg-red-700 text-gray-200 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                            <input type="hidden" name="room_id" value="{{ $room->id }}">
+                                            <button type="submit">退室</button>
                                         </div>
-                                    </form>
-                                @else
-                                    <form method="POST" action="{{ route('roomMembers.store') }}">
-                                        @csrf
-                                        <div class="flex justify-end mt-4">
-                                            <div
-                                                class="bg-blue-500 hover:bg-blue-700 text-gray-200 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                                <input type="hidden" name="room_id" value="{{ $room->id }}">
-                                                <button type="submit">参加</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                @endif
+                                    </div>
+                                </form>
                             @else
-                                <form method="GET" action="{{ route('rooms.edit', $room) }}">
+                                <form method="POST" action="{{ route('roomMembers.store') }}">
                                     @csrf
                                     <div class="flex justify-end mt-4">
-                                        <button type="submit"
-                                            class="bg-blue-500 hover:bg-blue-700 text-gray-100 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">編集</button>
+                                        <div
+                                            class="bg-blue-500 hover:bg-blue-700 text-gray-200 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                            <input type="hidden" name="room_id" value="{{ $room->id }}">
+                                            <button type="submit">参加</button>
+                                        </div>
                                     </div>
                                 </form>
                             @endif
-                        </div>
-
-                        <script>
-                            var content_text = '{!! $room->data_json !!}';
-                            var json = content_text.replace(/\n/g, '\\n');
-                            var authenticatedUserId = {{ auth()->id() }};
-                            json = JSON.parse(json);
-                            const restoredContent{{ $room->id }} = new Quill('#restored-content-{{ $room->id }}');
-                            restoredContent{{ $room->id }}.setContents(json);
-                            restoredContent{{ $room->id }}.disable();
-
-                            function setupChatFormSubmission() {
-                                const chatForm = document.getElementById('chat-form');
-                                if (chatForm) {
-                                    chatForm.addEventListener('submit', handleChatFormSubmit);
-                                }
-                            }
-
-                            function handleChatFormSubmit(event) {
-                                event.preventDefault();
-                                const submitButton = this.querySelector('button[type="submit"]');
-                                submitButton.disabled = true; // Disable the submit button
-                                const formData = new FormData(this);
-                                fetch(this.action, {
-                                        method: this.method,
-                                        body: formData,
-                                        headers: {
-                                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-                                        }
-                                    })
-                                    .then(response => {
-                                        if (response.ok) {
-                                            document.getElementById('chat-input').value = ''; // Clear the chat input
-                                            scrollToBottom(); // Scroll to the bottom of the chat
-                                        }
-                                        submitButton.disabled = false; // Re-enable the submit button
-                                    })
-                                    .catch(error => {
-                                        console.error('Error:', error);
-                                        submitButton.disabled = false; // Re-enable the submit button in case of error
-                                    });
-                            }
-
-                            function scrollToBottom() {
-                                const chatContainer = document.getElementById('scroll');
-                                setTimeout(() => {
-                                    chatContainer.scrollTop = chatContainer.scrollHeight;
-                                }, 100); // Add a delay to ensure the DOM updates properly
-                            }
-
-                            document.getElementById('getRole').addEventListener('click', function(e) {
-                                e.preventDefault();
-
-                            });
-                        </script>
+                        @else
+                            <form method="GET" action="{{ route('rooms.edit', $room) }}">
+                                @csrf
+                                <div class="flex justify-end mt-4">
+                                    <button type="submit"
+                                            class="bg-blue-500 hover:bg-blue-700 text-gray-100 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">編集</button>
+                                </div>
+                            </form>
+                        @endif
                     </div>
+
+                    <script>
+                        var content_text = '{!! $room->data_json !!}';
+                        var json = content_text.replace(/\n/g, '\\n');
+                        var authenticatedUserId = {{ auth()->id() }};
+                        json = JSON.parse(json);
+                        const restoredContent{{ $room->id }} = new Quill('#restored-content-{{ $room->id }}');
+                        restoredContent{{ $room->id }}.setContents(json);
+                        restoredContent{{ $room->id }}.disable();
+
+                        function setupChatFormSubmission() {
+                            const chatForm = document.getElementById('chat-form');
+                            if (chatForm) {
+                                chatForm.addEventListener('submit', handleChatFormSubmit);
+                            }
+                        }
+
+                        function handleChatFormSubmit(event) {
+                            event.preventDefault();
+                            const submitButton = this.querySelector('button[type="submit"]');
+                            submitButton.disabled = true; // Disable the submit button
+                            const formData = new FormData(this);
+                            fetch(this.action, {
+                                method: this.method,
+                                body: formData,
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                                }
+                            })
+                                .then(response => {
+                                    if (response.ok) {
+                                        document.getElementById('chat-input').value = ''; // Clear the chat input
+                                        scrollToBottom(); // Scroll to the bottom of the chat
+                                    }
+                                    submitButton.disabled = false; // Re-enable the submit button
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    submitButton.disabled = false; // Re-enable the submit button in case of error
+                                });
+                        }
+
+                        function scrollToBottom() {
+                            const chatContainer = document.getElementById('scroll');
+                            setTimeout(() => {
+                                chatContainer.scrollTop = chatContainer.scrollHeight;
+                            }, 100); // Add a delay to ensure the DOM updates properly
+                        }
+
+                        document.getElementById('getRole').addEventListener('click', function(e) {
+                            e.preventDefault();
+
+                        });
+                    </script>
                 </div>
             </div>
         </div>
+    </div>
 </x-app-layout>

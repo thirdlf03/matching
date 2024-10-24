@@ -11,7 +11,7 @@ class RoomRoleController extends Controller
 {
 
 
- 
+
     public function store(Request $request, Room $room)
     {
         //ロールが記入されているか確認
@@ -35,13 +35,25 @@ class RoomRoleController extends Controller
             'status' => $request -> status,
         ]);
 
-        
+
 
         //ルームページにリダイレクトすると同時にロールページを表示
         return redirect()->route('rooms.show',['room' => $request->room_id]);
     }
 
-    
+    public function update(Request $request, $role_id)
+    {
+        //ロールの更新処理
+        $room_role = RoomRole::find($role_id);
+        $room_role->update([
+            'user_id' => $request->assigned_member,
+            'role_name' => $request->role_name,
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('rooms.show',['room' => $request->room_id]);
+
+    }
     public function destroy(Request $request, Room $room)
     {
         //ロールの削除処理
