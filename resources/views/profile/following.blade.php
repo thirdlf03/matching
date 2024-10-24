@@ -18,10 +18,10 @@
                             </a>
                             <!--フォローとフォロワー数-->
                             <p class="text-black dark:text-white">
-                                followers: {{ $follow->followers->count() }}
+                                フォロー中: {{ $follow->follows->count() }}
                             </p>
                             <p class="text-black dark:text-white">
-                                following: {{ $follow->follows->count() }}
+                                フォロワー: {{ $follow->followers->count() }}
                             </p>
                         </div>
                     @endforeach
