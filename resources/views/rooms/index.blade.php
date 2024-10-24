@@ -9,10 +9,69 @@
     </x-slot>
 
     <div class="py-12">
+        <button id="backToTopBtn"
+                class="bg-blue-500 hover:bg-blue-700 text-gray-200 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline fixed bottom-5 right-5">
+            上に戻る
+        </button>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const backToTopBtn = document.getElementById('backToTopBtn');
+
+                backToTopBtn.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            });
+        </script>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <a class="p-2 mb-2" href="{{ route('rooms.create') }}">+ 新規作成</a>
+                    <div x-data="{ switchOn: {{ request('followed') ? 'true' : 'false' }}, clicked: false }" class="flex space-x-2 py-0.75 my-2">
+                        <input id="thisId" type="checkbox" name="switch" class="hidden" :checked="switchOn">
+
+                        <button
+                            x-ref="switchButton"
+                            type="button"
+                            @click="switchOn = ! switchOn; clicked = true"
+                            :class="switchOn ? 'bg-blue-600' : 'bg-neutral-200'"
+                            class="relative inline-flex h-6 py-0.5 focus:outline-none rounded-full w-10"
+                            id="followedRoomsBtn"
+                            data-followed="{{ request('followed') ? 'true' : 'false' }}"
+                            x-cloak>
+                            <span :class="(switchOn ? 'translate-x-[18px]' : 'translate-x-0.5') + (clicked ? ' duration-200 ease-in-out' : '')" class="w-5 h-5 bg-white rounded-full shadow-md"></span>
+                        </button>
+
+                        <label @click="$refs.switchButton.click(); $refs.switchButton.focus()" :id="$id('switch')"
+                               :class="{ 'text-blue-600': switchOn, 'text-gray-400': ! switchOn }"
+                               class="text-sm select-none"
+                               x-cloak>
+                            フォロー中
+                        </label>
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const backToTopBtn = document.getElementById('backToTopBtn');
+                            backToTopBtn.addEventListener('click', () => {
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            });
+
+                            const followedRoomsBtn = document.getElementById('followedRoomsBtn');
+                            followedRoomsBtn.setAttribute('data-followed', "{{ request('followed') ? 'true' : 'false' }}");
+                            followedRoomsBtn.addEventListener('click', function() {
+                                const url = new URL("{{ route('rooms.index') }}");
+                                const isFollowed = followedRoomsBtn.getAttribute('data-followed') === 'true';
+                                if (isFollowed) {
+                                    url.searchParams.delete("followed");
+                                } else {
+                                    url.searchParams.set("followed", "true");
+                                }
+                                followedRoomsBtn.setAttribute('data-followed', !isFollowed);
+                                window.location.href = url;
+                            });
+                        });
+                    </script>
+
                     <form id="categoryForm" action="{{ route('rooms.index') }}" method="GET" class="mb-6">
                         <div class="flex flex-wrap">
                             <div class="w-22 h-8 rounded-full border border-black p-1 m-1 cursor-pointer category-icon flex items-center justify-center {{ is_null(request('category_id')) ? 'selected' : '' }}" data-category-id="">
@@ -43,7 +102,7 @@
                         });
                     </script>
 
-                @foreach ($rooms as $room)
+                    @foreach ($rooms as $room)
                         <div class="flex items-center">
                             <p class="font-bold text-sm lg:text-lg mt-4">募集人数: {{ $room->size }}</p>
                             <p class="font-bold mx-7 text-sm lg:text-lg mt-4">参加中:
