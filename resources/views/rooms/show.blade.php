@@ -96,7 +96,7 @@
                         </div>
                     @endif
 
-                    <div class="mt-2 mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                    <div class="mt-2 mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg relative">
                         <div id="restored-content-{{ $room->id }}"></div>
                         @if ($room->is_show == 1)
                             <p class="my-2">場所</p>
@@ -111,11 +111,11 @@
                         </ul>
                         @if ($room->user_id != auth()->id())
                             @if ($room->room_members->contains(auth()->id()))
-                                <form method="POST" action="{{ route('roomMembers.destroy', $room) }}">
+                                <form method="POST" action="{{ route('roomMembers.destroy', $room) }}" style="position: absolute; top: 0px; right: 20px;">
                                     @csrf
                                     @method('DELETE')
                                     <div class="flex justify-end mt-4">
-                                        <div class="bg-red-500 hover:bg-red-700 text-gray-200 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                        <div class="bg-red-500 hover:bg-red-700 text-gray-200 font-bold py-0.5 px-1 rounded focus:outline-none focus:shadow-outline">
                                             <input type="hidden" name="room_id" value="{{ $room->id }}">
                                             <button type="submit">退室</button>
                                         </div>
