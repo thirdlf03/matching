@@ -17,7 +17,7 @@ class RoomController extends Controller
   public function index(Request $request)
    {
       $category_id = $request->input('category_id');
-      $followed = $request->input('followed'); 
+      $followed = $request->input('followed');
       $categories = Category::all();
 
       // 現在のユーザーを取得
@@ -26,7 +26,7 @@ class RoomController extends Controller
       if ($followed) {
           // 自分がフォローしているユーザーのIDを取得
           $followedUsers = Follow::where('follow_id', $currentUser->id)
-                                 ->pluck('follower_id'); 
+                                 ->pluck('follower_id');
 
           // フォローしているユーザーの部屋を取得
           $rooms = Room::whereIn('user_id', $followedUsers)
@@ -43,7 +43,7 @@ class RoomController extends Controller
                      ->orderBy('created_at', 'desc')
                      ->get();
                     }
-        return view('rooms.index', compact('rooms', 'categories'));
+        return view('rooms.index', compact(['rooms', 'categories', 'followed']));
     }
 
 
