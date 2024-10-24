@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Models\Room;
 use App\Models\User;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -27,11 +28,13 @@ final class RoomFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'size' => fake()->randomNumber(),
-            'title' => fake()->title,
-            'data_json' => fake()->word,
-            'latitude' => fake()->optional()->randomFloat(8, -90, 90),
-            'longitude' => fake()->optional()->randomFloat(8, -180, 180),
+            'size' => $this->faker->randomNumber(),
+            'title' => $this->faker->title,
+            'data_json' => json_encode(['key' => 'value']), // Ensure this is valid JSON
+            'latitude' => $this->faker->optional()->randomFloat(8, -90, 90),
+            'longitude' => $this->faker->optional()->randomFloat(8, -180, 180),
+            'category_id' => Category::factory(),
+            'is_show' => $this->faker->boolean,
         ];
     }
 }
