@@ -32,7 +32,8 @@ class ChatController extends Controller
         MyEvent::dispatch(
             ['user_id' => $user_id,
                 'user' => ['name' => auth()->user()->name],
-                'chat' => $request -> chat]
+                'chat' => $request -> chat,
+                'room_id' => $request -> room_id,]
         );
 
         //チャットの送信をブロードキャスト

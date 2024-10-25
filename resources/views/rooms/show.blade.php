@@ -6,7 +6,7 @@
             {{ __('Room詳細') }}
         </h2>
     </x-slot>
-
+    @vite('resources/js/app.js')
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -318,9 +318,11 @@
                     </div>
 
                     <script>
+                        var roomId = {{ $room->id }};
+                        var authenticatedUserId = {{ auth()->id() }};
+
                         var content_text = '{!! $room->data_json !!}';
                         var json = content_text.replace(/\n/g, '\\n');
-                        var authenticatedUserId = {{ auth()->id() }};
                         json = JSON.parse(json);
                         const restoredContent{{ $room->id }} = new Quill('#restored-content-{{ $room->id }}');
                         restoredContent{{ $room->id }}.setContents(json);
@@ -339,35 +341,36 @@
                             submitButton.disabled = true; // Disable the submit button
                             const formData = new FormData(this);
                             fetch(this.action, {
-                                    method: this.method,
-                                    body: formData,
-                                    headers: {
-                                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-                                    }
-                                })
-                                .then(response => {
-                                    if (response.ok) {
-                                        document.getElementById('chat-input').value = ''; // Clear the chat input
-                                        scrollToBottom(); // Scroll to the bottom of the chat
-                                    }
-                                    submitButton.disabled = false; // Re-enable the submit button
-                                })
-                                .catch(error => {
-                                    console.error('Error:', error);
-                                    submitButton.disabled = false; // Re-enable the submit button in case of error
-                                });
+
+                                method: this.method,
+                                body: formData,
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                                }
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    document.getElementById('chat-input').value = ''; // Clear the chat input
+                                    scrollToBottom(); // Scroll to the bottom of the chat
+                                }
+                                submitButton.disabled = false; // Re-enable the submit button
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                submitButton.disabled = false; // Re-enable the submit button in case of error
+                            });
+
                         }
 
                         function scrollToBottom() {
                             const chatContainer = document.getElementById('scroll');
                             setTimeout(() => {
                                 chatContainer.scrollTop = chatContainer.scrollHeight;
-                            }, 100); // Add a delay to ensure the DOM updates properly
+                            }, 300); // Add a delay to ensure the DOM updates properly
                         }
 
                         document.getElementById('getRole').addEventListener('click', function(e) {
                             e.preventDefault();
-
                         });
                     </script>
                 </div>

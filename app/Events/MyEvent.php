@@ -23,7 +23,7 @@ class MyEvent implements ShouldBroadcast
 
   public function broadcastOn(): Channel
   {
-      return new Channel('my-channel');
+      return new Channel('my-channel.'.$this->message['room_id']);
   }
 
   public function broadcastAs()
