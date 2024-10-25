@@ -8,6 +8,7 @@ use App\Models\RoomRole;
 use App\Models\Archive;
 use App\Models\Category;
 use App\Models\Follow;
+use App\Models\CAlendar;
 
 use Illuminate\Http\Request;
 
@@ -21,7 +22,7 @@ class RoomController extends Controller
       $category_id = $request->input('category_id');
       $followed = $request->input('followed');
       $categories = Category::all();
-
+      
       // 現在のユーザーを取得
       $currentUser = auth()->user();
 
@@ -71,6 +72,7 @@ class RoomController extends Controller
             'size' => 'required',
             'title' => 'required',
             'data_json' => 'required',
+            
         ]);
 
         //ルームの作成と保存
@@ -85,6 +87,7 @@ class RoomController extends Controller
             'longitude' => $request->longitude,
             'category_id' => $request->category_id,
             'is_show' => $request->is_show,
+            'date' => $request->date,
         ]);
 
         //ルーム一覧ページにリダイレクト
@@ -160,6 +163,7 @@ class RoomController extends Controller
             'longitude' => $request->longitude,
             'category_id' => $request->category_id,
             'is_show' => $request->is_show,
+            'date' => $request ->date,
         ]);
 
         return redirect()->route('rooms.show', $room);
@@ -180,6 +184,7 @@ class RoomController extends Controller
             'latitude' => $room->latitude,
             'longitude' => $room->longitude,
             'category_id' => $room->category_id,
+            'date' =>$room -> date,
         ]);
 
         //ルームの削除処理

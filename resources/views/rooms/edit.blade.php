@@ -25,8 +25,18 @@
                             value="{{ $room->title }}"></input>
                         <label>人数</label>
                         <input name="size" required type="number" class="mx-2 my-4" value="{{ $room->size }}"><br>
-                        <div class="flex items-center">
-                            <select name="category_id" id="categorySelect" class="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                         <!-- カレンダーを追加-->
+                         <div class="flex items-center">
+                            <div class="mx-2">
+                                <label>開催日</label>
+                         <input type="date" id="date" name="date" class="form-control" value="{{$room->date}}">
+</div>
+
+                        <!-- ここまでカレンダーを追加 -->
+                        <div class="mx-2">
+                            
+                            <select name="category_id" id="categorySelect"
+                                class="shadow appearance-none border rounded w-full py-2 px-10 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                                 <option value="">すべてのカテゴリー</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}" {{ $room->category_id == $category->id ? 'selected' : '' }}>
@@ -34,8 +44,10 @@
                                     </option>
                                 @endforeach
                             </select>
-                        </div>
-                        <input type="hidden" name="category_id" id="selected_category_id" value="{{ request('category_id') }}">
+</div>
+</div>
+                        <input type="hidden" name="category_id" id="selected_category_id"
+                            value="{{ request('category_id') }}">
                         <div x-data="{ open: false }">
                             <input @click="open = !open" type="checkbox" class="my-4"></input>
                             <label>位置情報を更新</label><br>
@@ -103,8 +115,10 @@
                     </form>
                     <style>
                         .selected {
-                            background-color: #0000FF; /* Blue color */
-                            color: #fff; /* Change text color if needed */
+                            background-color: #0000FF;
+                            /* Blue color */
+                            color: #fff;
+                            /* Change text color if needed */
                         }
                     </style>
                     <script>
@@ -145,7 +159,8 @@
                             icon.addEventListener('click', function() {
                                 document.querySelectorAll('.category-icon').forEach(i => i.classList.remove('selected'));
                                 this.classList.add('selected');
-                                document.getElementById('selected_category_id').value = this.getAttribute('data-category-id');
+                                document.getElementById('selected_category_id').value = this.getAttribute(
+                                    'data-category-id');
                             });
                         });
 

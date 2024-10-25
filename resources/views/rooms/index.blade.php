@@ -13,21 +13,27 @@
     <div class="mt-12 py-12 px-6 max-w-7xl mx-auto bg-white shadow-sm sm:rounded-lg">
         <!-- Back to Top Button -->
         <button id="backToTopBtn"
+
             class="fixed bottom-8 right-8 p-4 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-500 transition-all ease-in-out">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M5 11l7-7 7 7M5 19l7-7 7 7" />
             </svg>
+
         </button>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 const backToTopBtn = document.getElementById('backToTopBtn');
                 backToTopBtn.addEventListener('click', () => {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
                 });
             });
         </script>
+
 
         <!-- Room Creation and Toggle for Followed Rooms -->
         <div class="flex justify-between mb-6">
@@ -97,6 +103,56 @@
             }
         </style>
 
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const backToTopBtn = document.getElementById('backToTopBtn');
+                            backToTopBtn.addEventListener('click', () => {
+                                window.scrollTo({
+                                    top: 0,
+                                    behavior: 'smooth'
+                                });
+                            });
+
+                            const followedRoomsBtn = document.getElementById('followedRoomsBtn');
+                            followedRoomsBtn.setAttribute('data-followed', "{{ request('followed') ? 'true' : 'false' }}");
+                            followedRoomsBtn.addEventListener('click', function() {
+                                const url = new URL("{{ route('rooms.index') }}");
+                                const isFollowed = followedRoomsBtn.getAttribute('data-followed') === 'true';
+                                if (isFollowed) {
+                                    url.searchParams.delete("followed");
+                                } else {
+                                    url.searchParams.set("followed", "true");
+                                }
+                                followedRoomsBtn.setAttribute('data-followed', !isFollowed);
+                                window.location.href = url;
+                            });
+                        });
+                    </script>
+
+                    <form id="categoryForm" action="{{ route('rooms.index') }}" method="GET" class="mb-6">
+                        <div class="flex flex-wrap">
+                            <div class="w-22 h-8 rounded-full border border-black p-1 m-1 cursor-pointer category-icon flex items-center justify-center {{ is_null(request('category_id')) ? 'selected' : '' }}"
+                                data-category-id="">
+                                <h3 class="text-xs font-semibold text-center">すべてのカテゴリー</h3>
+                            </div>
+                            @foreach ($categories as $category)
+                                <div class="w-22 h-8 rounded-full border border-black p-1 m-1 cursor-pointer category-icon flex items-center justify-center {{ request('category_id') == $category->id ? 'selected' : '' }}"
+                                    data-category-id="{{ $category->id }}">
+                                    <h3 class="text-xs font-semibold text-center">{{ $category->category_name }}</h3>
+                                </div>
+                            @endforeach
+                        </div>
+                        <input type="hidden" name="category_id" id="selected_category_id"
+                            value="{{ request('category_id') }}">
+                    </form>
+                    <style>
+                        .selected {
+                            background-color: #0000FF;
+                            /* Blue color */
+                            color: #fff;
+                            /* Change text color if needed */
+                        }
+                    </style>                         
         <script>
             document.querySelectorAll('.category-icon').forEach(icon => {
                 icon.addEventListener('click', function() {
@@ -132,6 +188,9 @@
                         <div class="text-gray-500 text-lg mt-2">
                             <p>参加中: {{ count($room->room_members) }} / {{ $room->size }}</p>
                             <p>カテゴリー: {{ $room->category->category_name ?? 'なし' }}</p>
+                            @if($room->date)
+                            <p class="font-bold text-sm lg:text-lg mt-4">開催日:{{ $room->date }}</p> <!-- 日付の表示 -->
+                            @endif
                         </div>
 
                         <form method="GET" action="{{ route('rooms.show', $room) }}" class="w-full flex justify-end">
