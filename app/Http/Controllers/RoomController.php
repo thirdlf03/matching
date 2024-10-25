@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Room;
 use App\Models\Chat;
+use App\Models\RoomRole;
 use App\Models\Archive;
 use App\Models\Category;
 use App\Models\Follow;
 use App\Models\CAlendar;
+
 use Illuminate\Http\Request;
 
 class RoomController extends Controller
@@ -99,7 +101,8 @@ class RoomController extends Controller
     public function show(Room $room)
     {
         $chats = Chat::where('room_id', $room->id)->get();
-        return view('rooms.show', compact(['room', 'chats']));
+        $roles = RoomRole::with('user')->where('room_id', $room->id)->get();
+        return view('rooms.show', compact(['room', 'chats', 'roles']));
     }
 
     /**
