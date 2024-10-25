@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/chats/{chat}', [ChatController::class, 'destroy'])->name('chat.destroy');
     //Route::resource('chats',ChatController::class);
     Route::post('/room_roles', [RoomRoleController::class, 'store'])->name('room_role.store');
+    Route::patch('/room_roles/{room_role}', [RoomRoleController::class, 'update'])->name('room_role.update');
     Route::delete('/room_roles/{room_role}', [RoomRoleController::class, 'destroy'])->name('room_role.destroy');
 
 });
