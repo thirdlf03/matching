@@ -28,13 +28,16 @@
                         <!-- カレンダーを追加-->
                          <div class="flex items-center">
                             <div class="mx-2">
+                                <label>開催日</label>
                          <input type="date" id="date" name="date" class="form-control">
 </div>
 
                         <!-- ここまでカレンダーを追加 -->
                         <div class="mx-2">
+                           
                             <select name="category_id" id="categorySelect"
                                 class="shadow appearance-none border rounded w-full py-2 px-10 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                 
                                 <option value="">すべてのカテゴリー</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"

@@ -22,7 +22,7 @@
                                 {{ $room->title }}</p>
                             <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">カテゴリー:
                                 {{ $room->category->category_name ?? 'なし' }}</p>
-                            <p class="font-bold text-sm lg:text-lg mt-4">{{ $room->date }}</p> <!-- 日付の表示 -->
+                            <p class="font-bold text-sm lg:text-lg mt-4">開催日:{{ $room->date }}</p> <!-- 日付の表示 -->
 
                         </div>
 
