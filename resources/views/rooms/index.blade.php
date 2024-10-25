@@ -10,16 +10,19 @@
 
     <div class="py-12">
         <button id="backToTopBtn"
-        class="border-2 border-blue-300 text-blue-300 font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline hover:bg-blue-300 hover:text-white fixed bottom-5 right-5 bg-transparent">
-    上に戻る
-</button>
+            class="border-2 border-blue-300 text-blue-300 font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline hover:bg-blue-300 hover:text-white fixed bottom-5 right-5 bg-transparent">
+            上に戻る
+        </button>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 const backToTopBtn = document.getElementById('backToTopBtn');
 
                 backToTopBtn.addEventListener('click', () => {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
                 });
             });
         </script>
@@ -30,31 +33,31 @@
                     <div x-data="{ switchOn: {{ request('followed') ? 'true' : 'false' }}, clicked: false }" class="flex space-x-2 py-0.75 my-2">
                         <input id="thisId" type="checkbox" name="switch" class="hidden" :checked="switchOn">
 
-                        <button
-                            x-ref="switchButton"
-                            type="button"
-                            @click="switchOn = ! switchOn; clicked = true"
+                        <button x-ref="switchButton" type="button" @click="switchOn = ! switchOn; clicked = true"
                             :class="switchOn ? 'bg-blue-600' : 'bg-neutral-200'"
                             class="relative inline-flex h-6 py-0.5 focus:outline-none rounded-full w-10"
-                            id="followedRoomsBtn"
-                            data-followed="{{ request('followed') ? 'true' : 'false' }}"
-                            x-cloak>
-                            <span :class="(switchOn ? 'translate-x-[18px]' : 'translate-x-0.5') + (clicked ? ' duration-200 ease-in-out' : '')" class="w-5 h-5 bg-white rounded-full shadow-md"></span>
+                            id="followedRoomsBtn" data-followed="{{ request('followed') ? 'true' : 'false' }}" x-cloak>
+                            <span
+                                :class="(switchOn ? 'translate-x-[18px]' : 'translate-x-0.5') + (clicked ?
+                                    ' duration-200 ease-in-out' : '')"
+                                class="w-5 h-5 bg-white rounded-full shadow-md"></span>
                         </button>
 
                         <label @click="$refs.switchButton.click(); $refs.switchButton.focus()" :id="$id('switch')"
-                               :class="{ 'text-blue-600': switchOn, 'text-gray-400': ! switchOn }"
-                               class="text-sm select-none"
-                               x-cloak>
+                            :class="{ 'text-blue-600': switchOn, 'text-gray-400': !switchOn }"
+                            class="text-sm select-none" x-cloak>
                             フォロー中
                         </label>
                     </div>
 
                     <script>
-                        document.addEventListener('DOMContentLoaded', function () {
+                        document.addEventListener('DOMContentLoaded', function() {
                             const backToTopBtn = document.getElementById('backToTopBtn');
                             backToTopBtn.addEventListener('click', () => {
-                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                                window.scrollTo({
+                                    top: 0,
+                                    behavior: 'smooth'
+                                });
                             });
 
                             const followedRoomsBtn = document.getElementById('followedRoomsBtn');
@@ -75,21 +78,26 @@
 
                     <form id="categoryForm" action="{{ route('rooms.index') }}" method="GET" class="mb-6">
                         <div class="flex flex-wrap">
-                            <div class="w-22 h-8 rounded-full border border-black p-1 m-1 cursor-pointer category-icon flex items-center justify-center {{ is_null(request('category_id')) ? 'selected' : '' }}" data-category-id="">
+                            <div class="w-22 h-8 rounded-full border border-black p-1 m-1 cursor-pointer category-icon flex items-center justify-center {{ is_null(request('category_id')) ? 'selected' : '' }}"
+                                data-category-id="">
                                 <h3 class="text-xs font-semibold text-center">すべてのカテゴリー</h3>
                             </div>
                             @foreach ($categories as $category)
-                                <div class="w-22 h-8 rounded-full border border-black p-1 m-1 cursor-pointer category-icon flex items-center justify-center {{ request('category_id') == $category->id ? 'selected' : '' }}" data-category-id="{{ $category->id }}">
+                                <div class="w-22 h-8 rounded-full border border-black p-1 m-1 cursor-pointer category-icon flex items-center justify-center {{ request('category_id') == $category->id ? 'selected' : '' }}"
+                                    data-category-id="{{ $category->id }}">
                                     <h3 class="text-xs font-semibold text-center">{{ $category->category_name }}</h3>
                                 </div>
                             @endforeach
                         </div>
-                        <input type="hidden" name="category_id" id="selected_category_id" value="{{ request('category_id') }}">
+                        <input type="hidden" name="category_id" id="selected_category_id"
+                            value="{{ request('category_id') }}">
                     </form>
                     <style>
                         .selected {
-                            background-color: #0000FF; /* Blue color */
-                            color: #fff; /* Change text color if needed */
+                            background-color: #0000FF;
+                            /* Blue color */
+                            color: #fff;
+                            /* Change text color if needed */
                         }
                     </style>
                     <script>
@@ -97,7 +105,8 @@
                             icon.addEventListener('click', function() {
                                 document.querySelectorAll('.category-icon').forEach(i => i.classList.remove('selected'));
                                 this.classList.add('selected');
-                                document.getElementById('selected_category_id').value = this.getAttribute('data-category-id');
+                                document.getElementById('selected_category_id').value = this.getAttribute(
+                                    'data-category-id');
                                 document.getElementById('categoryForm').submit();
                             });
                         });
@@ -112,6 +121,7 @@
                                 {{ $room->title }}</p>
                             <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">カテゴリー:
                                 {{ $room->category->category_name ?? 'なし' }}</p>
+                            <p class="font-bold text-sm lg:text-lg mt-4">{{ $room->date }}</p> <!-- 日付の表示 -->
 
                         </div>
                         <div class="mt-2 mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">

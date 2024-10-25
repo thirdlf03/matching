@@ -50,17 +50,20 @@
                                 @foreach ($rooms as $room)
                                     <div class="flex items-center">
                                         <p class="font-bold text-sm lg:text-lg mt-4">募集人数: {{ $room->size }}</p>
-                                        <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">部屋名: {{ $room->title }}</p>
+                                        <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">部屋名:
+                                            {{ $room->title }}</p>
                                     </div>
                                     <div class="mt-2 mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
                                         <div id="restored-content-{{ $room->id }}"></div>
                                         <a href="{{ route('profile.show', $room->user) }}">
-                                            <p class="text-gray-600 dark:text-gray-400 text-sm">投稿者: {{ $room->user->name }}</p>
+                                            <p class="text-gray-600 dark:text-gray-400 text-sm">投稿者:
+                                                {{ $room->user->name }}</p>
                                         </a>
                                         <form method="GET" action="{{ route('rooms.show', $room) }}">
                                             @csrf
                                             <div class="flex justify-end mt-4">
-                                                <div class="bg-blue-500 hover:bg-blue-700 text-gray-200 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                                <div
+                                                    class="bg-blue-500 hover:bg-blue-700 text-gray-200 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                                     <button type="submit">詳細</button>
                                                 </div>
                                             </div>
@@ -87,12 +90,14 @@
                                 @foreach ($archives as $archive)
                                     <div class="flex items-center">
                                         <p class="font-bold text-sm lg:text-lg mt-4">募集人数: {{ $archive->size }}</p>
-                                        <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">部屋名: {{ $archive->title }}</p>
+                                        <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">部屋名:
+                                            {{ $archive->title }}</p>
                                     </div>
                                     <div class="mt-2 mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
                                         <div id="restored-content-{{ $archive->id }}"></div>
                                         <a href="{{ route('profile.show', $archive->user) }}">
-                                            <p class="text-gray-600 dark:text-gray-400 text-sm">投稿者: {{ $archive->user->name }}</p>
+                                            <p class="text-gray-600 dark:text-gray-400 text-sm">投稿者:
+                                                {{ $archive->user->name }}</p>
                                         </a>
                                     </div>
                                     <script>
