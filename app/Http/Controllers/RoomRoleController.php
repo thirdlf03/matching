@@ -46,7 +46,7 @@ class RoomRoleController extends Controller
         //ロールの更新処理
         $room_role = RoomRole::find($role_id);
         $room_role->update([
-            'user_id' => $request->assigned_member,
+            'user_id' => $request->user_id,
             'role_name' => $request->role_name,
             'status' => $request->status,
         ]);

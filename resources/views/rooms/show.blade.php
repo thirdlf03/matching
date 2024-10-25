@@ -217,19 +217,19 @@
                                 <tr x-data="{ isEditing: false, roleName: '{{ $role->role_name }}', assignedUser: '{{ $role->user_id }}', status: '{{ $role->status }}' }">
                                     <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">
                                         <span x-show="!isEditing">{{ $role->role_name }}</span>
-                                        <input x-show="isEditing" x-model="roleName" type="text" class="w-full border rounded-md" />
+                                        <input x-show="isEditing" x-model="roleName" type="text" class="w-full border rounded-md" x-cloak/>
                                     </td>
                                     <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">
                                         <span x-show="!isEditing">{{ $role->user ? $role->user->name : '未割り当て' }}</span>
-                                        <select x-show="isEditing" x-model="assignedUser" class="w-full border rounded-md">
+                                        <select x-show="isEditing" x-model="assignedUser" class="w-full border rounded-md"　x-cloak>
                                             @foreach($room->room_members as $member)
                                                 <option value="{{ $member->id }}" :selected="assignedUser == {{ $member->id }}">{{ $member->name }}</option>
                                             @endforeach
                                         </select>
                                     </td>
                                     <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">
-                                        <span x-show="!isEditing">{{ $role->status }}</span>
-                                        <select x-show="isEditing" x-model="status" class="w-full border rounded-md">
+                                        <span x-show="!isEditing" x-cloak>{{ $role->status }}</span>
+                                        <select x-show="isEditing" x-model="status" class="w-full border rounded-md" x-cloak>
                                             <option value="未着手">未着手</option>
                                             <option value="進行中">進行中</option>
                                             <option value="達成">達成</option>
@@ -237,8 +237,8 @@
                                     </td>
                                     <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">
                                         @if ($room->user_id == auth()->id())
-                                            <button x-show="!isEditing" @click="isEditing = true" class="bg-blue-500 text-white px-2 py-1 rounded">編集</button>
-                                            <form x-show="isEditing" method="POST" action="{{ route('room_role.update', $role->id) }}" class="inline">
+                                            <button x-show="!isEditing" @click="isEditing = true" class="bg-blue-500 text-white px-2 py-1 rounded" x-cloak>編集</button>
+                                            <form x-show="isEditing" method="POST" action="{{ route('room_role.update', $role->id) }}" class="inline" x-cloak>
                                                 @csrf
                                                 @method('PATCH')
                                                 <input type="hidden" name="role_name" :value="roleName">
