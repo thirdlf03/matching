@@ -10,14 +10,35 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-8 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <a href="{{ route('rooms.index') }}" class="text-blue-500 hover:text-blue-700 mr-2">部屋一覧に戻る</a>
-                    <p class="text-gray-800 dark:text-gray-300 text-lg">{{ $user->name }}</p>
-                    <div class="text-gray-600 dark:text-gray-400 text-sm">
-                        <p>アカウント作成日時: {{ $user->created_at->format('Y-m-d H:i') }}</p>
-                    </div>
+                    <div class="flex px-4">
+                        <div class="flex flex-col pr-8">
+                            <a href="{{ route('rooms.index') }}" class="text-blue-500 hover:text-blue-700 mr-2">部屋一覧に戻る</a>
+                            <p class="text-gray-800 dark:text-gray-300 text-4xl py-4">{{ $user->name }}</p>
+                            <div class="text-gray-600 dark:text-gray-400 text-sm">
+                                <p>アカウント作成日時: {{ $user->created_at->format('Y-m-d H:i') }}</p>
+                            </div>
+                        </div>
+                        <!-- Following Count -->
+                        <div class="flex items-center justify-center space-x-8 mb-4 mt-4">
+                            <!-- Following Count on the Left -->
+                            <div class="text-center flex flex-col items-center">
+                                <a href="{{ route('profile.following', $user) }}" class="text-gray-800 dark:text-gray-300">
+                                    <span class="text-4xl font-bold">{{ $user->follows->count() }}</span>
+                                    <span class="text-sm">フォロー中</span>
+                                </a>
+                            </div>
 
+
+                            <div class="text-center flex flex-col items-center">
+                                <a href="{{ route('profile.followers', $user) }}" class="text-gray-800 dark:text-gray-300">
+                                    <span class="text-4xl font-bold">{{ $user->followers->count() }}</span>
+                                    <span class="text-sm">フォロワー</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                     @if ($user->id !== auth()->id())
                         <div class="text-gray-900 dark:text-gray-100">
                             @if ($user->followers->contains(auth()->id()))
@@ -35,13 +56,8 @@
                         </div>
                     @endif
 
-                    <a href="{{ route('profile.following', $user) }}" class="text-gray-900 mb-3">
-                        フォロー中: {{ $user->follows->count() }}
-                    </a><br>
-
-                    <a href="{{ route('profile.followers', $user) }}" class="text-gray-900 mb-3">
-                        フォロワー: {{ $user->followers->count() }}
-                    </a>
+        
+                
 
                     <div class="flex flex-wrap lg:flex-nowrap">
                         <div class="w-full lg:w-1/2 p-4">
