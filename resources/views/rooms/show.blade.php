@@ -22,6 +22,7 @@
                                 {{ $room->title }}</p>
                             <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">カテゴリー:
                                 {{ $room->category->category_name ?? 'なし' }}</p>
+                            <p class="font-bold text-sm lg:text-lg mt-4">開催日:{{ $room->date }}</p> <!-- 日付の表示 -->
 
                         </div>
 
@@ -30,7 +31,9 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
-                                        class="bg-red-500 hover:bg-red-700 text-gray-100 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">削除</button>
+
+                                    class="bg-red-500 hover:bg-red-700 text-gray-100 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">削除</button>
+
                             </form>
                         @endif
                     </div>
@@ -38,6 +41,7 @@
                     @if ($room->room_members->contains(auth()->id()) || $room->user_id == auth()->id())
                         <div x-data="{ slideOverOpen: false }" x-init="@if (session('openChat')) slideOverOpen = true @endif" class="relative z-50 w-auto h-auto">
                             <button @click="slideOverOpen=true; document.body.style.overflow = 'hidden';"
+
                                     class="inline-flex items-center justify-center h-10 px-4 py-2 text-sm font-medium transition-colors bg-white border rounded-md hover:bg-neutral-100 active:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-neutral-200/60 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none">チャット</button>
 
                             <template x-teleport="body">
@@ -57,6 +61,7 @@
                                              x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
                                              x-transition:leave-start="translate-x-0"
                                              x-transition:leave-end="translate-x-full" class="w-screen max-w-md">
+
                                             <div
                                                 class="flex flex-col h-screen bg-white border-l shadow-lg border-neutral-100/70">
                                                 <div class="px-4 sm:px-5">
@@ -68,10 +73,12 @@
                                                                 @click="slideOverOpen = false; document.body.style.overflow = '';"
                                                                 class="absolute top-0 right-0 z-30 flex items-center justify-center px-3 py-2 mt-4 mr-5 space-x-1 text-xs font-medium uppercase border rounded-md border-neutral-200 text-neutral-600 hover:bg-neutral-100">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                     viewBox="0 0 24 24" stroke-width="1.5"
-                                                                     stroke="currentColor" class="w-4 h-4">
+
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor" class="w-4 h-4">
                                                                     <path stroke-linecap="round" stroke-linejoin="round"
-                                                                          d="M6 18L18 6M6 6l12 12"></path>
+                                                                        d="M6 18L18 6M6 6l12 12"></path>
+
                                                                 </svg>
                                                                 <span>閉じる</span>
                                                             </button>
@@ -109,6 +116,7 @@
                                                     </div>
                                                 </div>
                                                 <form method="POST" action="{{ route('chat.store') }}" id="chat-form"
+
                                                       class="flex-shrink-0 px-4 sm:px-5 mt-5 mb-4">
                                                     @csrf
                                                     <div class="flex">
@@ -134,7 +142,10 @@
 
                         @if ($room->is_show == 1)
                             <p class="my-2">場所</p>
-                            <iframe src="https://maps.google.com/maps?output=embed&q={{ $room->latitude }},{{ $room->longitude }}&ll={{ $room->latitude }},{{ $room->longitude }}&t=m&hl=ja&z=18" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            <iframe
+                                src="https://maps.google.com/maps?output=embed&q={{ $room->latitude }},{{ $room->longitude }}&ll={{ $room->latitude }},{{ $room->longitude }}&t=m&hl=ja&z=18"
+                                width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"></iframe>
                         @endif
 
                         <p class="text-gray-600 dark:text-gray-400 text-sm">投稿者: {{ $room->user->name }}</p><br>
@@ -264,10 +275,12 @@
 
                         @if ($room->user_id != auth()->id())
                             @if ($room->room_members->contains(auth()->id()))
-                                <form method="POST" action="{{ route('roomMembers.destroy', $room) }}" style="position: absolute; top: 0px; right: 20px;">
+                                <form method="POST" action="{{ route('roomMembers.destroy', $room) }}"
+                                    style="position: absolute; top: 0px; right: 20px;">
                                     @csrf
                                     @method('DELETE')
                                     <div class="flex justify-end mt-4">
+
 
                                         <div class="bg-red-500 hover:bg-red-700 text-gray-200 font-bold py-0.5 px-1 rounded focus:outline-none focus:shadow-outline">
 
@@ -277,17 +290,19 @@
                                     </div>
                                 </form>
                             @else
-                                @if(count($room->room_members) < $room->size)
-                                <form method="POST" action="{{ route('roomMembers.store') }}">
-                                    @csrf
-                                    <div class="flex justify-end mt-4">
-                                        <div
-                                            class="bg-blue-500 hover:bg-blue-700 text-gray-200 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                            <input type="hidden" name="room_id" value="{{ $room->id }}">
-                                            <button type="submit" @if(count($room->room_members) >= $room->size) disabled @endif>参加</button>
+
+                                @if (count($room->room_members) < $room->size)
+                                    <form method="POST" action="{{ route('roomMembers.store') }}">
+                                        @csrf
+                                        <div class="flex justify-end mt-4">
+                                            <div
+                                                class="bg-blue-500 hover:bg-blue-700 text-gray-200 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                                <input type="hidden" name="room_id" value="{{ $room->id }}">
+                                                <button type="submit"
+                                                    @if (count($room->room_members) >= $room->size) disabled @endif>参加</button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
                                 @endif
                             @endif
                         @else
@@ -295,7 +310,8 @@
                                 @csrf
                                 <div class="flex justify-end mt-4">
                                     <button type="submit"
-                                            class="bg-blue-500 hover:bg-blue-700 text-gray-100 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">編集</button>
+                                        class="bg-blue-500 hover:bg-blue-700 text-gray-100 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">編集</button>
+
                                 </div>
                             </form>
                         @endif
@@ -325,6 +341,7 @@
                             submitButton.disabled = true; // Disable the submit button
                             const formData = new FormData(this);
                             fetch(this.action, {
+
                                 method: this.method,
                                 body: formData,
                                 headers: {
@@ -342,6 +359,7 @@
                                 console.error('Error:', error);
                                 submitButton.disabled = false; // Re-enable the submit button in case of error
                             });
+
                         }
 
                         function scrollToBottom() {
