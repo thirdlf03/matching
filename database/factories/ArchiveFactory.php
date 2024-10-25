@@ -1,28 +1,28 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Database\Factories;
 
-use App\Models\Room;
+use App\Models\Archive;
 use App\Models\User;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<\App\Models\Room>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Archive>
  */
-final class RoomFactory extends Factory
+class ArchiveFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Room::class;
+    protected $model = Archive::class;
 
     /**
      * Define the model's default state.
+     *
+     * @return array<string, mixed>
      */
     public function definition(): array
     {
@@ -34,7 +34,8 @@ final class RoomFactory extends Factory
             'latitude' => $this->faker->optional()->randomFloat(8, -90, 90),
             'longitude' => $this->faker->optional()->randomFloat(8, -180, 180),
             'category_id' => Category::factory(),
-            'is_show' => $this->faker->boolean,
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

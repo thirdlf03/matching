@@ -2,6 +2,9 @@
 
 <x-app-layout>
     <x-slot name="header">
+        <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Room検索') }}
         </h2>
@@ -58,6 +61,15 @@
                                     </div>
                                 </form>
                             </div>
+                            <script>
+                                var content_text = '{!! $room->data_json !!}';
+                                var json = content_text.replace(/\n/g, '\\n');
+                                json = JSON.parse(json);
+                                const restoredContent{{ $room->id }} = new Quill('#restored-content-{{ $room->id }}');
+                                restoredContent{{ $room->id }}.setContents(json);
+                                console.log(json);
+                                restoredContent{{ $room->id }}.disable();
+                            </script>
                         @endforeach
 
                         <!-- ページネーション -->

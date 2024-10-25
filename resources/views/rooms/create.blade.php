@@ -25,10 +25,25 @@
                         <br class="block sm:hidden">
                         <label>人数</label>
                         <input name="size" required type="number" class="mx-2 my-4"><br>
+                        <div class="flex items-center">
+                            <select name="category_id" id="categorySelect" class="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                <option value="">すべてのカテゴリー</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->category_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <input type="hidden" name="category_id" id="selected_category_id" value="{{ request('category_id') }}">
+                        <br>
                         <div x-data="{ open: false }">
                             <input @click="open = !open" type="checkbox" class="my-4"></input>
                             <label>位置情報をセット</label><br>
                             <span x-show="open">
+                                <input type="checkbox" class="my-1" id="check"></input>
+                                <label>詳細画面に位置情報を載せる</label><br>
+                                <br>
                                 <input type="checkbox" class="my-1" id="position"></input>
                                 <label>自分の位置をセットする</label><br>
                                 <input type="text" id="address" value="場所" class="my-2"></input>
@@ -77,6 +92,7 @@
                         </div>
                         <div id="editor" required></div>
                         <input type="hidden" name="data_json" id="data_json" value="">
+                        <input type="hidden" name="is_show" id="show" value="0">
                         <input type="hidden" name="latitude" id="latitude" value="">
                         <input type="hidden" name="longitude" id="longitude" value="">
                         <div class="flex justify-end mt-4">
@@ -86,7 +102,12 @@
                             </button>
                         </div>
                     </form>
-
+                    <style>
+                        .selected {
+                            background-color: #0000FF; /* Blue color */
+                            color: #fff; /* Change text color if needed */
+                        }
+                    </style>
                     <script>
                         const quill = new Quill('#editor', {
                             modules: {
@@ -97,12 +118,23 @@
                             theme: 'snow',
                         });
 
+                        document.getElementById('categorySelect').addEventListener('change', function() {
+                            document.getElementById('selected_category_id').value = this.value;
+                        });
+
                         document.getElementById('roomForm').addEventListener('submit', function(e) {
                             const delta = quill.getContents();
                             const jsoncontent = JSON.stringify(delta);
                             document.getElementById('data_json').value = jsoncontent;
                         });
 
+                        document.querySelectorAll('.category-icon').forEach(icon => {
+                            icon.addEventListener('click', function() {
+                                document.querySelectorAll('.category-icon').forEach(i => i.classList.remove('selected'));
+                                this.classList.add('selected');
+                                document.getElementById('selected_category_id').value = this.getAttribute('data-category-id');
+                            });
+                        });
 
                         document.getElementById('getPosition').addEventListener('click', function(e) {
                             e.preventDefault();
@@ -112,6 +144,16 @@
                                 `<iframe src="${url}&t=m&hl=ja&z=18" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
                             document.getElementById('latitude').value = 33.59253;
                             document.getElementById('longitude').value = 130.39928;
+                        });
+
+                        document.getElementById('check').addEventListener('change', function(e) {
+                            if (document.getElementById('show').value == '1') {
+                                document.getElementById('show').value = '0';
+                                console.log(document.getElementById('show').value);
+                            } else {
+                                document.getElementById('show').value = '1';
+                                console.log(document.getElementById('show').value);
+                            }
                         });
 
                         document.getElementById('position').addEventListener('change', function(e) {

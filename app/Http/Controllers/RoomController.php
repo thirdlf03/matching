@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Room;
 use App\Models\Chat;
 use App\Models\RoomRole;
+use App\Models\Archive;
+use App\Models\Category;
+use App\Models\Follow;
 
 use Illuminate\Http\Request;
 
@@ -13,22 +16,49 @@ class RoomController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //ルームのデータをビューに渡して新しい順に一覧表示させる。
-        $rooms = Room::with(['user', 'room_members'])->latest()->get();
+  public function index(Request $request)
+   {
+      $category_id = $request->input('category_id');
+      $followed = $request->input('followed');
+      $categories = Category::all();
 
-        return view('rooms.index', compact('rooms'));
-        //dd($rooms);
+      // 現在のユーザーを取得
+      $currentUser = auth()->user();
+
+      if ($followed) {
+          // 自分がフォローしているユーザーのIDを取得
+          $followedUsers = Follow::where('follow_id', $currentUser->id)
+                                 ->pluck('follower_id');
+
+          // フォローしているユーザーの部屋を取得
+          $rooms = Room::whereIn('user_id', $followedUsers)
+                       ->when($category_id, function($query) use ($category_id) {
+                           return $query->where('category_id', $category_id);
+                       })
+                       ->orderBy('created_at', 'desc')
+                       ->get();
+                    } else {
+        // フォローしていない場合はすべての部屋を表示
+        $rooms = Room::when($category_id, function($query) use ($category_id) {
+                         return $query->where('category_id', $category_id);
+                     })
+                     ->orderBy('created_at', 'desc')
+                     ->get();
+                    }
+        return view('rooms.index', compact(['rooms', 'categories', 'followed']));
     }
+
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
+        $categories = Category::all();
+
+        $selected_category_id = null;
         //ルーム作成ページを表示する
-        return view('rooms.create');
+        return view('rooms.create', compact(['categories', 'selected_category_id']));
     }
 
     /**
@@ -53,9 +83,9 @@ class RoomController extends Controller
             'size' => $request->size,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
+            'category_id' => $request->category_id,
+            'is_show' => $request->is_show,
         ]);
-
-        $room->room_members()->attach($user_id);
 
         //ルーム一覧ページにリダイレクト
         return redirect()->route('rooms.index');
@@ -78,7 +108,10 @@ class RoomController extends Controller
     public function edit(Room $room)
     {
         //ルームの編集画面を表示する
-        return view('rooms.edit', compact('room'));
+        $categories = Category::all();
+        $selected_category_id = $room->category_id;
+
+        return view('rooms.edit', compact(['room', 'categories', 'selected_category_id']));
     }
 
 
@@ -125,9 +158,11 @@ class RoomController extends Controller
             'size' => $request->size,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
+            'category_id' => $request->category_id,
+            'is_show' => $request->is_show,
         ]);
 
-        return redirect()->route('rooms.index');
+        return redirect()->route('rooms.show', $room);
     }
 
     /**
@@ -135,6 +170,18 @@ class RoomController extends Controller
      */
     public function destroy(Room $room)
     {
+        $user_id = auth()->id();
+
+        Archive::create([
+            'data_json' => $room->data_json,
+            'title' => $room->title,
+            'user_id' => $user_id,
+            'size' => $room->size,
+            'latitude' => $room->latitude,
+            'longitude' => $room->longitude,
+            'category_id' => $room->category_id,
+        ]);
+
         //ルームの削除処理
         $room->delete();
 

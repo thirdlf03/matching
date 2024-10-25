@@ -18,10 +18,10 @@
                                 詳細を見る
                                 <!--フォローとフォロワー数-->
                                 <p class="text-black dark:text-white">
-                                    followers: {{ $follower->followers->count() }}
+                                    フォロー中: {{ $follower->follows->count() }}
                                 </p>
                                 <p class="text-black dark:text-white">
-                                    following: {{ $follower->follows->count() }}
+                                    フォロワー: {{ $follower->followers->count() }}
                                 </p>
                         </div>
                     @endforeach
