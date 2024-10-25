@@ -141,149 +141,123 @@
                                 <li>{{ $member->name }}</li>
                             @endforeach
                         </ul>
+                        <br>
                         <!-- ここから投稿タグの作成 -->
-                        <!-- <form method="POST" action="{{ route('room_role.store') }}">
-    @csrf -->
-                        <div x-data="{
-    selectOpen: false,
-    newTaskTitle: '',
-    selectedTask: '',
-    tasks: [
-    @foreach ($roles as $role)
-        {
-            id: {{ $role->id }},
-            title: '{{ $role->role_name }}',
-            assignedMember: {{ $role->user_id }},
-            progress: '{{ $role->status }}',
-            members: {!! json_encode($room->room_members->map(function ($member) { return ['name' => $member->name, 'value' => $member->id]; })) !!}
-        },
-        @endforeach
-    ],
-    progressOptions: ['未着手', '進行中', '達成'],
-    activeTask: null,
-    activeMember: null,
-    activeProgress: null,
-    activeTitle: '',
-    selectTask(task) {
-        this.activeTask = task;
-        this.activeMember = task.assignedMember;
-        this.activeProgress = task.progress;
-        this.activeTitle = task.title;
-        this.selectOpen = true;
-    },
-    assignMember(memberId) {
-        const selectedMember = this.activeTask.members.find(member => member.value == memberId);
-        this.activeTask.assignedMember = selectedMember;
-    },
-    updateProgress(status) {
-        this.activeTask.progress = status;
-    },
-    updateTaskTitle() {
-        this.activeTask.title = this.activeTitle;
-    },
-    addTask() {
-        if (this.newTaskTitle.trim() === '') return;
-        this.tasks.push({
-            id: null,
-            title: this.newTaskTitle,
-            assignedMember: null,
-            progress: '未着手',
-            members: {{ json_encode($room->room_members->map(function ($member) { return ['name' => $member->name, 'value' => $member->id]; })) }}
-        });
-        this.newTaskTitle = '';
-    },
-    removeTask(task) {
-        this.tasks = this.tasks.filter(t => t !== task);
-    }
-}" class="w-full">
 
-                            <!-- アコーディオン -->
-                            <div x-data="{ accordionOpen: false }" class="w-full mt-4">
-                                <button @click="accordionOpen = !accordionOpen" class="w-full bg-gray-200 text-left px-4 py-2 text-lg font-semibold">
-                                    役割
-                                </button>
+                        <!-- Add New Task Button and Modal -->
+                        @if ($room->user_id == auth()->id())
+                            <div x-data="{ showNewTaskModal: false }">
+                                <div class="mt-4">
+                                    <button @click="showNewTaskModal = true" class="bg-blue-500 text-white px-4 py-2 rounded">新規作成</button>
+                                </div>
 
-                                <!-- タスクリスト -->
-                                <div x-show="accordionOpen" class="task-list space-y-4 mt-4">
-                                    @if ($room->room_members->contains(auth()->id()) || $room->user_id == auth()->id())
-                                        <!-- 新しいタスク追加フォーム -->
+                                <!-- New Task Modal -->
+                                <div x-show="showNewTaskModal" x-cloak class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                                    <div class="bg-white p-6 rounded shadow-lg">
+                                        <h2 class="text-xl mb-4">新しいタスクを作成</h2>
                                         <form method="POST" action="{{ route('room_role.store') }}">
                                             @csrf
-                                            <div class="mt-4">
-                                                <input type="text" x-model="newTaskTitle" placeholder="新しい役割を追加する" class="border p-2 w-full mb-2" />
-                                                <button @click="addTask" type="submit" class="bg-green-500 text-white px-4 py-2 rounded-full w-8 h-6 flex items-center justify-center">
-                                                    <span class="text-2xl font-bold">+</span>
-                                                </button>
+                                            <input type="hidden" name="room_id" value="{{ $room->id }}">
+                                            <div class="mb-4">
+                                                <label for="role_name" class="block text-sm font-medium text-gray-700">役割名</label>
+                                                <input type="text" name="role_name" id="role_name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                            </div>
+                                            <div class="mb-4">
+                                                <label for="assigned_member" class="block text-sm font-medium text-gray-700">メンバー</label>
+                                                <select name="assigned_member" id="assigned_member" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                                    @foreach($room->room_members as $member)
+                                                        <option value="{{ $member->id }}">{{ $member->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="mb-4">
+                                                <label for="status" class="block text-sm font-medium text-gray-700">ステータス</label>
+                                                <select name="status" id="status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                                    <option value="未着手">未着手</option>
+                                                    <option value="進行中">進行中</option>
+                                                    <option value="達成">達成</option>
+                                                </select>
+                                            </div>
+                                            <div class="flex justify-end">
+                                                <button type="button" @click="showNewTaskModal = false" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">キャンセル</button>
+                                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">作成</button>
                                             </div>
                                         </form>
-                                    @endif
-
-                                    <template x-for="task in tasks" :key="task.title">
-                                        <ul class="task-item border rounded p-4">
-                                            <div class="flex justify-between items-center">
-                                                <span class="font-bold" x-text="task.title"></span>
-                                                <div>
-                                                    @if ($room->room_members->contains(auth()->id()) || $room->user_id == auth()->id())
-                                                        <button @click="selectTask(task)" type="button" class="bg-blue-500 text-white px-2 py-1 rounded mr-2">
-                                                            編集
-                                                        </button>
-                                                        <button @click="removeTask(task)" type="button" class="bg-red-500 text-white px-2 py-1 rounded">
-                                                            削除
-                                                        </button>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            <div class="mt-2">
-                                                <p>担当: <span x-text="task.assignedMember ? task.assignedMember.name : 'None'"></span></p>
-                                                <p>進捗: <span x-text="task.progress"></span></p>
-                                            </div>
-                                        </ul>
-                                    </template>
+                                    </div>
                                 </div>
                             </div>
+                        @endif
 
-                            <!-- タスク編集モーダル -->
-                            <!-- Task editing modal -->
-                            <form method="POST" action="{{ route('room_role.update', ['room_role' => 1]) }}">
-                                @method('PATCH')
-                                @csrf
-                                <input type="hidden" name="room_id" value="{{ $room->id }}">
-                                <input type="hidden" name="user_id" :value="activeTask.user_id">
+                        <!-- Task List -->
+                        <table class="min-w-full bg-white dark:bg-gray-800">
+                            <thead>
+                            <tr>
+                                <th class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">役割</th>
+                                <th class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">ユーザー名</th>
+                                <th class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">ステータス</th>
+                                <th class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($roles as $role)
+                                <tr x-data="{ isEditing: false, roleName: '{{ $role->role_name }}', assignedUser: '{{ $role->user_id }}', status: '{{ $role->status }}' }">
+                                    <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">
+                                        <span x-show="!isEditing">{{ $role->role_name }}</span>
+                                        <input x-show="isEditing" x-model="roleName" type="text" class="w-full border rounded-md" />
+                                    </td>
+                                    <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">
+                                        <span x-show="!isEditing">{{ $role->user ? $role->user->name : '未割り当て' }}</span>
+                                        <select x-show="isEditing" x-model="assignedUser" class="w-full border rounded-md">
+                                            @foreach($room->room_members as $member)
+                                                <option value="{{ $member->id }}" :selected="assignedUser == {{ $member->id }}">{{ $member->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">
+                                        <span x-show="!isEditing">{{ $role->status }}</span>
+                                        <select x-show="isEditing" x-model="status" class="w-full border rounded-md">
+                                            <option value="未着手">未着手</option>
+                                            <option value="進行中">進行中</option>
+                                            <option value="達成">達成</option>
+                                        </select>
+                                    </td>
+                                    <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">
+                                        @if ($room->user_id == auth()->id())
+                                            <button x-show="!isEditing" @click="isEditing = true" class="bg-blue-500 text-white px-2 py-1 rounded">編集</button>
+                                            <form x-show="isEditing" method="POST" action="{{ route('room_role.update', $role->id) }}" class="inline">
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="hidden" name="role_name" :value="roleName">
+                                                <input type="hidden" name="user_id" :value="assignedUser">
+                                                <input type="hidden" name="status" :value="status">
+                                                <input type="hidden" name="room_id" value="{{ $room->id }}">
+                                                <button type="submit" class="bg-green-500 text-white px-2 py-1 rounded">保存</button>
+                                            </form>
+                                            <form method="POST" action="{{ route('room_role.destroy', $role->id) }}" class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <input type="hidden" name="room_id" value="{{ $room->id }}">
+                                                <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded">削除</button>
+                                            </form>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
 
-                                <div class="mt-4">
-                                    <label class="block">役割名</label>
-                                    <input type="text" name="role_name" x-model="activeTitle" @input="updateTaskTitle" class="border p-2 w-full" />
-                                </div>
+                        <script>
+                            document.addEventListener('alpine:init', () => {
+                                Alpine.data('taskModal', () => ({
+                                    showNewTaskModal: false,
+                                }));
+                            });
+                        </script>
+                        <style>
+                            [x-cloak] { display: none !important; }
+                        </style>
 
-                                <div class="mt-4">
-                                    <label class="block">担当者</label>
-                                    <select name="assigned_member" @change="assignMember($event.target.value)" class="border p-2 w-full">
-                                        <option value="">メンバーを選ぶ</option>
-                                        <template x-for="member in activeTask.members" :key="member.value">
-                                            <option :value="member.value" x-text="member.name"></option>
-                                        </template>
-                                    </select>
-                                </div>
 
-                                <div class="mt-4">
-                                    <label class="block">ステータス</label>
-                                    <select name="status" @change="updateProgress($event.target.value)" class="border p-2 w-full">
-                                        <template x-for="status in progressOptions" :key="status">
-                                            <option :value="status" x-text="status"></option>
-                                        </template>
-                                    </select>
-                                </div>
-
-                                <div class="flex justify-end mt-4">
-                                    <button @click="selectOpen = false;" type="button" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">
-                                        閉じる
-                                    </button>
-                                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
-                                        送信
-                                    </button>
-                                </div>
-                            </form>
-                        <!-- ここまで役割タグの追加 -->
 
                         @if ($room->user_id != auth()->id())
                             @if ($room->room_members->contains(auth()->id()))

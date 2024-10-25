@@ -68,8 +68,8 @@ class RoomController extends Controller
     public function show(Room $room)
     {
         $chats = Chat::where('room_id', $room->id)->get();
-        $role = RoomRole::where('room_id', $room->id)->get();
-        return view('rooms.show', compact(['room', 'chats', 'role']));
+        $roles = RoomRole::with('user')->where('room_id', $room->id)->get();
+        return view('rooms.show', compact(['room', 'chats', 'roles']));
     }
 
     /**

@@ -51,14 +51,21 @@ class RoomRoleController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect()->route('rooms.show',['room' => $request->room_id]);
+        $roomd = $request->room_id;
+
+        return redirect()->route('rooms.show', ['room' => $roomd]);
 
     }
-    public function destroy(Request $request, Room $room)
+    public function destroy(Request $request, $role_id)
     {
-        //ロールの削除処理
+        $room_role = RoomRole::find($role_id);
+
+        // Delete the RoomRole instance
         $room_role->delete();
 
-        return redirect()->route('rooms.show',['room' => $room_id]);
+        $roomd = $request->room_id;
+
+        // Redirect to the room's show page
+        return redirect()->route('rooms.show', ['room' => $roomd]);
     }
 }
