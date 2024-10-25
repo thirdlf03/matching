@@ -10,9 +10,10 @@
 
     <div class="py-12">
         <button id="backToTopBtn"
-                class="bg-blue-500 hover:bg-blue-700 text-gray-200 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline fixed bottom-5 right-5">
-            上に戻る
-        </button>
+        class="border-2 border-blue-300 text-blue-300 font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline hover:bg-blue-300 hover:text-white fixed bottom-5 right-5 bg-transparent">
+    上に戻る
+</button>
+
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const backToTopBtn = document.getElementById('backToTopBtn');

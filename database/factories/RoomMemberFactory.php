@@ -29,7 +29,7 @@ final class RoomMemberFactory extends Factory
         return [
             'room_id' => Room::factory(),
             'user_id' => User::factory(),
-            'status' => fake()->randomNumber(),
+            'status' => $this->faker->randomNumber(),
         ];
     }
 }
