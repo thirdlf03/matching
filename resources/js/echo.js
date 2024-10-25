@@ -11,9 +11,7 @@ window.Echo = new Echo({
   forceTLS: true
 });
 
-//var channel = window.Echo.channel('my-channel');
-
-window.Echo.channel('my-channel')
+window.Echo.channel('my-channel.' + roomId)
     .listen('.my-event', function (data) {
         // Function to generate chat message HTML
         function createChatMessage(chat) {
@@ -51,4 +49,3 @@ window.Echo.channel('my-channel')
         // Append the received chat message
         appendChatMessage(data.message);
     });
-
