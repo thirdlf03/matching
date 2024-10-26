@@ -38,48 +38,40 @@
         <!-- Room Creation and Toggle for Followed Rooms -->
         <div class="flex justify-between mb-6">
             <a href="{{ route('rooms.create') }}"
-    class="border-1 border-blue-600 text-blue-600 font-semibold py-1 px-2 rounded-lg shadow-md transition-all duration-300 bg-transparent hover:bg-blue-600 hover:text-white">
+    class="border-1 border-blue-600 text-blue-600 font-semibold py-2 px-4 rounded-lg shadow-md transition-all duration-300 bg-transparent hover:bg-blue-600 hover:text-white">
     + 新規作成
 </a>
 
+<div x-data="{ switchOn: {{ request('followed') ? 'true' : 'false' }}, clicked: false }" class="flex items-center">
+    <button
+        type="button"
+        @click="switchOn = !switchOn; clicked = true; handleSwitch()"
+        :class="switchOn ? 'bg-blue-600' : 'bg-neutral-200'"
+        class="relative inline-flex h-6 py-0.5 focus:outline-none rounded-full w-10"
+        id="followedRoomsBtn">
+        <span :class="(switchOn ? 'translate-x-[18px]' : 'translate-x-0.5') + (clicked ? ' duration-200 ease-in-out' : '')" class="w-5 h-5 bg-white rounded-full shadow-md"></span>
+    </button>
 
-            <div x-data="{ switchOn: {{ request('followed') ? 'true' : 'false' }}, clicked: false }" class="flex items-center">
-                <button x-ref="switchButton"
-                        type="button"
-                        @click="switchOn = !switchOn; clicked = true"
-                        :class="switchOn ? 'bg-blue-600' : 'bg-neutral-200'"
-                        class="relative inline-flex h-6 py-0.5 focus:outline-none rounded-full w-10"
-                        id="followedRoomsBtn"
-                        data-followed="{{ request('followed') ? 'true' : 'false' }}"
-                        x-cloak>
-                    <span :class="(switchOn ? 'translate-x-[18px]' : 'translate-x-0.5') + (clicked ? ' duration-200 ease-in-out' : '')" class="w-5 h-5 bg-white rounded-full shadow-md"></span>
-                </button>
+    <label @click="$refs.switchButton.click(); $refs.switchButton.focus()"
+           :class="{ 'text-blue-600': switchOn, 'text-gray-400': !switchOn }"
+           class="text-sm select-none ml-3">
+        フォロー中
+    </label>
+</div>
 
-                <label @click="$refs.switchButton.click(); $refs.switchButton.focus()"
-                       :class="{ 'text-blue-600': switchOn, 'text-gray-400': ! switchOn }"
-                       class="text-sm select-none ml-3"
-                       x-cloak>
-                    フォロー中
-                </label>
-            </div>
+<script>
+    function handleSwitch() {
+        const url = new URL("{{ route('rooms.index') }}");
+        if (this.switchOn) {
+            url.searchParams.set("followed", "true");
+        } else {
+            url.searchParams.delete("followed");
+        }
+        window.location.href = url;
+    }
+</script>
 
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    const followedRoomsBtn = document.getElementById('followedRoomsBtn');
-                    followedRoomsBtn.setAttribute('data-followed', "{{ request('followed') ? 'true' : 'false' }}");
-                    followedRoomsBtn.addEventListener('click', function() {
-                        const url = new URL("{{ route('rooms.index') }}");
-                        const isFollowed = followedRoomsBtn.getAttribute('data-followed') === 'true';
-                        if (isFollowed) {
-                            url.searchParams.delete("followed");
-                        } else {
-                            url.searchParams.set("followed", "true");
-                        }
-                        followedRoomsBtn.setAttribute('data-followed', !isFollowed);
-                        window.location.href = url;
-                    });
-                });
-            </script>
+            
         </div>
 
         

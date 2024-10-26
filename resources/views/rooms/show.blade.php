@@ -12,8 +12,9 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex items-center justify-between mt-4">
+                        
                         <a href="{{ route('rooms.index') }}" class="text-blue-500 hover:text-blue-700 mr-2">部屋一覧に戻る</a>
-                        <div class="flex items-center">
+                        
                             <p class="font-bold text-sm lg:text-lg mt-4">募集人数:
                                 {{ $room->size }}</p>
                             <p class="font-bold mx-7 text-sm lg:text-lg mt-4">参加中:
@@ -148,7 +149,13 @@
                                 width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"
                                 referrerpolicy="no-referrer-when-downgrade"></iframe>
                         @endif
-
+                        <div class="w-12 h-12 bg-grey-400 rounded-full flex items-center justify-center mr-4 mt-2">
+                        <svg class="absolute w-10 h-10 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
                         <p class="text-gray-600 dark:text-gray-400 text-sm">投稿者: {{ $room->user->name }}</p><br>
                         <p>参加者 ({{ count($room->room_members) }}人)</p>
                         <ul>
