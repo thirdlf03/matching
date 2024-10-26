@@ -66,17 +66,19 @@
                                         <div class="flex items-center mt-4">
 
                                             <!-- Icon Placeholder (You can replace this with an actual icon if needed) -->
-                                            
-                                            <div class="w-12 h-12 bg-grey-400 rounded-full flex items-center justify-center mr-4 mt-2">
-                        <svg class="absolute w-10 h-10 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
-                        </svg>
-                    </div>
+
+                                                @if ($room->user->image_url)
+                                                    <img src="{{ $room->user->image_url }}" alt="{{ $room->user->name }}" class="w-12 h-12 rounded-full mr-4 mt-2">
+                                                @else
+                                                    <div class="w-12 h-12 bg-grey-400 rounded-full flex items-center justify-center mr-4 mt-2">
+                                                        <svg class="absolute w-10 h-10 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                                                        </svg>
+                                                    </div>
+                                                @endif
                                             <!-- User Name -->
                                             <div class="flex-1">
-                                                
+
                                                 <a href="{{ route('profile.show', $room->user) }}" class="block mt-1 text-gray-500 text-xl">{{ $room->user->name }}</a>
                                             </div>
                                         </div>
