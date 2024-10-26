@@ -26,28 +26,28 @@
                         <label>人数</label>
                         <input name="size" required type="number" class="mx-2 my-4"><br>
                         <!-- カレンダーを追加-->
-                         <div class="flex items-center">
+                        <div class="flex items-center">
                             <div class="mx-2">
                                 <label>開催日</label>
-                         <input type="date" id="date" name="date" class="form-control">
-</div>
+                                <input type="date" id="date" name="date" class="form-control">
+                            </div>
 
-                        <!-- ここまでカレンダーを追加 -->
-                        <div class="mx-2">
-                           
-                            <select name="category_id" id="categorySelect"
-                                class="shadow appearance-none border rounded w-full py-2 px-10 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                                 
-                                <option value="">すべてのカテゴリー</option>
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}"
-                                        {{ request('category_id') == $category->id ? 'selected' : '' }}>
-                                        {{ $category->category_name }}
-                                    </option>
-                                @endforeach
-                            </select>
-</div>
-</div>
+                            <!-- ここまでカレンダーを追加 -->
+                            <div class="mx-2">
+
+                                <select name="category_id" id="categorySelect"
+                                    class="shadow appearance-none border rounded w-full py-2 px-10 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+
+                                    <option value="">すべてのカテゴリー</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}"
+                                            {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->category_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <input type="hidden" name="category_id" id="selected_category_id"
                             value="{{ request('category_id') }}">
                         <br>
@@ -201,5 +201,5 @@
             </div>
         </div>
     </div>
-                    
+
 </x-app-layout>

@@ -38,14 +38,16 @@
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             @foreach ($rooms as $room)
-                                <div class="flex flex-col justify-between bg-white p-10 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200">
-                                    
+                                <div
+                                    class="flex flex-col justify-between bg-white p-10 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200">
+
                                     <!-- Room Header with Icon and Title -->
                                     <div class="flex flex-col items-start mb-4">
-                                        <h3 class="text-2xl font-bold text-gray-800 text-center">{{ $room->title ?? 'なし' }}</h3>
+                                        <h3 class="text-2xl font-bold text-gray-800 text-center">
+                                            {{ $room->title ?? 'なし' }}</h3>
 
                                         <div class="flex items-center mt-4">
-                                            
+
                                             <!-- Icon Placeholder (You can replace this with an actual icon if needed) -->
                                             
                                             <div class="w-12 h-12 bg-grey-400 rounded-full flex items-center justify-center mr-4 mt-2">
@@ -61,12 +63,14 @@
                                                 <a href="{{ route('profile.show', $room->user) }}" class="block mt-1 text-gray-500 text-xl">{{ $room->user->name }}</a>
                                             </div>
                                         </div>
-                                        <p class="self-end text-gray-500 text-sm ml-2">{{ $room->created_at->diffForHumans() }}</p>
+                                        <p class="self-end text-gray-500 text-sm ml-2">
+                                            {{ $room->created_at->diffForHumans() }}</p>
                                     </div>
 
                                     <!-- Room Content and Details -->
                                     <div class="flex flex-col justify-end">
-                                        <div id="restored-content-{{ $room->id }}" class="mt-4 text-gray-600 max-h-[128px] overflow-auto"></div>
+                                        <div id="restored-content-{{ $room->id }}"
+                                            class="mt-4 text-gray-600 max-h-[128px] overflow-auto"></div>
 
                                         <div class="text-gray-500 text-lg mt-2">
                                             <p>参加中: {{ count($room->room_members) }} / {{ $room->size }}</p>
@@ -77,7 +81,8 @@
                                         </div>
 
                                         <!-- Room Details Button -->
-                                        <form method="GET" action="{{ route('rooms.show', $room) }}" class="w-full flex justify-end">
+                                        <form method="GET" action="{{ route('rooms.show', $room) }}"
+                                            class="w-full flex justify-end">
                                             @csrf
                                             <button type="submit"
                                                 class="
