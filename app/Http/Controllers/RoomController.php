@@ -11,6 +11,8 @@ use App\Models\Follow;
 use App\Models\CAlendar;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class RoomController extends Controller
 {
@@ -90,6 +92,11 @@ class RoomController extends Controller
             'date' => $request->date,
         ]);
 
+        $user = Auth::user();
+        $user->points += 10;
+        $user->save();
+
+
         //ルーム一覧ページにリダイレクト
         return redirect()->route('rooms.index');
 
@@ -165,6 +172,7 @@ class RoomController extends Controller
             'is_show' => $request->is_show,
             'date' => $request ->date,
         ]);
+
 
         return redirect()->route('rooms.show', $room);
     }

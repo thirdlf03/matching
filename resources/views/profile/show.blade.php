@@ -39,6 +39,11 @@
                                     <span class="text-sm">フォロワー</span>
                                 </a>
                             </div>
+
+                            <div class="text-center flex items-baseline text-gray-800 dark:text-gray-300 space-x-1">
+                                    <span class="text-4xl font-bold">{{ $user->points}}</span>
+                                    <span class="text-sm">ポイント</span>
+                            </div>
                         </div>
                     </div>
                     @if ($user->id !== auth()->id())
