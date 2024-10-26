@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-show>
     <x-slot name="header">
         <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
@@ -384,4 +384,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-show>
