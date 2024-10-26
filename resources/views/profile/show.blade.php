@@ -132,7 +132,7 @@
                                                 {{ $archive->user->name }}</p>
                                         </a>
                                         @if (auth()->id() === $user->id)
-                                        <form method="POST" action="{{route('archives.destroy',$archive)}}">
+                                        <form method="POST" action="{{route('archives.destroy', $archive)}}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
