@@ -14,8 +14,8 @@
         <!-- Back to Top Button -->
         <button id="backToTopBtn"
 
-            class="fixed bottom-8 right-8 p-4 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-500 transition-all ease-in-out">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            class="fixed bottom-8 right-8 p-4 border-1 border-blue-600 text-blue-600 rounded-full shadow-lg hover:bg-blue-600 hover:text-white transition-all ease-in-out bg-transparent">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M5 11l7-7 7 7M5 19l7-7 7 7" />
             </svg>
@@ -38,9 +38,10 @@
         <!-- Room Creation and Toggle for Followed Rooms -->
         <div class="flex justify-between mb-6">
             <a href="{{ route('rooms.create') }}"
-                class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-300">
-                + 新規作成
-            </a>
+    class="border-1 border-blue-600 text-blue-600 font-semibold py-1 px-2 rounded-lg shadow-md transition-all duration-300 bg-transparent hover:bg-blue-600 hover:text-white">
+    + 新規作成
+</a>
+
 
             <div x-data="{ switchOn: {{ request('followed') ? 'true' : 'false' }}, clicked: false }" class="flex items-center">
                 <button x-ref="switchButton"
@@ -81,27 +82,7 @@
             </script>
         </div>
 
-        <!-- Category Selection -->
-        <form id="categoryForm" action="{{ route('rooms.index') }}" method="GET" class="mb-6">
-            <div class="flex flex-wrap">
-                <div class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-300 category-icon {{ is_null(request('category_id')) ? 'selected' : '' }}" data-category-id="">
-                    すべてのカテゴリー
-                </div>
-                @foreach ($categories as $category)
-                    <div class="w-22 h-8 rounded-full border border-black p-1 m-1 cursor-pointer category-icon flex items-center justify-center {{ request('category_id') == $category->id ? 'selected' : '' }}" data-category-id="{{ $category->id }}">
-                        <h3 class="text-xs font-semibold text-center">{{ $category->category_name }}</h3>
-                    </div>
-                @endforeach
-            </div>
-            <input type="hidden" name="category_id" id="selected_category_id" value="{{ request('category_id') }}">
-        </form>
-
-        <style>
-            .selected {
-                background-color: #0000FF; /* Blue color */
-                color: #fff; /* Change text color if needed */
-            }
-        </style>
+        
 
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
@@ -187,7 +168,7 @@
 
                         <div class="text-gray-500 text-lg mt-2">
                             <p>参加中: {{ count($room->room_members) }} / {{ $room->size }}</p>
-                            <p>カテゴリー: {{ $room->category->category_name ?? 'なし' }}</p>
+                            <!-- <p>カテゴリー: {{ $room->category->category_name ?? 'なし' }}</p> -->
                             @if($room->date)
                             <p class="font-bold text-sm lg:text-lg mt-4">開催日:{{ $room->date }}</p> <!-- 日付の表示 -->
                             @endif

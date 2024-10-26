@@ -21,9 +21,10 @@
                             <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">部屋名:
                                 {{ $room->title }}</p>
                             <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">カテゴリー:
-                                {{ $room->category->category_name ?? 'なし' }}</p>
+                                {{ $room->category->category_name ?? 'なし' }}</p> 
+                            @if($room->date)
                             <p class="font-bold text-sm lg:text-lg mt-4">開催日:{{ $room->date }}</p> <!-- 日付の表示 -->
-
+                            @endif
                         </div>
 
                         @if ($room->user_id == auth()->id())
