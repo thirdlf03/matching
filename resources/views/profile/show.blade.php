@@ -10,16 +10,30 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="p-8 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-8 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">      
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex px-4">
                         <div class="flex flex-col pr-8">
                             <a href="{{ route('rooms.index') }}"
                                 class="text-blue-500 hover:text-blue-700 mr-2">ルーム一覧に戻る</a>
+
+                              
+                       
                             @if ($user->image_url)
                                 <div class="flex">
                                 <img src="{{ $user->image_url }}" alt="{{ $user->name }}" class="w-10 h-10 rounded-full mr-4 mt-2">
-                                <p class="text-gray-800 dark:text-gray-300 text-4xl py-4">{{ $user->name }}</p>
+                                <p class="text-4xl py-4 
+                                    @if($user->points >= 1000) 
+                                        text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600
+                                    @elseif($user->points >= 500) 
+                                        text-red-500
+                                    @elseif($user->points >= 100) 
+                                        text-blue-700
+                                    @else 
+                                        text-gray-800 dark:text-gray-300 
+                                    @endif">
+                                    {{ $user->name }}
+                                </p>
                                 </div>
                             @else
                                 <div class="w-12 h-12 bg-grey-400 rounded-full flex items-center justify-center mr-4 mt-2">

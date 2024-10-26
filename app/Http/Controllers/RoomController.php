@@ -92,6 +92,7 @@ class RoomController extends Controller
             'date' => $request->date,
         ]);
 
+        //ポイント
         $user = Auth::user();
         $user->points += 10;
         $user->save();
