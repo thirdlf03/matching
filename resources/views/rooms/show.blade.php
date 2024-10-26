@@ -31,9 +31,11 @@
                             <form method="POST" action="{{ route('rooms.destroy', $room) }}">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit"
+                                
 
-                                        class="bg-red-500 hover:bg-red-700 text-gray-100 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">削除</button>
+                                        <button type="submit" class="border border-red-500 text-red-500 px-4 py-2 rounded hover:bg-red-500 hover:text-white transition-colors duration-200">
+    削除
+</button>
 
                             </form>
                         @endif
@@ -171,9 +173,13 @@
                         <!-- Add New Task Button and Modal -->
                         @if ($room->user_id == auth()->id())
                             <div x-data="{ showNewTaskModal: false }">
+                                
                                 <div class="mt-4">
-                                    <button @click="showNewTaskModal = true" class="bg-blue-500 text-white px-4 py-2 rounded">新規作成</button>
-                                </div>
+    <button @click="showNewTaskModal = true" class="border-1 border-blue-500 text-blue-500 px-4 py-2 rounded hover:bg-blue-500 hover:text-white transition-colors duration-200">
+        ＋役割作成
+    </button>
+</div>
+
 
                                 <!-- New Task Modal -->
                                 <div x-show="showNewTaskModal" x-cloak class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -233,7 +239,7 @@
                                     </td>
                                     <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">
                                         <span x-show="!isEditing" x-cloak>{{ $role->user ? $role->user->name : '未割り当て' }}</span>
-                                        <select x-show="isEditing" x-model="assignedUser" class="w-full border rounded-md"　x-cloak>
+                                        <select x-show="isEditing" x-model="assignedUser" class="w-full border rounded-md"x-cloak>
                                             <option value="" x-cloak {{ is_null($role->user_id) ? 'selected' : '' }}>未割り当て</option>
                                             <option value="{{ $room->user->id }}" x-cloak :selected="assignedUser == {{ $room->user->id }}">{{ $room->user->name }}</option>
                                             @foreach($room->room_members as $member)

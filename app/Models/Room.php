@@ -21,7 +21,7 @@ class Room extends Model
         'is_show',
         'date'
     ];
-
+    
     public function user()
     {
         return $this->belongsTo(User::class);
