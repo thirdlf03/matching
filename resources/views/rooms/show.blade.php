@@ -197,13 +197,14 @@
                         <!-- Add New Task Button and Modal -->
 
                         <div x-data="{ showNewTaskModal: false }">
-
+                            @if ($room->room_members->contains(auth()->id()) || $room->user_id == auth()->id())
                             <div class="mt-4">
                                 <button @click="showNewTaskModal = true"
                                     class="border-1 border-blue-500 text-blue-500 px-4 py-2 rounded hover:bg-blue-500 hover:text-white transition-colors duration-200">
                                     ＋役割作成
                                 </button>
                             </div>
+                            @endif
 
                             <!-- New Task Modal -->
                             <div x-show="showNewTaskModal" x-cloak
@@ -300,7 +301,7 @@
                                         </td>
 
                                         <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700" x-cloak>
-                                            @if ($room->user_id == auth()->id())
+                                            @if ($room->room_members->contains(auth()->id()) || $room->user_id == auth()->id())
                                                 <button x-show="!isEditing" @click="isEditing = true"
                                                     class="bg-blue-500 text-white px-2 py-1 rounded"
                                                     x-cloak>編集</button>
