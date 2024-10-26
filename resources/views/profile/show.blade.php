@@ -77,10 +77,11 @@
                                         <form method="GET" action="{{ route('rooms.show', $room) }}">
                                             @csrf
                                             <div class="flex justify-end mt-4">
-                                                <div
-                                                    class="bg-blue-500 hover:bg-blue-700 text-gray-200 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                                    <button type="submit">詳細</button>
-                                                </div>
+                                                <button type="submit"
+    class="flex self-end px-6 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-all duration-300">
+    詳細
+</button>
+
                                             </div>
                                         </form>
                                     </div>
