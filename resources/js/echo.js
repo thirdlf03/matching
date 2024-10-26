@@ -23,7 +23,7 @@ window.Echo.channel('my-channel.' + roomId)
                 const userAvatar = document.createElement('img');
                 userAvatar.src = chat.avatar;
                 userAvatar.alt = chat.user.name;
-                userAvatar.classList.add('w-8', 'h-8', 'rounded-full', 'mr-2');
+                userAvatar.classList.add('w-6', 'h-6', 'rounded-full', 'mr-2', 'mt-1');
                 chatContainer.appendChild(userAvatar);
 
                 const userInfo = document.createElement('div');

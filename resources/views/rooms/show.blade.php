@@ -144,7 +144,7 @@
                     <div class="mt-2 mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg relative">
 
                         <div id="restored-content-{{ $room->id }}"></div>
-                        <div class="w-12 h-12 bg-grey-400 rounded-full flex items-center justify-center mr-4 mt-2">
+                        <div class="flex items-center mt-4">
                             @if ($room->user->image_url)
                                 <img src="{{ $room->user->image_url }}" alt="{{ $room->user->name }}" class="w-12 h-12 rounded-full mr-4 mt-2">
                             @else
@@ -154,7 +154,9 @@
                                     </svg>
                                 </div>
                             @endif
-                            </div>
+                            <a href="{{ route('profile.show', $room->user) }}"
+                               class="block mt-1 text-gray-500 text-xl">{{ $room->user->name }}</a>
+                        </div>
 
                         @if ($room->is_show == 1)
                             <p class="my-2">場所</p>
@@ -164,8 +166,6 @@
                                 referrerpolicy="no-referrer-when-downgrade"></iframe>
                         @endif
 
-                        <a href="{{ route('profile.show', $room->user) }}"
-                           class="block mt-1 text-gray-500 text-xl">{{ $room->user->name }}</a> <br>
                         <p>参加者 ({{ count($room->room_members) }}人)</p>
                         <ul>
                             @foreach ($room->room_members as $member)
