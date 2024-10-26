@@ -33,6 +33,7 @@ class ChatController extends Controller
             ['user_id' => $user_id,
                 'user' => ['name' => auth()->user()->name],
                 'chat' => $request -> chat,
+                'created_at' => $chat->created_at,
                 'room_id' => $request -> room_id,]
         );
 

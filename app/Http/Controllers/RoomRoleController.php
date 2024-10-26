@@ -23,13 +23,12 @@ class RoomRoleController extends Controller
         //$taskData = json_decode($request->input('role'),true);
 
         //ロールの作成と保存
-        $user_id = auth() ->id();
         //dd($request);
         // デフォルトのステータス値を設定
     $status = $request->input('status', '未着手'); // デフォルトは「未着手」
         //ロールを作成
         RoomRole::create([
-            'user_id' => $user_id,
+            'user_id' => $request->assigned_member,
             'room_id' => $request -> room_id,
             'role_name' => $request -> role_name,
             'status' => $request -> status,
