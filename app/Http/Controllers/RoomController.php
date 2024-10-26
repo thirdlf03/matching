@@ -22,7 +22,7 @@ class RoomController extends Controller
       $category_id = $request->input('category_id');
       $followed = $request->input('followed');
       $categories = Category::all();
-      
+
       // 現在のユーザーを取得
       $currentUser = auth()->user();
 
@@ -72,7 +72,7 @@ class RoomController extends Controller
             'size' => 'required',
             'title' => 'required',
             'data_json' => 'required',
-            
+
         ]);
 
         //ルームの作成と保存
