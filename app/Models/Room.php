@@ -19,9 +19,9 @@ class Room extends Model
         'longitude',
         'category_id',
         'is_show',
-        'date'
+        'date',
     ];
-    
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -41,9 +41,9 @@ class Room extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
     public function calendar()
     {
         return $this->belongsTo(Calendar::class);
     }
-    
 }
