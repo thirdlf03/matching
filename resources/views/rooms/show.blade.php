@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-show>
     <x-slot name="header">
         <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
@@ -241,6 +241,7 @@
                                             <option value="達成" x-cloak>達成</option>
                                         </select>
                                     </td>
+
                                     <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700" x-cloak>
                                         @if ($room->user_id == auth()->id())
                                             <button x-show="!isEditing" @click="isEditing = true" class="bg-blue-500 text-white px-2 py-1 rounded" x-cloak>編集</button>
@@ -383,4 +384,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-show>

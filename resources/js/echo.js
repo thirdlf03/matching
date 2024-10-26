@@ -61,4 +61,5 @@ window.Echo.channel('my-channel.' + roomId)
 
         // Append the received chat message
         appendChatMessage(data.message);
+        
     });
