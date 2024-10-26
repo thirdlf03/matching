@@ -36,24 +36,28 @@
         <!-- Room Creation and Toggle for Followed Rooms -->
         <div class="flex justify-between mb-6">
             <a href="{{ route('rooms.create') }}"
-                class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-300">
+               class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-300">
                 + 新規作成
             </a>
 
-            <div x-data="{ switchOn: {{ request('followed') ? 'true' : 'false' }}, clicked: false }" class="flex items-center">
-                <button x-ref="switchButton" type="button" @click="switchOn = !switchOn; clicked = true"
-                    :class="switchOn ? 'bg-blue-600' : 'bg-neutral-200'"
-                    class="relative inline-flex h-6 py-0.5 focus:outline-none rounded-full w-10" id="followedRoomsBtn"
-                    data-followed="{{ request('followed') ? 'true' : 'false' }}" x-cloak>
-                    <span
-                        :class="(switchOn ? 'translate-x-[18px]' : 'translate-x-0.5') + (clicked ? ' duration-200 ease-in-out' :
-                            '')"
-                        class="w-5 h-5 bg-white rounded-full shadow-md"></span>
-                </button>
 
-                <label @click="$refs.switchButton.click(); $refs.switchButton.focus()"
-                    :class="{ 'text-blue-600': switchOn, 'text-gray-400': !switchOn }" class="text-sm select-none ml-3"
+            <div x-data="{ switchOn: {{ json_encode(request('followed') ? true : false) }}, clicked: false }" class="flex space-x-2 py-0.75 my-2">
+                <input id="thisId" type="checkbox" name="switch" class="hidden" :checked="switchOn">
+                <button
+                    x-ref="switchButton"
+                    type="button"
+                    @click="switchOn = ! switchOn; clicked = true"
+                    :class="switchOn ? 'bg-blue-600' : 'bg-neutral-200'"
+                    class="relative inline-flex h-6 py-0.5 focus:outline-none rounded-full w-10"
+                    id="followedRoomsBtn"
+                    data-followed="{{ request('followed') ? 'true' : 'false' }}"
                     x-cloak>
+                    <span :class="(switchOn ? 'translate-x-[18px]' : 'translate-x-0.5') + (clicked ? ' duration-200 ease-in-out' : '')" class="w-5 h-5 bg-white rounded-full shadow-md"></span>
+                </button>
+                <label @click="$refs.switchButton.click(); $refs.switchButton.focus()" :id="$id('switch')"
+                       :class="{ 'text-blue-600': switchOn, 'text-gray-400': ! switchOn }"
+                       class="text-sm select-none"
+                       x-cloak>
                     フォロー中
                 </label>
             </div>
@@ -87,19 +91,18 @@
                     });
                 });
 
-                const followedRoomsBtn = document.getElementById('followedRoomsBtn');
-                followedRoomsBtn.setAttribute('data-followed', "{{ request('followed') ? 'true' : 'false' }}");
-                followedRoomsBtn.addEventListener('click', function() {
-                    const url = new URL("{{ route('rooms.index') }}");
-                    const isFollowed = followedRoomsBtn.getAttribute('data-followed') === 'true';
-                    if (isFollowed) {
-                        url.searchParams.delete("followed");
-                    } else {
-                        url.searchParams.set("followed", "true");
-                    }
-                    followedRoomsBtn.setAttribute('data-followed', !isFollowed);
-                    window.location.href = url;
-                });
+            const followedRoomsBtn = document.getElementById('followedRoomsBtn');
+            followedRoomsBtn.setAttribute('data-followed', "{{ request('followed') ? 'true' : 'false' }}");
+            followedRoomsBtn.addEventListener('click', function() {
+                const url = new URL("{{ route('rooms.index') }}");
+                const isFollowed = followedRoomsBtn.getAttribute('data-followed') === 'true';
+                if (isFollowed) {
+                    url.searchParams.delete("followed");
+                } else {
+                    url.searchParams.set("followed", "true");
+                }
+                followedRoomsBtn.setAttribute('data-followed', !isFollowed);
+                window.location.href = url.toString();
             });
         </script>
 
@@ -151,13 +154,13 @@
                         <div class="flex items-center mt-4">
                             <div class="w-12 h-12 bg-grey-400 rounded-full flex items-center justify-center mr-4 mt-2">
                                 <svg class="absolute w-10 h-10 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg">
+                                     xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                                        clip-rule="evenodd"></path>
+                                          clip-rule="evenodd"></path>
                                 </svg>
                             </div>
                             <a href="{{ route('profile.show', $room->user) }}"
-                                class="block mt-1 text-gray-500 text-xl">{{ $room->user->name }}</a>
+                               class="block mt-1 text-gray-500 text-xl">{{ $room->user->name }}</a>
                         </div>
                         <p class="self-end text-gray-500 text-sm ml-2">{{ $room->created_at->diffForHumans() }}</p>
                     </div>
@@ -177,7 +180,7 @@
                         <form method="GET" action="{{ route('rooms.show', $room) }}" class="w-full flex justify-end">
                             @csrf
                             <button type="submit"
-                                class="flex self-end px-6 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-500 transition-all duration-300">
+                                    class="flex self-end px-6 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-500 transition-all duration-300">
                                 詳細
                             </button>
                         </form>

@@ -17,18 +17,31 @@ window.Echo.channel('my-channel.' + roomId)
         function createChatMessage(chat) {
             const isCurrentUser = chat.user_id === authenticatedUserId;
             const chatContainer = document.createElement('div');
-            chatContainer.classList.add('flex');
-            chatContainer.classList.add(isCurrentUser ? 'justify-end' : 'justify-start');
+            chatContainer.classList.add('flex', isCurrentUser ? 'justify-end' : 'justify-start');
 
             if (!isCurrentUser) {
+                const userInfo = document.createElement('div');
+                userInfo.classList.add('text-xs', 'text-gray-600', 'mb-1');
+
                 const userName = document.createElement('p');
-                userName.classList.add('text-xs', 'text-gray-600', 'mb-1');
                 userName.textContent = chat.user.name;
-                chatContainer.appendChild(userName);
+                userInfo.appendChild(userName);
+
+                const timestamp = document.createElement('p');
+                timestamp.textContent = new Date(chat.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                userInfo.appendChild(timestamp);
+
+                chatContainer.appendChild(userInfo);
+            } else {
+                const timestamp = document.createElement('p');
+                timestamp.classList.add('text-xs', 'text-gray-600', 'mb-1');
+                timestamp.textContent = new Date(chat.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                chatContainer.appendChild(timestamp);
             }
 
             const messageContainer = document.createElement('div');
             messageContainer.classList.add('bg-gray-100', 'p-2', 'rounded-md', 'max-w-xs');
+
             const messageText = document.createElement('p');
             messageText.classList.add('text-sm', 'text-gray-900');
             messageText.textContent = chat.chat;

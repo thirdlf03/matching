@@ -12,8 +12,9 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex items-center justify-between mt-4">
+                        
                         <a href="{{ route('rooms.index') }}" class="text-blue-500 hover:text-blue-700 mr-2">部屋一覧に戻る</a>
-                        <div class="flex items-center">
+                        
                             <p class="font-bold text-sm lg:text-lg mt-4">募集人数:
                                 {{ $room->size }}</p>
                             <p class="font-bold mx-7 text-sm lg:text-lg mt-4">参加中:
@@ -22,8 +23,9 @@
                                 {{ $room->title }}</p>
                             <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">カテゴリー:
                                 {{ $room->category->category_name ?? 'なし' }}</p>
+                            @if($room->date)
                             <p class="font-bold text-sm lg:text-lg mt-4">開催日:{{ $room->date }}</p> <!-- 日付の表示 -->
-
+                            @endif
                         </div>
 
                         @if ($room->user_id == auth()->id())
@@ -147,7 +149,13 @@
                                 width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"
                                 referrerpolicy="no-referrer-when-downgrade"></iframe>
                         @endif
-
+                        <div class="w-12 h-12 bg-grey-400 rounded-full flex items-center justify-center mr-4 mt-2">
+                        <svg class="absolute w-10 h-10 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
                         <p class="text-gray-600 dark:text-gray-400 text-sm">投稿者: {{ $room->user->name }}</p><br>
                         <p>参加者 ({{ count($room->room_members) }}人)</p>
                         <ul>
@@ -181,13 +189,12 @@
                                                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                                             </div>
                                             <div class="mb-4">
-                                                <label for="assigned_member"
-                                                    class="block text-sm font-medium text-gray-700">メンバー</label>
-                                                <select name="assigned_member" id="assigned_member"
-                                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                                                    @foreach ($room->room_members as $member)
-                                                        <option value="{{ $member->id }}">{{ $member->name }}
-                                                        </option>
+                                                <label for="assigned_member" class="block text-sm font-medium text-gray-700">メンバー</label>
+                                                <select name="assigned_member" id="assigned_member" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                                    <option value="">未割り当て</option>
+                                                    <option value="{{ $room->user->id }}">{{ $room->user->name }} (オーナー)</option>
+                                                    @foreach($room->room_members as $member)
+                                                        <option value="{{ $member->id }}">{{ $member->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -224,66 +231,52 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($roles as $role)
-                                    <tr x-data="{ isEditing: false, roleName: '{{ $role->role_name }}', assignedUser: '{{ $role->user_id }}', status: '{{ $role->status }}' }">
-                                        <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">
-                                            <span x-show="!isEditing">{{ $role->role_name }}</span>
-                                            <input x-show="isEditing" x-model="roleName" type="text"
-                                                class="w-full border rounded-md" x-cloak />
-                                        </td>
-                                        <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">
-                                            <span
-                                                x-show="!isEditing">{{ $role->user ? $role->user->name : '未割り当て' }}</span>
-                                            <select x-show="isEditing" x-model="assignedUser"
-                                                class="w-full border rounded-md"　x-cloak>
-                                                @foreach ($room->room_members as $member)
-                                                    <option value="{{ $member->id }}"
-                                                        :selected="assignedUser == {{ $member->id }}">
-                                                        {{ $member->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">
-                                            <span x-show="!isEditing" x-cloak>{{ $role->status }}</span>
-                                            <select x-show="isEditing" x-model="status"
-                                                class="w-full border rounded-md" x-cloak>
-                                                <option value="未着手">未着手</option>
-                                                <option value="進行中">進行中</option>
-                                                <option value="達成">達成</option>
-                                            </select>
-                                        </td>
-                                        <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">
-                                            @if ($room->user_id == auth()->id())
-                                                <button x-show="!isEditing" @click="isEditing = true"
-                                                    class="bg-blue-500 text-white px-2 py-1 rounded"
-                                                    x-cloak>編集</button>
-                                                <form x-show="isEditing" method="POST"
-                                                    action="{{ route('room_role.update', $role->id) }}"
-                                                    class="inline" x-cloak>
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <input type="hidden" name="role_name" :value="roleName">
-                                                    <input type="hidden" name="user_id" :value="assignedUser">
-                                                    <input type="hidden" name="status" :value="status">
-                                                    <input type="hidden" name="room_id"
-                                                        value="{{ $room->id }}">
-                                                    <button type="submit"
-                                                        class="bg-green-500 text-white px-2 py-1 rounded">保存</button>
-                                                </form>
-                                                <form method="POST"
-                                                    action="{{ route('room_role.destroy', $role->id) }}"
-                                                    class="inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <input type="hidden" name="room_id"
-                                                        value="{{ $room->id }}">
-                                                    <button type="submit"
-                                                        class="bg-red-500 text-white px-2 py-1 rounded">削除</button>
-                                                </form>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
+                            @foreach($roles as $role)
+                                <tr x-data="{ isEditing: false, roleName: '{{ $role->role_name }}', assignedUser: '{{ $role->user_id }}', status: '{{ $role->status }}' }">
+                                    <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">
+                                        <span x-show="!isEditing" x-cloak>{{ $role->role_name }}</span>
+                                        <input x-show="isEditing" x-model="roleName" type="text" class="w-full border rounded-md" x-cloak/>
+                                    </td>
+                                    <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">
+                                        <span x-show="!isEditing" x-cloak>{{ $role->user ? $role->user->name : '未割り当て' }}</span>
+                                        <select x-show="isEditing" x-model="assignedUser" class="w-full border rounded-md"　x-cloak>
+                                            <option value="" x-cloak {{ is_null($role->user_id) ? 'selected' : '' }}>未割り当て</option>
+                                            <option value="{{ $room->user->id }}" x-cloak :selected="assignedUser == {{ $room->user->id }}">{{ $room->user->name }}</option>
+                                            @foreach($room->room_members as $member)
+                                                <option value="{{ $member->id }}" x-cloak :selected="assignedUser == {{ $member->id }}">{{ $member->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">
+                                        <span x-show="!isEditing" x-cloak>{{ $role->status }}</span>
+                                        <select x-show="isEditing" x-model="status" class="w-full border rounded-md" x-cloak>
+                                            <option value="未着手" x-cloak>未着手</option>
+                                            <option value="進行中" x-cloak>進行中</option>
+                                            <option value="達成" x-cloak>達成</option>
+                                        </select>
+                                    </td>
+                                    <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700" x-cloak>
+                                        @if ($room->user_id == auth()->id())
+                                            <button x-show="!isEditing" @click="isEditing = true" class="bg-blue-500 text-white px-2 py-1 rounded" x-cloak>編集</button>
+                                            <form x-show="isEditing" method="POST" action="{{ route('room_role.update', $role->id) }}" class="inline" x-cloak>
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="hidden" name="role_name" :value="roleName">
+                                                <input type="hidden" name="user_id" :value="assignedUser">
+                                                <input type="hidden" name="status" :value="status">
+                                                <input type="hidden" name="room_id" value="{{ $room->id }}">
+                                                <button type="submit" class="bg-green-500 text-white px-2 py-1 rounded">保存</button>
+                                            </form>
+                                            <form method="POST" action="{{ route('room_role.destroy', $role->id) }}" class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <input type="hidden" name="room_id" value="{{ $room->id }}">
+                                                <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded">削除</button>
+                                            </form>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
 
