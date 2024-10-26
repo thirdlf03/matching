@@ -58,7 +58,8 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             @foreach ($rooms as $room)
                                 <div
-                                    class="flex flex-col justify-between bg-white p-10 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200">
+                                    class="flex flex-col justify-between bg-white p-10 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200
+                                    @if (auth()->user()->follows->contains($room->user_id)) shadow-lime-600 @endif">
 
                                     <!-- Room Header with Icon and Title -->
                                     <div class="flex flex-col items-start mb-4">

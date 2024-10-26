@@ -26,17 +26,19 @@
                         <label>人数</label>
                         <input name="size" required type="number" class="mx-2 my-4"><br>
                         <!-- カレンダーを追加-->
-                        <div class="flex items-center">
-                            <div class="mx-2">
-                                <label>開催日</label>
-                                <input type="date" id="date" name="date" class="form-control">
+                        <div class="md:flex items-center">
+                            <div class="md:flex">
+                                <div class="mx-2">
+                                    <label>開催日 </label>
+                                    <input type="date" id="date" name="date" class="form-control">
+                                </div>
                             </div>
 
                             <!-- ここまでカレンダーを追加 -->
                             <div class="mx-2">
-
+                                <br class="md:hidden">
                                 <select name="category_id" id="categorySelect"
-                                    class="shadow appearance-none border rounded w-full py-2 px-10 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                        class="shadow appearance-none border rounded sm:w-1/2　w-full py-2 px-10 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline">
 
                                     <option value="">すべてのカテゴリー</option>
                                     @foreach ($categories as $category)
@@ -48,6 +50,7 @@
                                 </select>
                             </div>
                         </div>
+
                         <input type="hidden" name="category_id" id="selected_category_id"
                             value="{{ request('category_id') }}">
                         <br>
@@ -59,7 +62,7 @@
                                 <label>詳細画面に位置情報を載せる</label><br>
                                 <br>
                                 <input type="checkbox" class="my-1" id="position"></input>
-                                <label>自分の位置をセットする</label><br>
+                                <label>自分の位置情報をセットする</label><br>
                                 <input type="text" id="address" value="場所" class="my-2"></input>
                                 <button id="getPosition"
                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">検索</button>
@@ -182,8 +185,6 @@
 
                             function success(pos) {
                                 const crd = pos.coords;
-                                console.log(crd.latitude);
-                                console.log(crd.longitude);
                                 document.getElementById('map').innerHTML =
                                     `<iframe src="https://maps.google.com/maps?output=embed&q=${crd.latitude},${crd.longitude}&ll=${crd.latitude},${crd.longitude}&t=m&hl=ja&z=18" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
                                 document.getElementById('latitude').value = crd.latitude;

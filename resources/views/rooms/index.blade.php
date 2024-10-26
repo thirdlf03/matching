@@ -60,47 +60,37 @@
 
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
+                    const backToTopBtn = document.getElementById('backToTopBtn');
+                    backToTopBtn.addEventListener('click', () => {
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                    });
+
                     const followedRoomsBtn = document.getElementById('followedRoomsBtn');
                     followedRoomsBtn.setAttribute('data-followed', "{{ request('followed') ? 'true' : 'false' }}");
                     followedRoomsBtn.addEventListener('click', function() {
                         const url = new URL("{{ route('rooms.index') }}");
                         const isFollowed = followedRoomsBtn.getAttribute('data-followed') === 'true';
+                        const categoryId = document.getElementById('selected_category_id').value;
+
                         if (isFollowed) {
                             url.searchParams.delete("followed");
                         } else {
                             url.searchParams.set("followed", "true");
                         }
+
+                        if (categoryId) {
+                            url.searchParams.set("category_id", categoryId);
+                        }
+
                         followedRoomsBtn.setAttribute('data-followed', !isFollowed);
-                        window.location.href = url;
+                        window.location.href = url.toString();
                     });
                 });
             </script>
         </div>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                        const backToTopBtn = document.getElementById('backToTopBtn');
-                        backToTopBtn.addEventListener('click', () => {
-                            window.scrollTo({
-                                top: 0,
-                                behavior: 'smooth'
-                            });
-                        });
-
-                        const followedRoomsBtn = document.getElementById('followedRoomsBtn');
-                        followedRoomsBtn.setAttribute('data-followed', "{{ request('followed') ? 'true' : 'false' }}");
-                        followedRoomsBtn.addEventListener('click', function() {
-                            const url = new URL("{{ route('rooms.index') }}");
-                            const isFollowed = followedRoomsBtn.getAttribute('data-followed') === 'true';
-                            if (isFollowed) {
-                                url.searchParams.delete("followed");
-                            } else {
-                                url.searchParams.set("followed", "true");
-                            }
-                            followedRoomsBtn.setAttribute('data-followed', !isFollowed);
-                            window.location.href = url.toString();
-                        });
-        </script>
 
         <form id="categoryForm" action="{{ route('rooms.index') }}" method="GET" class="mb-6">
             <div class="flex flex-wrap">
@@ -116,6 +106,7 @@
                 @endforeach
             </div>
             <input type="hidden" name="category_id" id="selected_category_id" value="{{ request('category_id') }}">
+            <input type="hidden" name="followed" id="followed" value="{{ request('followed') ? 'true' : 'false' }}">
         </form>
         <style>
             .selected {
@@ -128,20 +119,35 @@
         <script>
             document.querySelectorAll('.category-icon').forEach(icon => {
                 icon.addEventListener('click', function() {
+                    const url = new URL("{{ route('rooms.index') }}");
+                    const categoryId = this.getAttribute('data-category-id');
+                    const isFollowed = document.getElementById('followedRoomsBtn').getAttribute('data-followed') === 'true';
+
                     document.querySelectorAll('.category-icon').forEach(i => i.classList.remove('selected'));
                     this.classList.add('selected');
-                    document.getElementById('selected_category_id').value = this.getAttribute(
-                        'data-category-id');
-                    document.getElementById('categoryForm').submit();
+
+                    if (categoryId) {
+                        url.searchParams.set("category_id", categoryId);
+                    } else {
+                        url.searchParams.delete("category_id");
+                    }
+
+                    if (isFollowed) {
+                        url.searchParams.set("followed", "true");
+                    }
+
+                    window.location.href = url.toString();
                 });
             });
+
         </script>
 
         <!-- Room Listings -->
         <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach ($rooms as $room)
                 <div
-                    class="flex flex-col justify-between bg-white p-10 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200">
+                    class="flex flex-col justify-between bg-white p-10 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200
+                    @if (auth()->user()->follows->contains($room->user_id)) shadow-lime-600 @endif">
 
                     <!-- Room Header with Icon and Title -->
                     <div class="flex flex-col items-start mb-4">

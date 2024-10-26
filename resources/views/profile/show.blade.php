@@ -35,7 +35,7 @@
                 </script>
 
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <div class="flex px-4">
+                    <div class="md:flex px-4">
                         <div class="flex flex-col pr-8">
                             <a href="{{ route('rooms.index') }}"
                                 class="text-blue-500 hover:text-blue-700 mr-2">ルーム一覧に戻る</a>
@@ -86,7 +86,7 @@
                             </div>
                         </div>
                         <!-- Following Count -->
-                        <div class="flex items-center justify-center space-x-8 mb-4 mt-4">
+                        <div class= "md:flex items-center justify-center space-x-8 mb-4 mt-4">
                             <!-- Following Count on the Left -->
                             <div class="text-center flex flex-col items-center">
                                 <a href="{{ route('profile.following', $user) }}"
