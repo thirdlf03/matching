@@ -3,7 +3,7 @@
         <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Room詳細') }}
+            {{ __('ルーム詳細') }}
         </h2>
     </x-slot>
     @vite('resources/js/app.js')
@@ -12,13 +12,13 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex items-center justify-between mt-4">
-                        <a href="{{ route('rooms.index') }}" class="text-blue-500 hover:text-blue-700 mr-2">部屋一覧に戻る</a>
+                        <a href="{{ route('rooms.index') }}" class="text-blue-500 hover:text-blue-700 mr-2">ルーム一覧に戻る</a>
                         <div class="flex items-center">
                             <p class="font-bold text-sm lg:text-lg mt-4">募集人数:
                                 {{ $room->size }}</p>
                             <p class="font-bold mx-7 text-sm lg:text-lg mt-4">参加中:
                                 {{ count($room->room_members) }}</p>
-                            <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">部屋名:
+                            <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">ルーム名:
                                 {{ $room->title }}</p>
                             <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">カテゴリー:
                                 {{ $room->category->category_name ?? 'なし' }}</p>

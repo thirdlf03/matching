@@ -66,7 +66,7 @@
                                 @foreach ($rooms as $room)
                                     <div class="flex items-center">
                                         <p class="font-bold text-sm lg:text-lg mt-4">募集人数: {{ $room->size }}</p>
-                                        <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">部屋名:
+                                        <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">ルーム名:
                                             {{ $room->title }}</p>
                                     </div>
                                     <div class="mt-2 mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
@@ -102,12 +102,12 @@
                         </div>
 
                         <div class="w-full lg:w-1/2 p-4 lg:border-l lg:border-gray-300 dark:border-gray-600">
-                            <h3 class="text-lg font-semibold mb-4">過去作った部屋</h3>
+                            <h3 class="text-lg font-semibold mb-4">過去作ったルーム</h3>
                             @if ($archives->count())
                                 @foreach ($archives as $archive)
                                     <div class="flex items-center">
                                         <p class="font-bold text-sm lg:text-lg mt-4">募集人数: {{ $archive->size }}</p>
-                                        <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">部屋名:
+                                        <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">ルーム名:
                                             {{ $archive->title }}</p>
                                     </div>
                                     <div class="mt-2 mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
