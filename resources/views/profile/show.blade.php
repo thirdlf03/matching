@@ -114,6 +114,15 @@
                                             <p class="text-gray-600 dark:text-gray-400 text-sm">投稿者:
                                                 {{ $archive->user->name }}</p>
                                         </a>
+                                        @if (auth()->id() === $user->id)
+                                        <form method="POST" action="{{route('archives.destroy',$archive)}}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                            class="text-red-500 hover:text-red-700 mt-4">
+                                            削除</button>
+                                        </form>
+                                        @endif
                                     </div>
                                     <script>
                                         var content_text = '{!! $archive->data_json !!}';
@@ -130,7 +139,6 @@
                             @endif
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
