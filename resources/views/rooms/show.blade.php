@@ -241,6 +241,7 @@
                                             <option value="達成" x-cloak>達成</option>
                                         </select>
                                     </td>
+
                                     <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700" x-cloak>
                                         @if ($room->user_id == auth()->id())
                                             <button x-show="!isEditing" @click="isEditing = true" class="bg-blue-500 text-white px-2 py-1 rounded" x-cloak>編集</button>
