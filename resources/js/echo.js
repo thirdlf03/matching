@@ -20,6 +20,11 @@ window.Echo.channel('my-channel.' + roomId)
             chatContainer.classList.add('flex', isCurrentUser ? 'justify-end' : 'justify-start');
 
             if (!isCurrentUser) {
+                const userAvatar = document.createElement('img');
+                userAvatar.src = chat.avatar;
+                userAvatar.alt = chat.user.name;
+                userAvatar.classList.add('w-8', 'h-8', 'rounded-full', 'mr-2');
+
                 const userInfo = document.createElement('div');
                 userInfo.classList.add('text-xs', 'text-gray-600', 'mb-1');
 
@@ -61,5 +66,5 @@ window.Echo.channel('my-channel.' + roomId)
 
         // Append the received chat message
         appendChatMessage(data.message);
-        
+
     });
