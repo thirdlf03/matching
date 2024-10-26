@@ -18,12 +18,12 @@ class LoginController extends Controller
     public function handleGoogleCallback()
     {
         $googleUser = Socialite::driver('google')->stateless()->user();
-
         $user = User::updateOrCreate([
             'email' => $googleUser->getEmail(),
         ], [
             'name' => $googleUser->getName(),
             'email' => $googleUser->getEmail(),
+            'image_url' => $googleUser->getAvatar(),
             // 必要に応じて他のフィールドを設定
             'password' => bcrypt(Str::random(16)), // ランダムなパスワードを生成（使用しないので任意でOK）
         ]);
