@@ -12,8 +12,9 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex items-center justify-between mt-4">
+                        
                         <a href="{{ route('rooms.index') }}" class="text-blue-500 hover:text-blue-700 mr-2">部屋一覧に戻る</a>
-                        <div class="flex items-center">
+                        
                             <p class="font-bold text-sm lg:text-lg mt-4">募集人数:
                                 {{ $room->size }}</p>
                             <p class="font-bold mx-7 text-sm lg:text-lg mt-4">参加中:
@@ -32,7 +33,6 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
-
                                     class="bg-red-500 hover:bg-red-700 text-gray-100 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">削除</button>
 
                             </form>
@@ -42,24 +42,29 @@
                     @if ($room->room_members->contains(auth()->id()) || $room->user_id == auth()->id())
                         <div x-data="{ slideOverOpen: false }" x-init="@if (session('openChat')) slideOverOpen = true @endif" class="relative z-50 w-auto h-auto">
                             <button @click="slideOverOpen=true; document.body.style.overflow = 'hidden';"
-                                    class="inline-flex items-center justify-center h-10 px-4 py-2 text-sm font-medium transition-colors bg-white border rounded-md hover:bg-neutral-100 active:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-neutral-200/60 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none">チャット</button>
+                                class="inline-flex items-center justify-center h-10 px-4 py-2 text-sm font-medium transition-colors bg-white border rounded-md hover:bg-neutral-100 active:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-neutral-200/60 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none">チャット</button>
+
                             <template x-teleport="body">
                                 <div x-show="slideOverOpen"
-                                     @keydown.window.escape="slideOverOpen=false; document.body.style.overflow = '';"
-                                     x-init="$watch('slideOverOpen', value => { if (value) { setupChatFormSubmission();
-                                            scrollToBottom(); } })" class="relative z-[99]">
+                                    @keydown.window.escape="slideOverOpen=false; document.body.style.overflow = '';"
+                                    x-init="$watch('slideOverOpen', value => {
+                                        if (value) {
+                                            setupChatFormSubmission();
+                                            scrollToBottom();
+                                        }
+                                    })" class="relative z-[99]">
                                     <div x-show="slideOverOpen" x-transition.opacity.duration.600ms
-                                         @click="slideOverOpen=false; document.body.style.overflow = '';"
-                                         class="fixed inset-0 bg-black bg-opacity-10"></div>
+                                        @click="slideOverOpen=false; document.body.style.overflow = '';"
+                                        class="fixed inset-0 bg-black bg-opacity-10"></div>
                                     <div class="fixed inset-0 right-0 flex justify-end">
                                         <div x-show="slideOverOpen"
-                                             @click.away="slideOverOpen=false; document.body.style.overflow = '';"
-                                             x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
-                                             x-transition:enter-start="translate-x-full"
-                                             x-transition:enter-end="translate-x-0"
-                                             x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
-                                             x-transition:leave-start="translate-x-0"
-                                             x-transition:leave-end="translate-x-full" class="w-screen max-w-md">
+                                            @click.away="slideOverOpen=false; document.body.style.overflow = '';"
+                                            x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
+                                            x-transition:enter-start="translate-x-full"
+                                            x-transition:enter-end="translate-x-0"
+                                            x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
+                                            x-transition:leave-start="translate-x-0"
+                                            x-transition:leave-end="translate-x-full" class="w-screen max-w-md">
 
                                             <div
                                                 class="flex flex-col h-screen bg-white border-l shadow-lg border-neutral-100/70">
@@ -72,7 +77,6 @@
                                                                 @click="slideOverOpen = false; document.body.style.overflow = '';"
                                                                 class="absolute top-0 right-0 z-30 flex items-center justify-center px-3 py-2 mt-4 mr-5 space-x-1 text-xs font-medium uppercase border rounded-md border-neutral-200 text-neutral-600 hover:bg-neutral-100">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-
                                                                     viewBox="0 0 24 24" stroke-width="1.5"
                                                                     stroke="currentColor" class="w-4 h-4">
                                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -115,17 +119,16 @@
                                                     </div>
                                                 </div>
                                                 <form method="POST" action="{{ route('chat.store') }}" id="chat-form"
-
-                                                      class="flex-shrink-0 px-4 sm:px-5 mt-5 mb-4">
+                                                    class="flex-shrink-0 px-4 sm:px-5 mt-5 mb-4">
                                                     @csrf
                                                     <div class="flex">
                                                         <input type="hidden" name="room_id"
-                                                               value="{{ $room->id }}">
+                                                            value="{{ $room->id }}">
                                                         <input type="text" name="chat" placeholder="メッセージを入力"
-                                                               id="chat-input"
-                                                               class="flex-1 w-full px-4 py-2 text-sm border rounded-md focus:ring-2 focus:ring-neutral-200 focus:outline-none">
+                                                            id="chat-input"
+                                                            class="flex-1 w-full px-4 py-2 text-sm border rounded-md focus:ring-2 focus:ring-neutral-200 focus:outline-none">
                                                         <button type="submit"
-                                                                class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">送信</button>
+                                                            class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">送信</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -146,9 +149,14 @@
                                 width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"
                                 referrerpolicy="no-referrer-when-downgrade"></iframe>
                         @endif
-
-                        <a href="{{ route('profile.show', $room->user) }}"
-                           class="block mt-1 text-gray-500 text-xl">{{ $room->user->name }}</a> <br>
+                        <div class="w-12 h-12 bg-grey-400 rounded-full flex items-center justify-center mr-4 mt-2">
+                        <svg class="absolute w-10 h-10 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">投稿者: {{ $room->user->name }}</p><br>
                         <p>参加者 ({{ count($room->room_members) }}人)</p>
                         <ul>
                             @foreach ($room->room_members as $member)
@@ -162,19 +170,23 @@
                         @if ($room->user_id == auth()->id())
                             <div x-data="{ showNewTaskModal: false }">
                                 <div class="mt-4">
-                                    <button @click="showNewTaskModal = true" class="bg-blue-500 text-white px-4 py-2 rounded">新規作成</button>
+                                    <button @click="showNewTaskModal = true"
+                                        class="bg-blue-500 text-white px-4 py-2 rounded">新規作成</button>
                                 </div>
 
                                 <!-- New Task Modal -->
-                                <div x-show="showNewTaskModal" x-cloak class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                                <div x-show="showNewTaskModal" x-cloak
+                                    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                                     <div class="bg-white p-6 rounded shadow-lg">
                                         <h2 class="text-xl mb-4">新しいタスクを作成</h2>
                                         <form method="POST" action="{{ route('room_role.store') }}">
                                             @csrf
                                             <input type="hidden" name="room_id" value="{{ $room->id }}">
                                             <div class="mb-4">
-                                                <label for="role_name" class="block text-sm font-medium text-gray-700">役割名</label>
-                                                <input type="text" name="role_name" id="role_name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                                <label for="role_name"
+                                                    class="block text-sm font-medium text-gray-700">役割名</label>
+                                                <input type="text" name="role_name" id="role_name"
+                                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                                             </div>
                                             <div class="mb-4">
                                                 <label for="assigned_member" class="block text-sm font-medium text-gray-700">メンバー</label>
@@ -187,16 +199,20 @@
                                                 </select>
                                             </div>
                                             <div class="mb-4">
-                                                <label for="status" class="block text-sm font-medium text-gray-700">ステータス</label>
-                                                <select name="status" id="status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                                <label for="status"
+                                                    class="block text-sm font-medium text-gray-700">ステータス</label>
+                                                <select name="status" id="status"
+                                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                                                     <option value="未着手">未着手</option>
                                                     <option value="進行中">進行中</option>
                                                     <option value="達成">達成</option>
                                                 </select>
                                             </div>
                                             <div class="flex justify-end">
-                                                <button type="button" @click="showNewTaskModal = false" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">キャンセル</button>
-                                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">作成</button>
+                                                <button type="button" @click="showNewTaskModal = false"
+                                                    class="bg-gray-500 text-white px-4 py-2 rounded mr-2">キャンセル</button>
+                                                <button type="submit"
+                                                    class="bg-blue-500 text-white px-4 py-2 rounded">作成</button>
                                             </div>
                                         </form>
                                     </div>
@@ -207,12 +223,12 @@
                         <!-- Task List -->
                         <table class="min-w-full bg-white dark:bg-gray-800">
                             <thead>
-                            <tr>
-                                <th class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">役割</th>
-                                <th class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">ユーザー名</th>
-                                <th class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">ステータス</th>
-                                <th class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">操作</th>
-                            </tr>
+                                <tr>
+                                    <th class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">役割</th>
+                                    <th class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">ユーザー名</th>
+                                    <th class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">ステータス</th>
+                                    <th class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">操作</th>
+                                </tr>
                             </thead>
                             <tbody>
                             @foreach($roles as $role)
@@ -272,10 +288,10 @@
                             });
                         </script>
                         <style>
-                            [x-cloak] { display: none !important; }
+                            [x-cloak] {
+                                display: none !important;
+                            }
                         </style>
-
-
 
                         @if ($room->user_id != auth()->id())
                             @if ($room->room_members->contains(auth()->id()))
@@ -285,8 +301,8 @@
                                     @method('DELETE')
                                     <div class="flex justify-end mt-4">
 
-
-                                        <div class="bg-red-500 hover:bg-red-700 text-gray-200 font-bold py-0.5 px-1 rounded focus:outline-none focus:shadow-outline">
+                                        <div
+                                            class="bg-red-500 hover:bg-red-700 text-gray-200 font-bold py-0.5 px-1 rounded focus:outline-none focus:shadow-outline">
 
                                             <input type="hidden" name="room_id" value="{{ $room->id }}">
                                             <button type="submit">退室</button>
@@ -294,7 +310,6 @@
                                     </div>
                                 </form>
                             @else
-
                                 @if (count($room->room_members) < $room->size)
                                     <form method="POST" action="{{ route('roomMembers.store') }}">
                                         @csrf
@@ -346,23 +361,23 @@
                             const formData = new FormData(this);
                             fetch(this.action, {
 
-                                method: this.method,
-                                body: formData,
-                                headers: {
-                                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-                                }
-                            })
-                            .then(response => {
-                                if (response.ok) {
-                                    document.getElementById('chat-input').value = ''; // Clear the chat input
-                                    scrollToBottom(); // Scroll to the bottom of the chat
-                                }
-                                submitButton.disabled = false; // Re-enable the submit button
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                                submitButton.disabled = false; // Re-enable the submit button in case of error
-                            });
+                                    method: this.method,
+                                    body: formData,
+                                    headers: {
+                                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                                    }
+                                })
+                                .then(response => {
+                                    if (response.ok) {
+                                        document.getElementById('chat-input').value = ''; // Clear the chat input
+                                        scrollToBottom(); // Scroll to the bottom of the chat
+                                    }
+                                    submitButton.disabled = false; // Re-enable the submit button
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    submitButton.disabled = false; // Re-enable the submit button in case of error
+                                });
 
                         }
 
