@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Archive;
+use App\Models\Room;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ArchiveController extends Controller
@@ -16,7 +18,29 @@ class ArchiveController extends Controller
             abort(403, '権限がありません');
         }
         $archive->delete();
-        return response()->noContent();
+
+        $user = User::find($archive->user_id);
+
+        if (auth()->user()->is($user)) {
+            $rooms = Room::query()
+                ->where('user_id', $user->id)
+                ->latest()
+                ->paginate(10);
+        } else {
+            $rooms = $user
+                ->rooms()
+                ->latest()
+                ->paginate(10);
+        }
+
+        $archives = Archive::query()
+            ->where('user_id', $user->id)
+            ->latest()
+            ->paginate(10);
+
+        $user->load(['follows', 'followers']);
+
+        return view('profile.show', compact('user', 'rooms', 'archives'));
     }
 }
 

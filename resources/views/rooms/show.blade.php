@@ -3,7 +3,7 @@
         <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Room詳細') }}
+            {{ __('ルーム詳細') }}
         </h2>
     </x-slot>
     @vite('resources/js/app.js')
@@ -12,13 +12,13 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex items-center justify-between mt-4">
-                        <a href="{{ route('rooms.index') }}" class="text-blue-500 hover:text-blue-700 mr-2">部屋一覧に戻る</a>
+                        <a href="{{ route('rooms.index') }}" class="text-blue-500 hover:text-blue-700 mr-2">ルーム一覧に戻る</a>
                         <div class="flex items-center">
                             <p class="font-bold text-sm lg:text-lg mt-4">募集人数:
                                 {{ $room->size }}</p>
                             <p class="font-bold mx-7 text-sm lg:text-lg mt-4">参加中:
                                 {{ count($room->room_members) }}</p>
-                            <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">部屋名:
+                            <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">ルーム名:
                                 {{ $room->title }}</p>
                             <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">カテゴリー:
                                 {{ $room->category->category_name ?? 'なし' }}</p>
@@ -31,9 +31,11 @@
                             <form method="POST" action="{{ route('rooms.destroy', $room) }}">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit"
 
-                                        class="bg-red-500 hover:bg-red-700 text-gray-100 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">削除</button>
+
+                                        <button type="submit" class="border border-red-500 text-red-500 px-4 py-2 rounded hover:bg-red-500 hover:text-white transition-colors duration-200">
+    削除
+</button>
 
                             </form>
                         @endif
@@ -95,6 +97,7 @@
                                                                     <div
                                                                         class="flex @if ($chat->user_id == auth()->id()) justify-end @else justify-start @endif">
                                                                         @if ($chat->user_id != auth()->id())
+                                                                            <img src="{{ $chat->user->image_url }}" alt="{{ $chat->user->name }}" class="w-6 h-6 rounded-full mr-2 mt-1">
                                                                             <div class="text-xs text-gray-600 mb-1">
                                                                                 <p>{{ $chat->user->name }}</p>
                                                                                 <p>{{ $chat->created_at->format('H:i') }}
@@ -139,7 +142,21 @@
                     @endif
 
                     <div class="mt-2 mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg relative">
+
                         <div id="restored-content-{{ $room->id }}"></div>
+                        <div class="flex items-center mt-4">
+                            @if ($room->user->image_url)
+                                <img src="{{ $room->user->image_url }}" alt="{{ $room->user->name }}" class="w-12 h-12 rounded-full mr-4 mt-2">
+                            @else
+                                <div class="w-12 h-12 bg-grey-400 rounded-full flex items-center justify-center mr-4 mt-2">
+                                    <svg class="absolute w-10 h-10 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                            @endif
+                            <a href="{{ route('profile.show', $room->user) }}"
+                               class="block mt-1 text-gray-500 text-xl">{{ $room->user->name }}</a>
+                        </div>
 
                         @if ($room->is_show == 1)
                             <p class="my-2">場所</p>
@@ -149,8 +166,6 @@
                                 referrerpolicy="no-referrer-when-downgrade"></iframe>
                         @endif
 
-                        <a href="{{ route('profile.show', $room->user) }}"
-                           class="block mt-1 text-gray-500 text-xl">{{ $room->user->name }}</a> <br>
                         <p>参加者 ({{ count($room->room_members) }}人)</p>
                         <ul>
                             @foreach ($room->room_members as $member)
@@ -158,14 +173,18 @@
                             @endforeach
                         </ul>
                         <br>
-                        <!-- ここから投稿タグの作成 -->
+                        <!-- ここから役割タグの作成 -->
 
                         <!-- Add New Task Button and Modal -->
                         @if ($room->user_id == auth()->id())
                             <div x-data="{ showNewTaskModal: false }">
+
                                 <div class="mt-4">
-                                    <button @click="showNewTaskModal = true" class="bg-blue-500 text-white px-4 py-2 rounded">新規作成</button>
-                                </div>
+    <button @click="showNewTaskModal = true" class="border-1 border-blue-500 text-blue-500 px-4 py-2 rounded hover:bg-blue-500 hover:text-white transition-colors duration-200">
+        ＋役割作成
+    </button>
+</div>
+
 
                                 <!-- New Task Modal -->
                                 <div x-show="showNewTaskModal" x-cloak class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -225,7 +244,7 @@
                                     </td>
                                     <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">
                                         <span x-show="!isEditing" x-cloak>{{ $role->user ? $role->user->name : '未割り当て' }}</span>
-                                        <select x-show="isEditing" x-model="assignedUser" class="w-full border rounded-md"　x-cloak>
+                                        <select x-show="isEditing" x-model="assignedUser" class="w-full border rounded-md"x-cloak>
                                             <option value="" x-cloak {{ is_null($role->user_id) ? 'selected' : '' }}>未割り当て</option>
                                             <option value="{{ $room->user->id }}" x-cloak :selected="assignedUser == {{ $room->user->id }}">{{ $room->user->name }}</option>
                                             @foreach($room->room_members as $member)

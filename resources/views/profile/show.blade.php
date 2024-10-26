@@ -15,19 +15,33 @@
                     <div class="flex px-4">
                         <div class="flex flex-col pr-8">
                             <a href="{{ route('rooms.index') }}"
-                                class="text-blue-500 hover:text-blue-700 mr-2">部屋一覧に戻る</a>
-                                  <p class="text-4xl py-4 
-                            @if($user->points >= 1000) 
-                                text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600
-                            @elseif($user->points >= 500) 
-                                text-red-500
-                            @elseif($user->points >= 100) 
-                                text-blue-700
-                            @else 
-                                text-gray-800 dark:text-gray-300 
-                            @endif">
-                            {{ $user->name }}
-                        </p>
+                                class="text-blue-500 hover:text-blue-700 mr-2">ルーム一覧に戻る</a>
+
+                              
+                       
+                            @if ($user->image_url)
+                                <div class="flex">
+                                <img src="{{ $user->image_url }}" alt="{{ $user->name }}" class="w-10 h-10 rounded-full mr-4 mt-2">
+                                <p class="text-4xl py-4 
+                                    @if($user->points >= 1000) 
+                                        text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600
+                                    @elseif($user->points >= 500) 
+                                        text-red-500
+                                    @elseif($user->points >= 100) 
+                                        text-blue-700
+                                    @else 
+                                        text-gray-800 dark:text-gray-300 
+                                    @endif">
+                                    {{ $user->name }}
+                                </p>
+                                </div>
+                            @else
+                                <div class="w-12 h-12 bg-grey-400 rounded-full flex items-center justify-center mr-4 mt-2">
+                                    <svg class="absolute w-10 h-10 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                            @endif
                             <div class="text-gray-600 dark:text-gray-400 text-sm">
                                 <p>アカウント作成日時: {{ $user->created_at->format('Y-m-d H:i') }}</p>
                             </div>
@@ -81,7 +95,7 @@
                                 @foreach ($rooms as $room)
                                     <div class="flex items-center">
                                         <p class="font-bold text-sm lg:text-lg mt-4">募集人数: {{ $room->size }}</p>
-                                        <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">部屋名:
+                                        <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">ルーム名:
                                             {{ $room->title }}</p>
                                     </div>
                                     <div class="mt-2 mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
@@ -93,10 +107,11 @@
                                         <form method="GET" action="{{ route('rooms.show', $room) }}">
                                             @csrf
                                             <div class="flex justify-end mt-4">
-                                                <div
-                                                    class="bg-blue-500 hover:bg-blue-700 text-gray-200 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                                    <button type="submit">詳細</button>
-                                                </div>
+                                                <button type="submit"
+    class="flex self-end px-6 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-all duration-300">
+    詳細
+</button>
+
                                             </div>
                                         </form>
                                     </div>
@@ -116,12 +131,12 @@
                         </div>
 
                         <div class="w-full lg:w-1/2 p-4 lg:border-l lg:border-gray-300 dark:border-gray-600">
-                            <h3 class="text-lg font-semibold mb-4">過去作った部屋</h3>
+                            <h3 class="text-lg font-semibold mb-4">過去作ったルーム</h3>
                             @if ($archives->count())
                                 @foreach ($archives as $archive)
                                     <div class="flex items-center">
                                         <p class="font-bold text-sm lg:text-lg mt-4">募集人数: {{ $archive->size }}</p>
-                                        <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">部屋名:
+                                        <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">ルーム名:
                                             {{ $archive->title }}</p>
                                     </div>
                                     <div class="mt-2 mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
@@ -131,7 +146,7 @@
                                                 {{ $archive->user->name }}</p>
                                         </a>
                                         @if (auth()->id() === $user->id)
-                                        <form method="POST" action="{{route('archives.destroy',$archive)}}">
+                                        <form method="POST" action="{{route('archives.destroy', $archive)}}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
