@@ -173,7 +173,7 @@
 
                         <div class="text-gray-500 text-lg mt-2">
                             <p>参加中: {{ count($room->room_members) }} / {{ $room->size }}</p>
-                            <p>カテゴリー: {{ $room->category->category_name ?? 'なし' }}</p>
+{{--                            <p>カテゴリー: {{ $room->category->category_name ?? 'なし' }}</p>--}}
                             @if ($room->date)
                                 <p class="font-bold text-sm lg:text-lg mt-4">開催日:{{ $room->date }}</p> <!-- 日付の表示 -->
                             @endif
