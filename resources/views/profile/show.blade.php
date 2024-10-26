@@ -16,8 +16,18 @@
                         <div class="flex flex-col pr-8">
                             <a href="{{ route('rooms.index') }}"
                                 class="text-blue-500 hover:text-blue-700 mr-2">ルーム一覧に戻る</a>
-                                
-                            <p class="text-gray-800 dark:text-gray-300 text-4xl py-4">{{ $user->name }}</p>
+                            @if ($user->image_url)
+                                <div class="flex">
+                                <img src="{{ $user->image_url }}" alt="{{ $user->name }}" class="w-10 h-10 rounded-full mr-4 mt-2">
+                                <p class="text-gray-800 dark:text-gray-300 text-4xl py-4">{{ $user->name }}</p>
+                                </div>
+                            @else
+                                <div class="w-12 h-12 bg-grey-400 rounded-full flex items-center justify-center mr-4 mt-2">
+                                    <svg class="absolute w-10 h-10 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                            @endif
                             <div class="text-gray-600 dark:text-gray-400 text-sm">
                                 <p>アカウント作成日時: {{ $user->created_at->format('Y-m-d H:i') }}</p>
                             </div>
@@ -122,7 +132,7 @@
                                                 {{ $archive->user->name }}</p>
                                         </a>
                                         @if (auth()->id() === $user->id)
-                                        <form method="POST" action="{{route('archives.destroy',$archive)}}">
+                                        <form method="POST" action="{{route('archives.destroy', $archive)}}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
