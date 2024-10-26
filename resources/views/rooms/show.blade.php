@@ -1,4 +1,4 @@
-<x-show>
+<x-app-layout>
     <x-slot name="header">
         <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
@@ -31,11 +31,9 @@
                             <form method="POST" action="{{ route('rooms.destroy', $room) }}">
                                 @csrf
                                 @method('DELETE')
-                                
-
-                                        <button type="submit" class="border border-red-500 text-red-500 px-4 py-2 rounded hover:bg-red-500 hover:text-white transition-colors duration-200">
-    削除
-</button>
+                                <button type="submit" class="border border-red-500 text-red-500 px-4 py-2 rounded hover:bg-red-500 hover:text-white transition-colors duration-200">
+                                    削除
+                                </button>
 
                             </form>
                         @endif
@@ -175,10 +173,10 @@
                             <div x-data="{ showNewTaskModal: false }">
                                 
                                 <div class="mt-4">
-    <button @click="showNewTaskModal = true" class="border-1 border-blue-500 text-blue-500 px-4 py-2 rounded hover:bg-blue-500 hover:text-white transition-colors duration-200">
-        ＋役割作成
-    </button>
-</div>
+                                    <button @click="showNewTaskModal = true" class="border-1 border-blue-500 text-blue-500 px-4 py-2 rounded hover:bg-blue-500 hover:text-white transition-colors duration-200">
+                                        ＋役割作成
+                                    </button>
+                                </div>
 
 
                                 <!-- New Task Modal -->
@@ -398,4 +396,4 @@
             </div>
         </div>
     </div>
-</x-show>
+</x-app-layout>

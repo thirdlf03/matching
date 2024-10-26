@@ -12,13 +12,12 @@
 
     <div class="mt-12 py-12 px-6 max-w-7xl mx-auto bg-white shadow-sm sm:rounded-lg">
         <!-- Back to Top Button -->
-        <!-- Back to Top Button -->
-<button id="backToTopBtn"
-    class="fixed bottom-8 right-8 p-4 border-1 border-blue-600 text-blue-600 rounded-full shadow-lg hover:bg-blue-600 hover:text-white transition-all ease-in-out">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11l7-7 7 7M5 19l7-7 7 7" />
-    </svg>
-</button>
+        <button id="backToTopBtn"
+            class="fixed bottom-8 right-8 p-4 border-1 border-blue-600 text-blue-600 rounded-full shadow-lg hover:bg-blue-600 hover:text-white transition-all ease-in-out">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11l7-7 7 7M5 19l7-7 7 7" />
+            </svg>
+        </button>
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -35,9 +34,9 @@
         <!-- Room Creation and Toggle for Followed Rooms -->
          <div class="flex justify-between mb-6">
         <a href="{{ route('rooms.create') }}"
-   class="border-1 border-blue-600 hover:bg-blue-600 hover:text-white text-blue-600 font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-300">
-    + 新規作成
-</a>
+        class="border-1 border-blue-600 hover:bg-blue-600 hover:text-white text-blue-600 font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-300">
+            + 新規作成
+        </a>
 
 
 
