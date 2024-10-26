@@ -11,8 +11,8 @@ class Calendar extends Model
     use HasFactory;
 
     //protected $fillable = [
-        //'room_id',
-        //'date',
+    //'room_id',
+    //'date',
     //];
 
     public function rooms()

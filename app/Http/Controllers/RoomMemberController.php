@@ -7,25 +7,21 @@ use Illuminate\Http\Request;
 
 class RoomMemberController extends Controller
 {
-
     //ルームメンバーの一覧表示
 
     public function index()
     {
         // roommember.index ビューにデータを渡して表示
         return view('roommember.index', [
-            'roomMembers' => $roomMembers
+            'roomMembers' => $roomMembers,
         ]);
     }
-
-
-
 
     public function store(Request $request)
     {
         // バリデーションでデータの型があっているか確認
-         $validatedData = $request->validate([
-            'room_id' =>'required',
+        $validatedData = $request->validate([
+            'room_id' => 'required',
         ]);
 
         $user_id = auth()->id();
@@ -38,12 +34,11 @@ class RoomMemberController extends Controller
         return redirect()->route('rooms.show', $room)->with('status', 'ルームメンバー作成');
     }
 
-
     public function destroy(Request $request, Room $room)
     {
         // バリデーションでデータの型があっているか確認
-         $validatedData = $request->validate([
-            'room_id' =>'required',
+        $validatedData = $request->validate([
+            'room_id' => 'required',
         ]);
 
         $user_id = auth()->id();

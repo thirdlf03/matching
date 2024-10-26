@@ -15,6 +15,4 @@ class RoomMember extends Model
         'user_id',
         'status',
     ];
-
-    
 }

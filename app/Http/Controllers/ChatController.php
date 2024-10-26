@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Chat;
 use App\Events\MyEvent;
+use App\Models\Chat;
 use Illuminate\Http\Request;
 
 class ChatController extends Controller
 {
-
-
     /**
      * Store a newly created resource in storage.
      */
@@ -25,25 +23,23 @@ class ChatController extends Controller
 
         $chat = Chat::create([
             'user_id' => $user_id,
-            'room_id' => $request -> room_id,
-            'chat' => $request -> chat,
+            'room_id' => $request->room_id,
+            'chat' => $request->chat,
         ]);
 
         MyEvent::dispatch(
             ['user_id' => $user_id,
                 'user' => ['name' => auth()->user()->name],
                 'avatar' => auth()->user()->image_url,
-                'chat' => $request -> chat,
+                'chat' => $request->chat,
                 'created_at' => $chat->created_at,
-                'room_id' => $request -> room_id,]
+                'room_id' => $request->room_id, ]
         );
 
         //チャットの送信をブロードキャスト
         return response()->noContent();
 
     }
-
-
 
     /**
      * Remove the specified resource from storage.

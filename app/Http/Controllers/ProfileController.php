@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Archive;
+use App\Models\Room;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-use App\Models\Room;
-use App\Models\User;
-use App\Models\Archive;
 
 class ProfileController extends Controller
 {
@@ -23,7 +23,6 @@ class ProfileController extends Controller
             'user' => $request->user(),
         ]);
     }
-
 
     /**
      * Update the user's profile information.
@@ -94,10 +93,12 @@ class ProfileController extends Controller
         // ビューにユーザーとフォロワー一覧を渡す
         return view('profile.follower', compact('user', 'followers'));
     }
+
     public function showFollowing(User $user)
     {
         // 指定されたユーザーのフォロワーを取得
         $following = $user->follows()->get();  // フォロワーのリストを取得
+
         // ビューにユーザーとフォロワー一覧を渡す
         return view('profile.following', compact('user', 'following'));
     }

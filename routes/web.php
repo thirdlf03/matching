@@ -1,16 +1,15 @@
 <?php
 
+use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomMemberController;
 use App\Http\Controllers\RoomRoleController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ArchiveController;
 use Illuminate\Support\Facades\Route;
-use App\Events\MyEvent;
 
 if (env('APP_ENV') == 'production') {
     \Illuminate\Support\Facades\URL::forceScheme('https');

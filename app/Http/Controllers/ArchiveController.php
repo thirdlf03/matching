@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Archive;
 use App\Models\Room;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class ArchiveController extends Controller
 {
@@ -43,4 +42,3 @@ class ArchiveController extends Controller
         return view('profile.show', compact('user', 'rooms', 'archives'));
     }
 }
-

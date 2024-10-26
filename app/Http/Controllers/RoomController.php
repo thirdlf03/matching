@@ -2,55 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Room;
-use App\Models\Chat;
-use App\Models\RoomRole;
 use App\Models\Archive;
 use App\Models\Category;
+use App\Models\Chat;
 use App\Models\Follow;
-use App\Models\CAlendar;
-
+use App\Models\Room;
+use App\Models\RoomRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
 
 class RoomController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-  public function index(Request $request)
-   {
-      $category_id = $request->input('category_id');
-      $followed = $request->input('followed');
-      $categories = Category::all();
+    public function index(Request $request)
+    {
+        $category_id = $request->input('category_id');
+        $followed = $request->input('followed');
+        $categories = Category::all();
 
-      // 現在のユーザーを取得
-      $currentUser = auth()->user();
+        // 現在のユーザーを取得
+        $currentUser = auth()->user();
 
-      if ($followed) {
-          // 自分がフォローしているユーザーのIDを取得
-          $followedUsers = Follow::where('follow_id', $currentUser->id)
-                                 ->pluck('follower_id');
+        if ($followed) {
+            // 自分がフォローしているユーザーのIDを取得
+            $followedUsers = Follow::where('follow_id', $currentUser->id)
+                ->pluck('follower_id');
 
-          // フォローしているユーザーの部屋を取得
-          $rooms = Room::whereIn('user_id', $followedUsers)
-                       ->when($category_id, function($query) use ($category_id) {
-                           return $query->where('category_id', $category_id);
-                       })
-                       ->orderBy('created_at', 'desc')
-                       ->get();
-                    } else {
-        // フォローしていない場合はすべての部屋を表示
-        $rooms = Room::when($category_id, function($query) use ($category_id) {
-                         return $query->where('category_id', $category_id);
-                     })
-                     ->orderBy('created_at', 'desc')
-                     ->get();
-                    }
+            // フォローしているユーザーの部屋を取得
+            $rooms = Room::whereIn('user_id', $followedUsers)
+                ->when($category_id, function ($query) use ($category_id) {
+                    return $query->where('category_id', $category_id);
+                })
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } else {
+            // フォローしていない場合はすべての部屋を表示
+            $rooms = Room::when($category_id, function ($query) use ($category_id) {
+                return $query->where('category_id', $category_id);
+            })
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
+
         return view('rooms.index', compact(['rooms', 'categories', 'followed']));
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -60,6 +57,7 @@ class RoomController extends Controller
         $categories = Category::all();
 
         $selected_category_id = null;
+
         //ルーム作成ページを表示する
         return view('rooms.create', compact(['categories', 'selected_category_id']));
     }
@@ -97,7 +95,6 @@ class RoomController extends Controller
         $user->points += 10;
         $user->save();
 
-
         //ルーム一覧ページにリダイレクト
         return redirect()->route('rooms.index');
 
@@ -110,6 +107,7 @@ class RoomController extends Controller
     {
         $chats = Chat::where('room_id', $room->id)->get();
         $roles = RoomRole::with('user')->where('room_id', $room->id)->get();
+
         return view('rooms.show', compact(['room', 'chats', 'roles']));
     }
 
@@ -125,7 +123,6 @@ class RoomController extends Controller
         return view('rooms.edit', compact(['room', 'categories', 'selected_category_id']));
     }
 
-
     public function search(Request $request)
     {
         $query = Room::query();
@@ -135,7 +132,7 @@ class RoomController extends Controller
             $keyword = $request->keyword;
 
             // titleで部分一致検索
-            $query->where('title', 'like', '%' . $keyword . '%');
+            $query->where('title', 'like', '%'.$keyword.'%');
         }
 
         // sizeが指定されている場合のフィルタリング
@@ -149,8 +146,6 @@ class RoomController extends Controller
         // 検索結果をビューに渡す
         return view('rooms.search', compact('rooms'));
     }
-
-
 
     /**
      * Update the specified resource in storage.
@@ -171,9 +166,8 @@ class RoomController extends Controller
             'longitude' => $request->longitude,
             'category_id' => $request->category_id,
             'is_show' => $request->is_show,
-            'date' => $request ->date,
+            'date' => $request->date,
         ]);
-
 
         return redirect()->route('rooms.show', $room);
     }
@@ -193,7 +187,7 @@ class RoomController extends Controller
             'latitude' => $room->latitude,
             'longitude' => $room->longitude,
             'category_id' => $room->category_id,
-            'date' =>$room -> date,
+            'date' => $room->date,
         ]);
 
         //ルームの削除処理
