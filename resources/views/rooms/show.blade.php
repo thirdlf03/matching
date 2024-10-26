@@ -31,7 +31,7 @@
                             <form method="POST" action="{{ route('rooms.destroy', $room) }}">
                                 @csrf
                                 @method('DELETE')
-                                
+
 
                                         <button type="submit" class="border border-red-500 text-red-500 px-4 py-2 rounded hover:bg-red-500 hover:text-white transition-colors duration-200">
     削除
@@ -97,6 +97,7 @@
                                                                     <div
                                                                         class="flex @if ($chat->user_id == auth()->id()) justify-end @else justify-start @endif">
                                                                         @if ($chat->user_id != auth()->id())
+                                                                            <img src="{{ $chat->user->image_url }}" alt="{{ $chat->user->name }}" class="w-6 h-6 rounded-full mr-2 mt-1">
                                                                             <div class="text-xs text-gray-600 mb-1">
                                                                                 <p>{{ $chat->user->name }}</p>
                                                                                 <p>{{ $chat->created_at->format('H:i') }}
@@ -141,14 +142,18 @@
                     @endif
 
                     <div class="mt-2 mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg relative">
-                        
+
                         <div id="restored-content-{{ $room->id }}"></div>
                         <div class="w-12 h-12 bg-grey-400 rounded-full flex items-center justify-center mr-4 mt-2">
-                                <svg class="absolute w-10 h-10 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                                          clip-rule="evenodd"></path>
-                                </svg>
+                            @if ($room->user->image_url)
+                                <img src="{{ $room->user->image_url }}" alt="{{ $room->user->name }}" class="w-12 h-12 rounded-full mr-4 mt-2">
+                            @else
+                                <div class="w-12 h-12 bg-grey-400 rounded-full flex items-center justify-center mr-4 mt-2">
+                                    <svg class="absolute w-10 h-10 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                            @endif
                             </div>
 
                         @if ($room->is_show == 1)
@@ -173,7 +178,7 @@
                         <!-- Add New Task Button and Modal -->
                         @if ($room->user_id == auth()->id())
                             <div x-data="{ showNewTaskModal: false }">
-                                
+
                                 <div class="mt-4">
     <button @click="showNewTaskModal = true" class="border-1 border-blue-500 text-blue-500 px-4 py-2 rounded hover:bg-blue-500 hover:text-white transition-colors duration-200">
         ＋役割作成

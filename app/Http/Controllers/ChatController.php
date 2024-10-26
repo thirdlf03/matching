@@ -32,6 +32,7 @@ class ChatController extends Controller
         MyEvent::dispatch(
             ['user_id' => $user_id,
                 'user' => ['name' => auth()->user()->name],
+                'avatar' => auth()->user()->image_url,
                 'chat' => $request -> chat,
                 'created_at' => $chat->created_at,
                 'room_id' => $request -> room_id,]
