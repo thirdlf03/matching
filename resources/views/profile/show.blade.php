@@ -15,7 +15,7 @@
                     <div class="flex px-4">
                         <div class="flex flex-col pr-8">
                             <a href="{{ route('rooms.index') }}"
-                                class="text-blue-500 hover:text-blue-700 mr-2">部屋一覧に戻る</a>
+                                class="text-blue-500 hover:text-blue-700 mr-2">ルーム一覧に戻る</a>
                                 
                             <p class="text-gray-800 dark:text-gray-300 text-4xl py-4">{{ $user->name }}</p>
                             <div class="text-gray-600 dark:text-gray-400 text-sm">
