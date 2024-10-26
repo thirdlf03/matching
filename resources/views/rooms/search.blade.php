@@ -58,7 +58,8 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             @foreach ($rooms as $room)
                                 <div
-                                    class="flex flex-col justify-between bg-white p-10 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200">
+                                    class="flex flex-col justify-between bg-white p-10 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200
+                                    @if (auth()->user()->follows->contains($room->user_id)) shadow-lime-600 @endif">
 
                                     <!-- Room Header with Icon and Title -->
                                     <div class="flex flex-col items-start mb-4">
@@ -87,7 +88,14 @@
                                             <div class="flex-1">
 
                                                 <a href="{{ route('profile.show', $room->user) }}"
-                                                    class="block mt-1 text-gray-500 text-xl">{{ $room->user->name }}</a>
+                                                    class="block mt-1 text-xl
+                                        @if ($room->user->points >= 1000) text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600
+                                        @elseif($room->user->points >= 500)
+                                            text-red-500
+                                        @elseif($room->user->points >= 100)
+                                            text-blue-700
+                                        @else
+                                            text-gray-800 dark:text-gray-300 @endif">{{ $room->user->name }}</a>
                                             </div>
                                         </div>
                                         <p class="self-end text-gray-500 text-sm ml-2">

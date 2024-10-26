@@ -11,34 +11,38 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <div class="flex items-center justify-between mt-4">
-                        <a href="{{ route('rooms.index') }}" class="text-blue-500 hover:text-blue-700 mr-2">ルーム一覧に戻る</a>
-                        <div class="flex items-center">
-                            <p class="font-bold text-sm lg:text-lg mt-4">募集人数:
-                                {{ $room->size }}</p>
-                            <p class="font-bold mx-7 text-sm lg:text-lg mt-4">参加中:
-                                {{ count($room->room_members) }}</p>
-                            <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">ルーム名:
-                                {{ $room->title }}</p>
-                            <p class="text-black mx-7 text-sm sm:block lg:text-lg font-bold mt-4">カテゴリー:
-                                {{ $room->category->category_name ?? 'なし' }}</p>
-                            @if ($room->date)
-                                <p class="font-bold text-sm lg:text-lg mt-4">開催日:{{ $room->date }}</p> <!-- 日付の表示 -->
+
+                    <div class="flex items-center justify-between w-full md:w-auto">
+                        <a href="{{ route('rooms.index') }}" class="text-blue-500 hover:text-blue-700 mr-2">
+                            ルーム一覧に戻る
+                        </a>
+                        <div class="flex justify-end w-full md:w-auto mt-2 md:mt-0 md:ml-auto">
+                            @if ($room->user_id == auth()->id())
+                                <form method="POST" action="{{ route('rooms.destroy', $room) }}"
+                                    class="md:ml-4 mt-2 md-0:mt">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button type="submit"
+                                        class="border border-red-500 text-red-500 px-4 py-2 rounded hover:bg-red-500 hover:text-white transition-colors duration-200">
+                                        削除
+                                    </button>
+                                </form>
                             @endif
                         </div>
-
-                        @if ($room->user_id == auth()->id())
-                            <form method="POST" action="{{ route('rooms.destroy', $room) }}">
-                                @csrf
-                                @method('DELETE')
-
-                                <button type="submit"
-                                    class="border border-red-500 text-red-500 px-4 py-2 rounded hover:bg-red-500 hover:text-white transition-colors duration-200">
-                                    削除
-                                </button>
-
-                            </form>
-                        @endif
+                    </div>
+                    <div class="flex flex-col md:flex-row items-center justify-between mt-4">
+                        <div class="md:flex items-center mt-4 md:mt-0 w-full md:w-auto text-left">
+                            <p class="font-bold text-sm lg:text-lg">募集人数: {{ $room->size }}</p>
+                            <p class="font-bold md:mx-7 text-sm lg:text-lg">参加中: {{ count($room->room_members) }}</p>
+                            <p class="text-black md:mx-7 text-sm sm:block lg:text-lg font-bold">ルーム名:
+                                {{ $room->title }}</p>
+                            <p class="text-black md:mx-7 text-sm sm:block lg:text-lg font-bold">カテゴリー:
+                                {{ $room->category->category_name ?? 'なし' }}</p>
+                            @if ($room->date)
+                                <p class="font-bold text-sm lg:text-lg">開催日:{{ $room->date }}</p>
+                            @endif
+                        </div>
                     </div>
 
                     @if ($room->room_members->contains(auth()->id()) || $room->user_id == auth()->id())
@@ -93,7 +97,7 @@
                                                 <div class="flex-grow flex flex-col overflow-hidden px-4 mt-5 sm:px-5">
                                                     <div
                                                         class="flex-grow overflow-hidden border border-dashed rounded-md border-neutral-300">
-                                                        <div class="h-full overflow-y-auto p-4" id="scroll">
+                                                        <div class="h-2/3 md:h-full overflow-y-auto p-4" id="scroll">
                                                             <div class="chats space-y-4" id="chat-container">
                                                                 @foreach ($chats as $chat)
                                                                     <div
@@ -163,7 +167,14 @@
                                 </div>
                             @endif
                             <a href="{{ route('profile.show', $room->user) }}"
-                                class="block mt-1 text-gray-500 text-xl">{{ $room->user->name }}</a>
+                                class="block mt-1 text-xl
+                                        @if ($room->user->points >= 1000) text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600
+                                        @elseif($room->user->points >= 500)
+                                            text-red-500
+                                        @elseif($room->user->points >= 100)
+                                            text-blue-700
+                                        @else
+                                            text-gray-800 dark:text-gray-300 @endif">{{ $room->user->name }}</a>
                         </div>
 
                         @if ($room->is_show == 1)
@@ -184,65 +195,64 @@
                         <!-- ここから役割タグの作成 -->
 
                         <!-- Add New Task Button and Modal -->
-                        @if ($room->user_id == auth()->id())
-                            <div x-data="{ showNewTaskModal: false }">
 
-                                <div class="mt-4">
-                                    <button @click="showNewTaskModal = true"
-                                        class="border-1 border-blue-500 text-blue-500 px-4 py-2 rounded hover:bg-blue-500 hover:text-white transition-colors duration-200">
-                                        ＋役割作成
-                                    </button>
-                                </div>
+                        <div x-data="{ showNewTaskModal: false }">
 
-                                <!-- New Task Modal -->
-                                <div x-show="showNewTaskModal" x-cloak
-                                    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                                    <div class="bg-white p-6 rounded shadow-lg">
-                                        <h2 class="text-xl mb-4">新しいタスクを作成</h2>
-                                        <form method="POST" action="{{ route('room_role.store') }}">
-                                            @csrf
-                                            <input type="hidden" name="room_id" value="{{ $room->id }}">
-                                            <div class="mb-4">
-                                                <label for="role_name"
-                                                    class="block text-sm font-medium text-gray-700">役割名</label>
-                                                <input type="text" name="role_name" id="role_name"
-                                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                                            </div>
-                                            <div class="mb-4">
-                                                <label for="assigned_member"
-                                                    class="block text-sm font-medium text-gray-700">メンバー</label>
-                                                <select name="assigned_member" id="assigned_member"
-                                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                                                    <option value="">未割り当て</option>
-                                                    <option value="{{ $room->user->id }}">{{ $room->user->name }}
-                                                        (オーナー)</option>
-                                                    @foreach ($room->room_members as $member)
-                                                        <option value="{{ $member->id }}">{{ $member->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="mb-4">
-                                                <label for="status"
-                                                    class="block text-sm font-medium text-gray-700">ステータス</label>
-                                                <select name="status" id="status"
-                                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                                                    <option value="未着手">未着手</option>
-                                                    <option value="進行中">進行中</option>
-                                                    <option value="達成">達成</option>
-                                                </select>
-                                            </div>
-                                            <div class="flex justify-end">
-                                                <button type="button" @click="showNewTaskModal = false"
-                                                    class="bg-gray-500 text-white px-4 py-2 rounded mr-2">キャンセル</button>
-                                                <button type="submit"
-                                                    class="bg-blue-500 text-white px-4 py-2 rounded">作成</button>
-                                            </div>
-                                        </form>
-                                    </div>
+                            <div class="mt-4">
+                                <button @click="showNewTaskModal = true"
+                                    class="border-1 border-blue-500 text-blue-500 px-4 py-2 rounded hover:bg-blue-500 hover:text-white transition-colors duration-200">
+                                    ＋役割作成
+                                </button>
+                            </div>
+
+                            <!-- New Task Modal -->
+                            <div x-show="showNewTaskModal" x-cloak
+                                class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                                <div class="bg-white p-6 rounded shadow-lg">
+                                    <h2 class="text-xl mb-4">新しいタスクを作成</h2>
+                                    <form method="POST" action="{{ route('room_role.store') }}">
+                                        @csrf
+                                        <input type="hidden" name="room_id" value="{{ $room->id }}">
+                                        <div class="mb-4">
+                                            <label for="role_name"
+                                                class="block text-sm font-medium text-gray-700">役割名</label>
+                                            <input type="text" name="role_name" id="role_name"
+                                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="assigned_member"
+                                                class="block text-sm font-medium text-gray-700">メンバー</label>
+                                            <select name="assigned_member" id="assigned_member"
+                                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                                <option value="">未割り当て</option>
+                                                <option value="{{ $room->user->id }}">{{ $room->user->name }}
+                                                    (オーナー)</option>
+                                                @foreach ($room->room_members as $member)
+                                                    <option value="{{ $member->id }}">{{ $member->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="status"
+                                                class="block text-sm font-medium text-gray-700">ステータス</label>
+                                            <select name="status" id="status"
+                                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                                <option value="未着手">未着手</option>
+                                                <option value="進行中">進行中</option>
+                                                <option value="達成">達成</option>
+                                            </select>
+                                        </div>
+                                        <div class="flex justify-end">
+                                            <button type="button" @click="showNewTaskModal = false"
+                                                class="bg-gray-500 text-white px-4 py-2 rounded mr-2">キャンセル</button>
+                                            <button type="submit"
+                                                class="bg-blue-500 text-white px-4 py-2 rounded">作成</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                        @endif
+                        </div>
 
                         <!-- Task List -->
                         <table class="min-w-full bg-white dark:bg-gray-800">
