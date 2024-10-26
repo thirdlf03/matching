@@ -12,8 +12,11 @@ class ArchiveController extends Controller
      */
     public function destroy(Archive $archive)
     {
+        if ($archive->user_id !== auth()->id()) {
+            abort(403, '権限がありません');
+        }
         $archive->delete();
-
         return response()->noContent();
     }
 }
+
