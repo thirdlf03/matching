@@ -149,7 +149,8 @@
                                 referrerpolicy="no-referrer-when-downgrade"></iframe>
                         @endif
 
-                        <p class="text-gray-600 dark:text-gray-400 text-sm">投稿者: {{ $room->user->name }}</p><br>
+                        <a href="{{ route('profile.show', $room->user) }}"
+                           class="block mt-1 text-gray-500 text-xl">{{ $room->user->name }}</a> <br>
                         <p>参加者 ({{ count($room->room_members) }}人)</p>
                         <ul>
                             @foreach ($room->room_members as $member)
