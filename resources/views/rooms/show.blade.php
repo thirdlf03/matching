@@ -12,30 +12,33 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
 
-                        <div class="flex items-center justify-between w-full md:w-auto">
-                            <a href="{{ route('rooms.index') }}" class="text-blue-500 hover:text-blue-700 mr-2">
-                                ルーム一覧に戻る
-                            </a>
-                            <div class="flex justify-end w-full md:w-auto mt-2 md:mt-0 md:ml-auto">
+                    <div class="flex items-center justify-between w-full md:w-auto">
+                        <a href="{{ route('rooms.index') }}" class="text-blue-500 hover:text-blue-700 mr-2">
+                            ルーム一覧に戻る
+                        </a>
+                        <div class="flex justify-end w-full md:w-auto mt-2 md:mt-0 md:ml-auto">
                             @if ($room->user_id == auth()->id())
-                                <form method="POST" action="{{ route('rooms.destroy', $room) }}" class="md:ml-4 mt-2 md-0:mt">
+                                <form method="POST" action="{{ route('rooms.destroy', $room) }}"
+                                    class="md:ml-4 mt-2 md-0:mt">
                                     @csrf
                                     @method('DELETE')
 
                                     <button type="submit"
-                                            class="border border-red-500 text-red-500 px-4 py-2 rounded hover:bg-red-500 hover:text-white transition-colors duration-200">
+                                        class="border border-red-500 text-red-500 px-4 py-2 rounded hover:bg-red-500 hover:text-white transition-colors duration-200">
                                         削除
                                     </button>
                                 </form>
                             @endif
-                            </div>
                         </div>
+                    </div>
                     <div class="flex flex-col md:flex-row items-center justify-between mt-4">
                         <div class="md:flex items-center mt-4 md:mt-0 w-full md:w-auto text-left">
                             <p class="font-bold text-sm lg:text-lg">募集人数: {{ $room->size }}</p>
                             <p class="font-bold md:mx-7 text-sm lg:text-lg">参加中: {{ count($room->room_members) }}</p>
-                            <p class="text-black md:mx-7 text-sm sm:block lg:text-lg font-bold">ルーム名: {{ $room->title }}</p>
-                            <p class="text-black md:mx-7 text-sm sm:block lg:text-lg font-bold">カテゴリー: {{ $room->category->category_name ?? 'なし' }}</p>
+                            <p class="text-black md:mx-7 text-sm sm:block lg:text-lg font-bold">ルーム名:
+                                {{ $room->title }}</p>
+                            <p class="text-black md:mx-7 text-sm sm:block lg:text-lg font-bold">カテゴリー:
+                                {{ $room->category->category_name ?? 'なし' }}</p>
                             @if ($room->date)
                                 <p class="font-bold text-sm lg:text-lg">開催日:{{ $room->date }}</p>
                             @endif

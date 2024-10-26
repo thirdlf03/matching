@@ -121,7 +121,8 @@
                 icon.addEventListener('click', function() {
                     const url = new URL("{{ route('rooms.index') }}");
                     const categoryId = this.getAttribute('data-category-id');
-                    const isFollowed = document.getElementById('followedRoomsBtn').getAttribute('data-followed') === 'true';
+                    const isFollowed = document.getElementById('followedRoomsBtn').getAttribute(
+                        'data-followed') === 'true';
 
                     document.querySelectorAll('.category-icon').forEach(i => i.classList.remove('selected'));
                     this.classList.add('selected');
@@ -139,7 +140,6 @@
                     window.location.href = url.toString();
                 });
             });
-
         </script>
 
         <!-- Room Listings -->

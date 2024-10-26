@@ -38,7 +38,7 @@
                             <div class="mx-2">
                                 <br class="md:hidden">
                                 <select name="category_id" id="categorySelect"
-                                        class="shadow appearance-none border rounded sm:w-1/2　w-full py-2 px-10 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                    class="shadow appearance-none border rounded sm:w-1/2　w-full py-2 px-10 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline">
 
                                     <option value="">すべてのカテゴリー</option>
                                     @foreach ($categories as $category)
