@@ -20,7 +20,7 @@ class ArchiveController extends Controller
         $archive->delete();
 
         $user = User::find($archive->user_id);
-        
+
         if (auth()->user()->is($user)) {
             $rooms = Room::query()
                 ->where('user_id', $user->id)
