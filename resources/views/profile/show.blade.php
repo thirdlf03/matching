@@ -12,26 +12,27 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="p-8 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
 
-                      <!-- Back to Top Button -->
-              <button id="backToTopBtn"
-                  class="fixed bottom-8 right-8 p-4 border-1 border-blue-600 text-blue-600 rounded-full shadow-lg hover:bg-blue-600 hover:text-white transition-all ease-in-out">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                      stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11l7-7 7 7M5 19l7-7 7 7" />
-                  </svg>
-              </button>
+                <!-- Back to Top Button -->
+                <button id="backToTopBtn"
+                    class="fixed bottom-8 right-8 p-4 border-1 border-blue-600 text-blue-600 rounded-full shadow-lg hover:bg-blue-600 hover:text-white transition-all ease-in-out">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M5 11l7-7 7 7M5 19l7-7 7 7" />
+                    </svg>
+                </button>
 
-              <script>
-                  document.addEventListener('DOMContentLoaded', function() {
-                      const backToTopBtn = document.getElementById('backToTopBtn');
-                      backToTopBtn.addEventListener('click', () => {
-                          window.scrollTo({
-                              top: 0,
-                              behavior: 'smooth'
-                          });
-                      });
-                  });
-              </script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const backToTopBtn = document.getElementById('backToTopBtn');
+                        backToTopBtn.addEventListener('click', () => {
+                            window.scrollTo({
+                                top: 0,
+                                behavior: 'smooth'
+                            });
+                        });
+                    });
+                </script>
 
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex px-4">
@@ -43,28 +44,41 @@
                                 <div class="flex">
                                     <img src="{{ $user->image_url }}" alt="{{ $user->name }}"
                                         class="w-10 h-10 rounded-full mr-4 mt-2">
-                                    <p class="text-4xl py-4 
-                                        @if($user->points >= 1000) 
-                                            text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600
-                                        @elseif($user->points >= 500) 
+                                    <p
+                                        class="text-4xl py-4
+                                        @if ($user->points >= 1000) text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600
+                                        @elseif($user->points >= 500)
                                             text-red-500
-                                        @elseif($user->points >= 100) 
+                                        @elseif($user->points >= 100)
                                             text-blue-700
-                                        @else 
-                                            text-gray-800 dark:text-gray-300 
-                                        @endif">
+                                        @else
+                                            text-gray-800 dark:text-gray-300 @endif">
                                         {{ $user->name }}
                                     </p>
                                 </div>
                             @else
-                                <div
-                                    class="w-12 h-12 bg-grey-400 rounded-full flex items-center justify-center mr-4 mt-2">
-                                    <svg class="absolute w-10 h-10 text-gray-400" fill="currentColor"
-                                        viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd"
-                                            d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd">
-                                        </path>
-                                    </svg>
+                                <div class="flex">
+                                    <div
+                                        class="w-12 h-12 bg-grey-400 rounded-full flex items-center justify-center mr-4 mt-2">
+                                        <svg class="absolute w-10 h-10 text-gray-400" fill="currentColor"
+                                            viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                                clip-rule="evenodd">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <p
+                                        class="text-4xl py-4
+                                        @if ($user->points >= 1000) text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600
+                                        @elseif($user->points >= 500)
+                                            text-red-500
+                                        @elseif($user->points >= 100)
+                                            text-blue-700
+                                        @else
+                                            text-gray-800 dark:text-gray-300 @endif">
+                                        {{ $user->name }}
+                                    </p>
                                 </div>
                             @endif
                             <div class="text-gray-600 dark:text-gray-400 text-sm">

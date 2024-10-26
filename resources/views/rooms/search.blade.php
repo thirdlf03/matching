@@ -87,7 +87,14 @@
                                             <div class="flex-1">
 
                                                 <a href="{{ route('profile.show', $room->user) }}"
-                                                    class="block mt-1 text-gray-500 text-xl">{{ $room->user->name }}</a>
+                                                    class="block mt-1 text-xl
+                                        @if ($room->user->points >= 1000) text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600
+                                        @elseif($room->user->points >= 500)
+                                            text-red-500
+                                        @elseif($room->user->points >= 100)
+                                            text-blue-700
+                                        @else
+                                            text-gray-800 dark:text-gray-300 @endif">{{ $room->user->name }}</a>
                                             </div>
                                         </div>
                                         <p class="self-end text-gray-500 text-sm ml-2">
