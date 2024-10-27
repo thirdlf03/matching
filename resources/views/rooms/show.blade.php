@@ -198,12 +198,12 @@
 
                         <div x-data="{ showNewTaskModal: false }">
                             @if ($room->room_members->contains(auth()->id()) || $room->user_id == auth()->id())
-                            <div class="mt-4">
-                                <button @click="showNewTaskModal = true"
-                                    class="border-1 border-blue-500 text-blue-500 px-4 py-2 rounded hover:bg-blue-500 hover:text-white transition-colors duration-200">
-                                    ＋役割作成
-                                </button>
-                            </div>
+                                <div class="mt-4">
+                                    <button @click="showNewTaskModal = true"
+                                        class="border-1 border-blue-500 text-blue-500 px-4 py-2 rounded hover:bg-blue-500 hover:text-white transition-colors duration-200">
+                                        ＋役割作成
+                                    </button>
+                                </div>
                             @endif
 
                             <!-- New Task Modal -->
