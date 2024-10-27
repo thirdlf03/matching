@@ -59,7 +59,7 @@
                             @foreach ($rooms as $room)
                                 <div
                                     class="flex flex-col justify-between bg-white p-10 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200
-                                    @if (auth()->user()->follows->contains($room->user_id)) shadow-lime-600 @endif">
+                                    @if ($room->room_members->contains(auth()->user()->id)) shadow-yellow-500 @endif">
 
                                     <!-- Room Header with Icon and Title -->
                                     <div class="flex flex-col items-start mb-4">
