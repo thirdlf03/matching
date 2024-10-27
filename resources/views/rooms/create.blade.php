@@ -64,7 +64,7 @@
                                 <input type="checkbox" class="my-1" id="position"></input>
                                 <label>自分の位置情報をセットする</label><br>
                                 <input type="text" id="address" value="場所" class="my-2"></input>
-                                <button id="getPosition"
+                                <button id="search"
                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">検索</button>
                                 <p id="map"></p>
                             </span>
@@ -127,6 +127,7 @@
                             /* Change text color if needed */
                         }
                     </style>
+                    
                     <script>
                         const quill = new Quill('#editor', {
                             modules: {
@@ -136,6 +137,85 @@
                             placeholder: '内容を入力',
                             theme: 'snow',
                         });
+
+                        var map;
+                        var marker;
+                        var infoWindow;
+
+                        function initMap() {
+
+                            //マップ初期表示の位置設定
+                            var target = document.getElementById('target');
+                            var centerp = {
+                                lat: 37.67229496806523,
+                                lng: 137.88838989062504
+                            };
+
+
+                            // 検索実行ボタンが押下されたとき
+                            document.getElementById('search').addEventListener('click', function(e) {
+                                e.preventDefault();
+                                var place = document.getElementById('address').value;
+                                var geocoder = new google.maps.Geocoder();
+
+                                geocoder.geocode({
+                                    address: place
+                                }, function(results, status) {
+                                    if (status == google.maps.GeocoderStatus.OK) {
+
+                                        var bounds = new google.maps.LatLngBounds();
+
+                                        for (var i in results) {
+                                            if (results[0].geometry) {
+
+                                                var latlng = results[0].geometry.location;
+                                                var address = results[0].formatted_address;
+                                                lat = latlng.lat();
+                                                lng = latlng.lng();
+                                                console.log(lat, lng);
+                                                document.getElementById('map').innerHTML =
+                                                    `<iframe src="https://maps.google.com/maps?output=embed&q=${lat},${lng}&ll=${lat},${lng}&t=m&hl=ja&z=18" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
+                                                document.getElementById('latitude').value = lat;
+                                                document.getElementById('longitude').value = lng;
+
+                                            }
+                                        }
+                                    } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+                                        alert("見つかりません");
+                                    } else {
+                                        console.log(status);
+                                        alert("エラー発生");
+                                    }
+                                });
+
+                            });
+
+
+                        }
+
+                        // マーカーのセットを実施する
+                        function setMarker(setplace) {
+                            // 既にあるマーカーを削除
+                            deleteMakers();
+
+                            var iconUrl = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+                            marker = new google.maps.Marker({
+                                position: setplace,
+                                map: map,
+                                icon: iconUrl
+                            });
+                        }
+
+                        //マーカーを削除する
+                        function deleteMakers() {
+                            if (marker != null) {
+                                marker.setMap(null);
+                            }
+                            marker = null;
+                        }
+
+
+
 
                         document.getElementById('categorySelect').addEventListener('change', function() {
                             document.getElementById('selected_category_id').value = this.value;
